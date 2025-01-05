@@ -1,0 +1,102 @@
+/* Estilos generales del contenedor */
+/* Estilos generales del contenedor */
+.conteiner-general {
+    display: flex;
+    justify-content: space-between; /* Distribuye los elementos horizontalmente */
+    align-items: center; /* Alinea verticalmente al centro */
+    padding: 10px 20px;
+    background-color: #c7c2b8 ; /* Color de fondo opcional */
+    border-bottom: 1px solid #ddd; /* Línea separadora opcional */
+    position: fixed; /* Hace que el menú se quede fijo */
+    top: 0; /* Lo coloca en la parte superior */
+    left: 0;
+    right: 0;
+    z-index: 1000;
+     /* Asegura que quede por encima de otros elementos */
+  }
+  
+  /* Espaciado para evitar que el contenido quede detrás del menú */
+  body {
+    margin-top: 70px; /* Ajusta este valor según la altura de tu menú */
+  }
+  
+  /* Estilo para el logo */
+  .image-logo {
+    height: 50px;
+    cursor: pointer;
+    border: 1px solid white;
+    border-radius: 10px;
+  }
+  
+  /* Estilo para el contenedor de categorías */
+  .categorias-container {
+    position: relative;
+  }
+  /* boton categorias --------------------------------------------------- */
+  .toggle-button {
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+  
+    
+  }
+  /* lateral izquierdo ------------------------------------------------------*/
+  /* Lista de categorías */
+  .categoria-list {
+   position: fixed;
+   top: 0;
+   left: -250px;
+   width: 250px;
+   height: 100%;
+   background: rgb(0,0,0);
+   background: rgb(0,0,0);
+   background: linear-gradient(333deg, rgba(0,0,0,1) 0%, rgba(199,194,184,1) 42%);
+   box-shadow: 2px 0 5px rgb(0 , 0, 0,0.1);
+   transition: left 0.3s ease; 
+  }
+  
+  .categoria-list.open {
+    /* cuando se abre */
+    left: 0;  
+  }
+  
+  .categoria-list ul {
+    list-style: none;
+    margin: 15px;
+    padding: 15px;
+  }
+  
+  .categoria-list li {
+    margin: 5px 0;
+  }
+  
+  .categoria-list a {
+    text-decoration: none;
+    color: #333;
+    font-size: 1rem;
+  }
+  /* -------------------------------------------------------------------- */
+  /* Estilo para el ícono del carrito */
+  .icono-cart {
+    font-size: 1.8rem;
+    cursor: pointer;
+    color: #333;
+  }
+  /* Menu lateral Carrito */
+.cart-menu{
+  position: fixed;
+  top: 0;
+  right: -300px;
+  width: 250px;
+  height: 100%;
+  background-color: #f4f4f4;
+  box-shadow: 2px 0 5px;
+  transition: right 0.3s ease;
+}
+
+.cart-menu.open{
+  right: 0px;
+}
+
+  

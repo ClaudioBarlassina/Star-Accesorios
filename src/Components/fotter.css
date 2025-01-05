@@ -1,0 +1,5 @@
+.conteiner-fotter{
+    display: flex;
+    position: fixed;
+    top: 150px;
+}
