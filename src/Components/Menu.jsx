@@ -46,7 +46,7 @@ const Menu = () => {
                 <a href="./Acero-Dorado">Acero Dorado</a>
               </li>
               <li>
-                <a href="./Acero-Quirurgico">Acero Quirurgico</a>
+                <a href="./Acero-Quirurgico ">Acero Quirurgico</a>
               </li>
             </ul>
           </div>
