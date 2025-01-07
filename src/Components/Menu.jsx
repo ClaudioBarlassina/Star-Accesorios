@@ -28,16 +28,14 @@ const Menu = () => {
     setCartOpen(!isCartOpen);
   };
   const handlerCategoriaSel = (categ) => {
-    console.log(categ)
-      // Actualizamos los filtros para filtrar por categoría seleccionada
-      setFilters((prevFilters) => ({
-        ...prevFilters,
-        categoria: categ,
-      }));
-      // Cerramos el menú después de seleccionar la categoría
-      setIsMenuOpen(false);
-   
-    
+    console.log(categ);
+    // Actualizamos los filtros para filtrar por categoría seleccionada
+    setFilters((prevFilters) => ({
+      ...prevFilters,
+      categoria: categ,
+    }));
+    // Cerramos el menú después de seleccionar la categoría
+    setIsMenuOpen(false);
   };
 
   return (
@@ -53,6 +51,17 @@ const Menu = () => {
           <div className={`categoria-list ${isMenuOpen ? "open" : ""}`}>
             <button onClick={handlerCategoriaClick}>Cerrar</button>
             <ul>
+              <li>
+                <a
+                  href="#"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    handlerCategoriaSel("all");
+                  }}
+                >
+                  Todas las categorías
+                </a>
+              </li>
               {Data1.map((item) => (
                 <li key={item.id}>
                   <a
