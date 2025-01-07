@@ -4,7 +4,7 @@ import data from "./assets/Data.json";
 import './App.css'
 import { useState } from 'react'
 import { useFilters } from './Hook/Usefilter'
-import Fotter from './Components/fotter';
+
 
 function App() {
  
@@ -12,11 +12,11 @@ function App() {
   const {filterProduct} = useFilters();
 
   const fitroProductos = filterProduct(Product)
-  console.log(fitroProductos)
+  
   return (
     <>
     <Menu></Menu>
-    <Productos prod={fitroProductos}/>
+    <Productos Prod={fitroProductos}/>
     {/* <Fotter datos={fitroProductos}/> */}
     </>
   )
