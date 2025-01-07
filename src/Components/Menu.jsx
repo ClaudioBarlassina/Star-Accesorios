@@ -49,7 +49,11 @@ const Menu = () => {
           </button>
           {/* ////////// */}
           <div className={`categoria-list ${isMenuOpen ? "open" : ""}`}>
-            <button onClick={handlerCategoriaClick}>Cerrar</button>
+            <div className="titulo-categorias"> 
+              <h2>Categorias</h2>
+
+            </div>
+           
             <ul>
               <li>
                 <a
