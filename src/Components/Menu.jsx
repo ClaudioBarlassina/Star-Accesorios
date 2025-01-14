@@ -1,7 +1,8 @@
 import React from "react";
 import { useState } from "react";
 import "./Menu.css";
-import Data from "../assets/Data.json";
+// import Data from "../assets/Data.json";
+import DataCateg from "../assets/DataCateg.json";
 import { CiShoppingCart } from "react-icons/ci";
 import { RxHamburgerMenu } from "react-icons/rx";
 import logo from "../assets/Logo Star 2.webp";
@@ -12,14 +13,15 @@ const Menu = () => {
   const { filters, setFilters } = useFilters();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isCartOpen, setCartOpen] = useState(false);
+  const [active, setActive] = useState(null);
 
-  const Data1 = Data.reduce((acc, item) => {
-    // Si la categoría aún no está en el array, la agregamos
-    if (!acc.some((cat) => cat.Categoria === item.Categoria)) {
-      acc.push(item);
-    }
-    return acc;
-  }, []);
+  // const Data1 = Data.reduce((acc, item) => {
+  //   // Si la categoría aún no está en el array, la agregamos
+  //   if (!acc.some((cat) => cat.Categoria === item.Categoria)) {
+  //     acc.push(item);
+  //   }
+  //   return acc;
+  // }, []);
 
   const handlerCategoriaClick = () => {
     setIsMenuOpen(!isMenuOpen);
@@ -27,58 +29,86 @@ const Menu = () => {
   const handlerCartClic = () => {
     setCartOpen(!isCartOpen);
   };
-  const handlerCategoriaSel = (categ) => {
-    console.log(categ);
-    // Actualizamos los filtros para filtrar por categoría seleccionada
+
+  const buttonAcordeon = (index) => {
+    setActive(active === index ? null : index);
+  };
+  const handlerSeleccion = (categoria, subcategoria) => {
     setFilters((prevFilters) => ({
       ...prevFilters,
-      categoria: categ,
+      categoria: categoria,
+      subcategoria: subcategoria,
     }));
-    // Cerramos el menú después de seleccionar la categoría
     setIsMenuOpen(false);
+    console.log(categoria, subcategoria);
   };
 
   return (
     <div className="conteiner-general">
       <div>
-        {/* Categorías */}
+        {/* Categorías ----------------------------------------------------------------*/}
         <div className="categorias-container">
-          {/* Boton Abrir / Cerrar */}
+          {/* Boton Abrir / Cerrar ----------------------------------------------------*/}
           <button onClick={handlerCategoriaClick} className="toggle-button">
             <RxHamburgerMenu />
           </button>
-          {/* ////////// */}
-          <div className={`categoria-list ${isMenuOpen ? "open" : ""}`}>
-            <div className="titulo-categorias"> 
-              <h2>Categorias</h2>
 
-            </div>
-           
+          {/* Menu Lateral ----------------------------------------------------------- */}
+          <div className={`categoria-list ${isMenuOpen ? "open" : ""}`}>
+            {/* <div className="titulo-categorias"> 
+              <h2>Categorias</h2>
+            </div> */}
+
+            {/* todas las categorias --------------------------------------------------------- */}
             <ul>
-              <li>
-                <a
+              <li >
+                {/* <a
                   href="#"
                   onClick={(e) => {
                     e.preventDefault();
-                    handlerCategoriaSel("all");
+                    handlerSeleccion("all", "all");
                   }}
                 >
                   Todas las categorías
-                </a>
+                </a> */}
+                <button className="boton-categoria" onClick={()=>handlerSeleccion("all", "all")}> Todas las categorias</button>
               </li>
-              {Data1.map((item) => (
-                <li key={item.id}>
-                  <a
-                    href={item.Categoria}
-                    onClick={(e) => {
-                      e.preventDefault();
-                      handlerCategoriaSel(item.Categoria);
-                    }}
-                  >
-                    {item.Categoria}
-                  </a>
-                </li>
-              ))}
+
+              {/*----------------------------------------------------------------------- */}
+              
+              <div>
+                {DataCateg.map((categ, index) => (
+                  <div key={index}>
+                    <button className="boton-categoria"onClick={() => buttonAcordeon(index)}>
+                      {categ.title} 
+                    </button>
+                    <div
+                      className={`acordeon-cont${
+                        active === index ? "active" : ""
+                      }`}
+                      style={{
+                        maxHeight: active === index ? "400px" : "0",
+                        overflow: "hidden",
+                        transition: "max-height 1s ease",
+                        
+                        
+                      }}
+                    >
+                      <ul>
+                        {categ.items.map((item, idx) => (
+                          <div
+                            key={idx}
+                           className="item-subcategoria"
+                            onClick={() => handlerSeleccion(categ.title, item)}
+                          >
+                            {item}
+                          </div>
+                        ))}
+                      </ul>
+                    </div>
+                  </div>
+                ))}
+              </div>
             </ul>
           </div>
         </div>

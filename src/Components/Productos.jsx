@@ -5,7 +5,7 @@ import Card from "./Card";
 function Productos(Prod) {
   return (
     <div className="productos">
-{console.log(Prod)}
+
       {/* Productos */}
       <div className="productos-grid">
         {Prod.Prod.map((item) => (

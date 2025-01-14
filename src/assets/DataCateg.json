@@ -1,0 +1,16 @@
+[
+    {
+      "title": "Acero Quirurgico",
+      "items": ["Anillos", "Cadenas con Dije", "Aros","Pulseras"]
+    },
+    {
+     "title": "Acero Blanco",
+      "items": ["Anillos", "Cadenas con Dije", "Aros","Pulseras"]
+    },{
+      "title": "Acero Dorado",
+     "items": ["Anillos", "Cadenas con Dije", "Aros","Pulseras"]
+    },{
+        "title": "Accesorios",
+       "items": ["Para el Cabello"]
+      }
+  ]

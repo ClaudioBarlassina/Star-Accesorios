@@ -9,7 +9,8 @@ export const FilterContext = createContext();
 
 export function FilterProvider({children}){
     const [filters, setFilters] = useState({
-        categoria: "all"
+        categoria: "all",
+        subcategoria: "all"
     })
     return(
         <FilterContext.Provider value={{

@@ -1,124 +1,153 @@
 /* Estilos generales del contenedor */
 /* Estilos generales del contenedor */
 .conteiner-general {
-    display: flex;
-    justify-content: space-between; /* Distribuye los elementos horizontalmente */
-    align-items: center; /* Alinea verticalmente al centro */
-    padding: 10px 20px;
-    background-color: #c7c2b8 ; /* Color de fondo opcional */
-    border-bottom: 1px solid #ddd; /* Línea separadora opcional */
-    position: fixed; /* Hace que el menú se quede fijo */
-    top: 0; /* Lo coloca en la parte superior */
-    left: 0;
-    right: 0;
-    z-index: 1000;
-     /* Asegura que quede por encima de otros elementos */
-  }
-  
-  /* Espaciado para evitar que el contenido quede detrás del menú */
-  body {
-    margin-top: 70px; /* Ajusta este valor según la altura de tu menú */
-  }
-  
-  /* Estilo para el logo */
-  .image-logo {
-    height: 50px;
-    cursor: pointer;
-    border: 1px solid white;
-    border-radius: 10px;
-  }
-  
-  /* Estilo para el contenedor de categorías */
-  .categorias-container {
-    position: relative;
-  }
-  /* boton categorias --------------------------------------------------- */
-  .toggle-button {
-    background: none;
-    border: none;
-    font-size: 1.5rem;
-    cursor: pointer;
-  
-    
-  }
-  /* lateral izquierdo ------------------------------------------------------*/
-  /* Lista de categorías */
-  .categoria-list {
-   position: fixed;
-   top: 0;
-   left: -250px;
-   width: 250px;
-   height: 100%;
-   background: rgb(0,0,0);
-   background: rgb(0,0,0);
-   background: linear-gradient(333deg, rgba(0,0,0,1) 0%, rgba(199,194,184,1) 42%);
-   box-shadow: 2px 0 5px rgb(0 , 0, 0,0.1);
-   transition: left 1s ease; 
-  }
-  
-  .categoria-list.open {
-    /* cuando se abre */
-    left: 0;  
-  }
-  
-  .categoria-list ul {
-    display: block;
-    list-style: none;
-    margin: 15px;
-    padding: 15px;
-   
-  }
-  
-  .categoria-list li {
-    margin: 5px 0;
-    border: 1px solid white;
-    
-  }
-  
-  .categoria-list a {
-    display: flex;
-    text-decoration: none;
-    color: #333;
-    font-size: 1rem;
-    font-family: sans-serif;
-    
-    
-    /* border: 1px solid white; */
-  }
-  .titulo-categorias{
-    font-family: sans-serif;
-    top: 20px;
-    position: relative;
-    border-bottom: 1px solid black;
-  }
-  .select-material{
-    top: 50px;
-    position: relative;
-  }
-  
+  display: flex;
+  justify-content: space-between; /* Distribuye los elementos horizontalmente */
+  align-items: center; /* Alinea verticalmente al centro */
+  padding: 10px 20px;
+  background-color: #c7c2b8; /* Color de fondo opcional */
+  border-bottom: 1px solid #ddd; /* Línea separadora opcional */
+  position: fixed; /* Hace que el menú se quede fijo */
+  top: 0; /* Lo coloca en la parte superior */
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  /* Asegura que quede por encima de otros elementos */
+}
 
-  /* -------------------------------------------------------------------- */
-  /* Estilo para el ícono del carrito */
-  .icono-cart {
-    font-size: 1.8rem;
-    cursor: pointer;
-    color: #333;
-  }
-  /* Menu lateral Carrito */
-.cart-menu{
+/* Espaciado para evitar que el contenido quede detrás del menú */
+body {
+  margin-top: 70px; /* Ajusta este valor según la altura de tu menú */
+}
+
+/* Estilo para el logo */
+.image-logo {
+  height: 50px;
+  cursor: pointer;
+  border: 1px solid white;
+  border-radius: 10px;
+}
+
+/* Estilo para el contenedor de categorías */
+.categorias-container {
+  position: relative;
+}
+/* boton categorias --------------------------------------------------- */
+.toggle-button {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+}
+/* lateral izquierdo ------------------------------------------------------*/
+/* Lista de categorías */
+.categoria-list {
+  position: fixed;
+  top: 0;
+  left: -250px;
+  width: 250px;
+  height: 100%;
+  background: rgb(0, 0, 0);
+  background: rgb(0, 0, 0);
+  background: linear-gradient(
+    333deg,
+    rgba(0, 0, 0, 1) 0%,
+    rgba(199, 194, 184, 1) 42%
+  );
+  box-shadow: 2px 0 5px rgb(0, 0, 0, 0.1);
+  transition: left 1s ease;
+}
+
+.categoria-list.open {
+  /* cuando se abre */
+  left: 0;
+}
+
+.categoria-list ul {
+  display: block;
+  list-style: none;
+  /* margin: 15px; */
+/* border: 1px solid white; */
+}
+
+.categoria-list li {
+  margin: 5px 0;
+  /* border: 1px solid rgb(250, 247, 247); */
+}
+
+.categoria-list a {
+  display: flex;
+  text-decoration: none;
+  color: #333;
+  font-size: 1rem;
+  font-family: sans-serif;
+
+  /* border: 1px solid white; */
+}
+.titulo-categorias {
+  font-family: sans-serif;
+  top: 20px;
+  position: relative;
+  border-bottom: 1px solid black;
+}
+.select-material {
+  top: 50px;
+  position: relative;
+}
+/* deplegable  */
+.acordion-desplegado {
+  height: 0px;
+  overflow: hidden;
+}
+
+.acordion-desplegado .active {
+  height: 150px;
+  overflow: visible;
+}
+.boton-categoria {
+  color: #333;
+  background-color: transparent;
+  font-size: 1rem;
+  width: 100%;
+  height: 40px;
+  border: 1px solid white;
+  box-shadow: 0 0 10px ;
+}
+.item-subcategoria {
+  border: 1px solid white;
+  margin: 7px;
+  font-family: sans-serif;
+  color: #333;
+  height: 20px;
+  align-content: center;
+  padding: 10px;
+
+}
+
+/* -------------------------------------------------------------------- */
+/* Estilo para el ícono del carrito */
+.icono-cart {
+  font-size: 1.8rem;
+  cursor: pointer;
+  color: #333;
+}
+/* Menu lateral Carrito */
+.cart-menu {
   position: fixed;
   top: 0;
   right: -300px;
   width: 250px;
   height: 100%;
-  background: linear-gradient(333deg, rgba(0,0,0,1) 0%, rgba(199,194,184,1) 42%);
-   box-shadow: 2px 0 5px rgb(0 , 0, 0,0.1);
+  background: linear-gradient(
+    333deg,
+    rgba(0, 0, 0, 1) 0%,
+    rgba(199, 194, 184, 1) 42%
+  );
+  box-shadow: 2px 0 5px rgb(0, 0, 0, 0.1);
   box-shadow: 2px 0 5px;
   transition: right 1s ease;
 }
 
-.cart-menu.open{
+.cart-menu.open {
   right: 0px;
 }
-
-  

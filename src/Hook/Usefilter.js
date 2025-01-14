@@ -1,22 +1,21 @@
 import { useContext } from "react";
-import {FilterContext} from "../Context/Filters"
+import { FilterContext } from "../Context/Filters";
 
 export function useFilters() {
-    const{filters, setFilters} = useContext(FilterContext)
-   
-   const filterProduct = products =>{
-      
-    return products.filter(products =>{
-      
-        return (
-           filters.categoria === "all" || products.Categoria === filters.categoria
-        )
-    })
-   }
+    const { filters, setFilters } = useContext(FilterContext);
 
- return {
-   
-    filterProduct, setFilters, filters
- };
+    const filterProduct = (products) => {
+        return products.filter((product) => {
+            return (
+                (filters.categoria === "all" || product.Categoria === filters.categoria) &&
+                (filters.subcategoria === "all" || product.SubCategoria === filters.subcategoria)
+            );
+        });
+    };
 
+    return {
+        filterProduct,
+        setFilters,
+        filters,
+    };
 }
