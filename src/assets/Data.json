@@ -21,6 +21,7 @@
         "image": "https://images.unsplash.com/photo-1553062407-98eeb64c6a62",
         "nombre":"Ejemplo3",
         "Categoria":"Acero Blanco",
+        "SubCategoria":"Cadenas con Dije",
         "precio":"$100",
         "descripcion": ""
     },{
@@ -28,6 +29,7 @@
         "image": "",
         "nombre":"Ejemplo4",
         "Categoria":"Acero Dorado",
+        "SubCategoria":"Cadenas con Dije",
         "precio":"$100",
         "descripcion": ""
     },{
@@ -35,6 +37,7 @@
         "image": "",
         "nombre":"Ejemplo5",
         "Categoria":"Acero Dorado",
+        "SubCategoria":"Aros",
         "precio":"$100",
         "descripcion": ""
     },{
@@ -50,6 +53,7 @@
         "image": "",
         "nombre":"Ejemplo7",
         "Categoria":"Acero Blanco",
+        "SubCategoria":"Pulseras",
         "precio":"$100",
         "descripcion": ""
     },{
@@ -57,6 +61,7 @@
         "image": "",
         "nombre":"Ejemplo8",
         "Categoria":"Acero Blanco",
+        "SubCategoria":"Aros",
         "precio":"$100",
         "descripcion": ""
     },{
