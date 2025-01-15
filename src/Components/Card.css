@@ -4,12 +4,13 @@
     width: 190px;
     height: 340px;
     border: 1px solid #ddd;
-    border-radius: 10px;
+    border-radius: 2px;
     overflow: hidden;
     align-items: center;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     transition: transform 0.3s, box-shadow 0.3s;
     background-color: #fff;
+    
   }
   
   .conteiner-card:hover {
@@ -19,9 +20,14 @@
   
   .imagen {
     display: flex;
-    width: 100%;
+    width: 110%;
     height: 200px;
     object-fit: cover;
+    top: -10px;
+    position: relative;
+    border-bottom-right-radius:50%;
+    border-bottom-left-radius: 50%;
+   
     
   }
   

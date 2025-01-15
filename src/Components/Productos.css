@@ -1,28 +1,23 @@
 .productos {
-    padding: 2px;
-    font-family: Arial, sans-serif;
-    position: relative;
-    top: 30px;
-  
+  padding: 2px;
+  font-family: Arial, sans-serif;
+  position: relative;
+  top: 30px;
+}
+
+.productos h1 {
+  font-size: 24px;
+  color: #333;
+}
+.productos-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  gap: 1px;
+  margin: 0;
+  justify-items: center;
+}
+@media (max-width: 450px) {
+  .productos-grid {
+    grid-template-columns: 1fr 1fr;
   }
- 
-  
-  .productos h1 {
-    font-size: 24px;
-    color: #333;
-  }
-  .productos-grid{
-   display: grid;
-   grid-template-columns: 1fr 1fr 1fr 1fr ;
-   gap: 1px;
-   margin: 0;
-   justify-items: center;
-  }
-  @media (max-width:450px){
-    .productos-grid{
-      grid-template-columns: 1fr 1fr 
-    }
-  }
-  
-  
-  
+}

@@ -11,6 +11,7 @@ function Productos(Prod) {
         {Prod.Prod.map((item) => (
           <Card
             key={item.id}
+            image={item.image}
             nombre={item.nombre}
             precio={item.precio}
             descripcion={item.descripcion}
