@@ -5,7 +5,7 @@ import "./Menu.css";
 import DataCateg from "../assets/DataCateg.json";
 import { CiShoppingCart } from "react-icons/ci";
 import { RxHamburgerMenu } from "react-icons/rx";
-import logo from "../assets/Logo2.png";
+import logo from "../assets/Logo5.jpeg";
 
 import { useFilters } from "../Hook/Usefilter";
 
