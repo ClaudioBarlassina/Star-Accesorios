@@ -23,10 +23,13 @@ body {
 
 /* Estilo para el logo */
 .image-logo {
-  height: 50px;
+  height: 60px;
   cursor: pointer;
-  border: 1px solid white;
-  border-radius: 10px;
+  /* border: 1px solid white; */
+  /* border-radius: 10px; */
+ 
+
+
 }
 
 /* Estilo para el contenedor de categorías */
@@ -44,7 +47,7 @@ body {
 /* Lista de categorías */
 .categoria-list {
   position: fixed;
-  top: 95px;
+  top: 102px;
   left: -250px;
   width: 250px;
   height: 100%;
