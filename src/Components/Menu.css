@@ -23,7 +23,7 @@ body {
 
 /* Estilo para el logo */
 .image-logo {
-  height: 60px;
+  height: 65px;
   cursor: pointer;
   /* border: 1px solid white; */
   /* border-radius: 10px; */
@@ -47,7 +47,7 @@ body {
 /* Lista de categorías */
 .categoria-list {
   position: fixed;
-  top: 102px;
+  top: 107px;
   left: -250px;
   width: 250px;
   height: 100%;
