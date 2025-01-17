@@ -15,13 +15,7 @@ const Menu = () => {
   const [isCartOpen, setCartOpen] = useState(false);
   const [active, setActive] = useState(null);
 
-  // const Data1 = Data.reduce((acc, item) => {
-  //   // Si la categoría aún no está en el array, la agregamos
-  //   if (!acc.some((cat) => cat.Categoria === item.Categoria)) {
-  //     acc.push(item);
-  //   }
-  //   return acc;
-  // }, []);
+ 
 
   const handlerCategoriaClick = () => {
     setIsMenuOpen(!isMenuOpen);
