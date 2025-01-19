@@ -5,12 +5,8 @@
   justify-content: space-between; /* Distribuye los elementos horizontalmente */
   align-items: center; /* Alinea verticalmente al centro */
   padding: 10px 20px;
-  background: rgb(219, 193, 140);
-  background: radial-gradient(
-    circle,
-    rgba(219, 193, 140, 1) 0%,
-    rgba(0, 0, 0, 1) 100%
-  );
+  background: rgb(255,255,252);
+background: radial-gradient(circle, rgba(255,255,252,1) 0%, rgba(216,36,219,1) 100%);
 
   border-bottom: 1px solid #ddd; /* Línea separadora opcional */
   position: fixed; /* Hace que el menú se quede fijo */
@@ -33,7 +29,7 @@ body {
   cursor: pointer;
   /* border: 1px solid white; */
   border-radius: 10px;
-  box-shadow: 0 0 10px white;
+ filter: drop-shadow(1px 10px 5px);
 }
 
 /* Estilo para el contenedor de categorías */
@@ -56,12 +52,13 @@ body {
   left: -250px;
   width: 250px;
   height: 100%;
-  background: rgb(7, 17, 26);
-  background: linear-gradient(
+  /* background: rgb(7, 17, 26); */
+  /* background: linear-gradient(
     90deg,
     rgba(7, 17, 26, 1) 0%,
     rgba(219, 193, 140, 1) 72%
-  );
+  ); */
+  background-color: white;
   box-shadow: 2px 0 5px rgb(0, 0, 0, 0.1);
   transition: left 0.5s ease;
 }
@@ -113,19 +110,19 @@ body {
   overflow: visible;
 }
 .boton-categoria {
-  color: #fafafa;
+  color: #131212;
   background-color: transparent;
   font-size: 1rem;
   width: 100%;
   height: 40px;
-  border: 1px solid white;
+  border: 1px solid #d824db;
   box-shadow: 0 0 10px;
 }
 .item-subcategoria {
-  border: 1px solid white;
+  border: 1px solid rgb(7, 7, 7);
   margin: 7px;
   font-family: sans-serif;
-  color: #f3f0f0;
+  color: #141414;
   height: 20px;
   align-content: center;
   padding: 10px;
