@@ -138,15 +138,16 @@ body {
 /* Menu lateral Carrito */
 .cart-menu {
   position: fixed;
-  top: 0;
+  top: 107px;
   right: -300px;
   width: 250px;
   height: 100%;
-  background: linear-gradient(
+  background-color: white;
+  /* background: linear-gradient(
     333deg,
     rgba(0, 0, 0, 1) 0%,
     rgba(199, 194, 184, 1) 42%
-  );
+  ); */
   box-shadow: 2px 0 5px rgb(0, 0, 0, 0.1);
   box-shadow: 2px 0 5px;
   transition: right 1s ease;
