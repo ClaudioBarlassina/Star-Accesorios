@@ -150,7 +150,7 @@ body {
   ); */
   box-shadow: 2px 0 5px rgb(0, 0, 0, 0.1);
   box-shadow: 2px 0 5px;
-  transition: right 1s ease;
+  transition: right 0.5s ease;
 }
 
 .cart-menu.open {

@@ -1,25 +1,21 @@
-import Menu from './Components/Menu'
-import Productos from "./Components/Productos"
-import data from "./assets/Data.json";
-import './App.css'
-import { useState } from 'react'
-import { useFilters } from './Hook/Usefilter'
+import "./App.css";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
+import Home from "./Components/Home";
+import Details from "./Components/Details";
 
 function App() {
- 
- const [Product] = useState(data)
-  const {filterProduct} = useFilters();
-
-  const fitroProductos = filterProduct(Product)
-  
   return (
     <>
-    <Menu></Menu>
-    <Productos Prod={fitroProductos}/>
-    {/* <Fotter datos={fitroProductos}/> */}
+      <Router>
+        <Routes>
+
+          <Route path="/" element={<Home></Home>}></Route>
+          <Route path="/Details/:productoId" element={<Details></Details>}></Route>
+        </Routes>
+      </Router>
     </>
-  )
+  );
 }
 
-export default App
+export default App;

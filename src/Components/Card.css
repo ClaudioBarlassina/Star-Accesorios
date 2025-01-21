@@ -64,10 +64,15 @@
     cursor: pointer;
     transition: background-color 0.3s, transform 0.2s;
     font-size: 1rem;
+    text-decoration: none;
+    display: flex;
+    justify-content: center;
+    
+
   }
   
   .button-card:hover {
-    background-color: #0056b3;
+    background-color: #ed91f0;
     transform: scale(1.05);
   }
   

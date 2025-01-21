@@ -2,7 +2,12 @@ import React from "react";
 import { Link } from "react-router-dom";
 import "./Card.css";
 
-function Card({ image, nombre, precio }) {
+function Card({ id, image, nombre, precio }) {
+
+
+
+
+
   return (
     <div className="conteiner-card">
       <img src={image} alt="" className="imagen" />
@@ -10,7 +15,12 @@ function Card({ image, nombre, precio }) {
         <h2>{nombre}</h2>
         <h3>{precio}</h3>
       </div>
-      <button className="button-card">detalle</button>
+      <Link to={`/Details/${id}`} className="button-card">
+      Ver Detalle
+      </Link>
+      
+      
+     
     </div>
   );
 }

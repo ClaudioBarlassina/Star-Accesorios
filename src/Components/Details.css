@@ -1,0 +1,18 @@
+.Details-conteiner{
+    display: flex;
+}
+.Details-image{
+    width: 400px;
+
+}
+.Details-info{
+    display: flex;
+    flex-direction: column;
+}
+
+@media (max-width: 450px) {
+    .Details-conteiner{
+        display: flex;
+        flex-direction: column;
+    }
+  }
