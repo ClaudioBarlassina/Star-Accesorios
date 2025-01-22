@@ -12,7 +12,9 @@
 
 @media (max-width: 450px) {
     .Details-conteiner{
+      
         display: flex;
         flex-direction: column;
     }
+    
   }

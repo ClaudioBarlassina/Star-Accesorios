@@ -19,9 +19,7 @@ background: radial-gradient(circle, rgba(255,255,252,1) 0%, rgba(216,36,219,1) 1
 }
 
 /* Espaciado para evitar que el contenido quede detrás del menú */
-body {
-  margin-top: 70px; /* Ajusta este valor según la altura de tu menú */
-}
+
 
 /* Estilo para el logo */
 .image-logo {
