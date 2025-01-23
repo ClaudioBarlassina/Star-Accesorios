@@ -13,10 +13,34 @@
 
 @media (max-width: 450px) {
     .Details-conteiner{
-      
+        font-family: Verdana, Geneva, Tahoma, sans-serif;
         display: flex;
         flex-direction: column;
        align-items: center;
+    }
+    .Details-info{
+        width: 100%;
+    }
+    .Details-Nombre{
+        font-size: 30px;
+        font-style: italic;
+        width: 100%;
+    }
+    .Details-Categoria{
+        font-size: 15px ;
+        color: gray;
+    }
+    .Details-Precio{
+        font-size: 25px;
+        
+    }
+    .select-cantidad{
+       display: flex;
+       /* justify-content: space-around; */
+    }
+    .separador{
+        border-top: 1px solid black;
+        margin: 10px;
     }
     
   }

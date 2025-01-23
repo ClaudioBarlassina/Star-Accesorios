@@ -6,7 +6,7 @@ import DataCateg from "../assets/DataCateg.json";
 import { CiShoppingCart } from "react-icons/ci";
 import { RxHamburgerMenu } from "react-icons/rx";
 import logo from "../assets/logo2-capa.png";
-
+import { useNavigate } from "react-router-dom";
 import { useFilters } from "../Hook/Usefilter";
 
 const Menu = () => {
@@ -15,7 +15,7 @@ const Menu = () => {
   const [isCartOpen, setCartOpen] = useState(false);
   const [active, setActive] = useState(null);
 
- 
+   const navigate = useNavigate();
 
   const handlerCategoriaClick = () => {
     setIsMenuOpen(!isMenuOpen);
@@ -32,8 +32,10 @@ const Menu = () => {
       ...prevFilters,
       categoria: categoria,
       subcategoria: subcategoria,
+      
     }));
     setIsMenuOpen(false);
+    navigate("/")
     console.log(categoria, subcategoria);
   };
 

@@ -1,34 +1,42 @@
-import React from 'react'
-import { useParams, Link } from 'react-router-dom'
-import Data from "../assets/Data.json"
-import "./Details.css"
+import React from "react";
+import { useParams, Link } from "react-router-dom";
+import Data from "../assets/Data.json";
+import "./Details.css";
 
 const Details = () => {
-    const {productoId} = useParams();
-     const product = Data.find((item) => item.id === productoId);
-  console.log(product.nombre)
-  
-    return (
-   <div className='Details-conteiner'>
-    <Link to={"/"} className='button-card'>
-    Volver</Link>
-    <div>
+  const { productoId } = useParams();
+  const product = Data.find((item) => item.id === productoId);
+  console.log(product.nombre);
 
-    <img src={product.image} alt="" className='Details-image'/>
-    </div>
-    <div className='Details-info'>
+  return (
+    <div className="Details-conteiner">
+      <div>
+        <img src={product.image} alt="" className="Details-image" />
+      </div>
+      <div className="Details-info">
+        <div>
+          <p className="Details-Nombre"> {product.nombre}</p>
+        </div>
+       
 
-   
-    <p>Nombre : {product.nombre}</p>
-    <p>Tipo Material: {product.Categoria}</p>
-    <p>Categoria : {product.SubCategoria}</p>
-    <p>Precio : {product.precio}</p>
-    <p>Descripcion : {product.descripcion}</p>
-   
-    </div>
-    <button className='button-card '>Agregar Al Carrito</button>
-    </div>
-  )
-}
+        <p className="Details-Categoria"> {product.Categoria}</p>
+        <p className="Details-Precio">Precio : {product.precio}</p>
+       <div className="separador"></div>
+        <p> {product.descripcion}</p>
+        <div className="select-cantidad">
+          <p>Cantidad</p>
+          <div>
 
-export default Details
+         <button>+</button>
+         <select name="" id=""></select>
+         <button>-</button>
+          </div>
+        </div>
+          <div className="separador"></div>
+      </div>
+      <button className="button-card ">Agregar Al Carrito</button>
+    </div>
+  );
+};
+
+export default Details;

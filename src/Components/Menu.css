@@ -88,7 +88,7 @@ background: radial-gradient(circle, rgba(255,255,252,1) 0%, rgba(216,36,219,1) 1
   /* border: 1px solid white; */
 }
 .titulo-categorias {
-  font-family: sans-serif;
+  
   top: 20px;
   position: relative;
   border-bottom: 1px solid black;

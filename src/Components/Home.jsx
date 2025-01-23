@@ -1,5 +1,5 @@
 import React from 'react'
-import Menu from '../Components/Menu'
+
 import Productos from "../Components/Productos"
 import data from "../assets/Data.json";
 import { useState } from 'react'
@@ -14,7 +14,7 @@ const Home = () => {
 
 
   return (
-    <div> <Menu></Menu>
+    <div> 
     <Productos Prod={fitroProductos}/></div>
   )
 }
