@@ -14,8 +14,11 @@ const Home = () => {
 
 
   return (
+    
+
     <div> 
     <Productos Prod={fitroProductos}/></div>
+   
   )
 }
 

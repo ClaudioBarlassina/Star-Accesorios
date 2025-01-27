@@ -2,12 +2,18 @@ import React from "react";
 import { useParams, Link } from "react-router-dom";
 import Data from "../assets/Data.json";
 import "./Details.css";
+import { useCart } from "../Hook/useCart";
+
 
 const Details = () => {
+
+
+const {addToCart, cart} = useCart()
+
   const { productoId } = useParams();
   const product = Data.find((item) => item.id === productoId);
-  console.log(product.nombre);
-
+  
+ 
   return (
     <div className="Details-conteiner">
       <div>
@@ -33,8 +39,9 @@ const Details = () => {
           </div>
         </div>
           <div className="separador"></div>
-      </div>
-      <button className="button-card ">Agregar Al Carrito</button>
+      </div> 
+      {console.log(cart)}
+      <button className="button-card " onClick={()=>addToCart(product)}>Agregar Al Carrito</button>
     </div>
   );
 };
