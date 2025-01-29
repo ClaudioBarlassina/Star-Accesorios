@@ -5,24 +5,31 @@ export const CartReducer = (state, action) => {
 
   switch (actionType) {
     case "ADD_TO_CART": {
-      const { id } = actionPayload;
-     
+      const { id, quantity } = actionPayload;
+
+      // Buscar si el producto ya existe en el carrito
       const productInCartIndex = state.findIndex((item) => item.id === id);
 
+      // Si el producto ya está en el carrito, sumamos la cantidad
       if (productInCartIndex >= 0) {
         const newState = structuredClone(state);
 
-        newState[productInCartIndex].quantity += 1;
+        // Se incrementa la cantidad del producto existente por la cantidad seleccionada
+        newState[productInCartIndex].quantity += quantity;
+
         return newState;
       }
+
+      // Si el producto no está en el carrito, lo agregamos con la cantidad seleccionada
       return [
         ...state,
         {
           ...actionPayload,
-          quantity: 1,
+          quantity: quantity, // Utilizar la cantidad seleccionada
         },
       ];
     }
+
     default:
       return state;
   }

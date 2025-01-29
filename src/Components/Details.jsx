@@ -11,8 +11,21 @@ const Details = () => {
   const product = Data.find((item) => item.id === productoId);
   
   const [cantidad, setCantidad] = useState(1)
+  console.log(cantidad)
+  
+
  const handlerAddCart = () =>{
-  addToCart(product)
+  const productos = {
+    id: product.id,
+    image : product.image,
+    nombre:  product.nombre,
+    precio: product.precio,
+    quantity: cantidad
+
+  }
+ 
+  addToCart(productos)
+  console.log(cart)
  }
 
   return (
@@ -43,7 +56,7 @@ const Details = () => {
       <button className="button-card " onClick={handlerAddCart}>
         Agregar Al Carrito
       </button>
-      {console.log(cart)}
+     
     </div>
   );
 };
