@@ -1,6 +1,4 @@
-export const cartInicialState = [
- 
-];
+export const cartInicialState = [];
 
 export const CartReducer = (state, action) => {
   const { type: actionType, payload: actionPayload } = action;
@@ -9,7 +7,6 @@ export const CartReducer = (state, action) => {
     case "ADD_TO_CART": {
       const { id } = actionPayload;
      
-
       const productInCartIndex = state.findIndex((item) => item.id === id);
 
       if (productInCartIndex >= 0) {
@@ -26,5 +23,7 @@ export const CartReducer = (state, action) => {
         },
       ];
     }
+    default:
+      return state;
   }
 };

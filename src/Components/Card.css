@@ -20,7 +20,8 @@
   
   .imagen {
     display: flex;
-    width: 110%;
+   
+    width: 200px;
     height: 200px;
     object-fit: cover;
     top: -10px;
@@ -36,6 +37,7 @@
     flex-direction: column;
     justify-content: start;
     align-items: center;
+    width: 180px;
     padding: 10px;
     gap: 5px;
   }
@@ -80,3 +82,15 @@
     transform: scale(1);
   }
   
+   .icon-cart{
+    position: relative;
+    width: 25px;
+    height: 20px;
+  top: -130px;
+  left: 50px;
+ border: 1px solid grey;
+  border-radius: 50px;
+  color: rgb(8, 8, 8);
+  box-shadow: 0 0 10px;
+  
+  } 
