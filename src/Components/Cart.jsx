@@ -9,7 +9,7 @@ const Cart = () => {
     <div>
         
 
-     {JSON.stringify(cart)}
+    
 
 
 

@@ -11,8 +11,8 @@ function App() {
     
       <Router>
 
-        <Menu></Menu>
         <CartProvider>
+        <Menu></Menu>
         <Routes>
           <Route path="/" element={<Home></Home>}></Route>
           <Route path="/Details/:productoId"

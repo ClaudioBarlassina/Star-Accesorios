@@ -8,13 +8,16 @@ import { RxHamburgerMenu } from "react-icons/rx";
 import logo from "../assets/logo2-capa.png";
 import { useNavigate } from "react-router-dom";
 import { useFilters } from "../Hook/Usefilter";
+import {useCart } from "../Hook/useCart";
 
 const Menu = () => {
   const { filters, setFilters } = useFilters();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isCartOpen, setCartOpen] = useState(false);
   const [active, setActive] = useState(null);
+  
 
+  const{cart} = useCart();
    const navigate = useNavigate();
 
   const handlerCategoriaClick = () => {
@@ -116,10 +119,24 @@ const Menu = () => {
         {/* boton Carrito */}
         <CiShoppingCart className="icono-cart" onClick={handlerCartClic} />
         <div className={`cart-menu ${isCartOpen ? "open" : ""}`}>
-          <button onClick={handlerCartClic}>Cerrar</button>
-          <p></p>
+         
+          {/* Agregamos la lista de productos */}
+        <div className="cart-items">
+          {cart.length > 0 ? (
+            cart.map((item, index) => (
+              <div key={index} className="cart-item">
+                <img src={item.image} alt="" className="imagen-items-carrito"/>
+                <p>{item.nombre}</p>
+                <p>Cantidad: {item.quantity}</p>
+                <p>Precio: ${item.precio}</p>
+              </div>
+            ))
+          ) : (
+            <p>El carrito está vacío</p>
+          )}
         </div>
       </div>
+    </div>
     </div>
   );
 };

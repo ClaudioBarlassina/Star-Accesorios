@@ -5,8 +5,12 @@
   justify-content: space-between; /* Distribuye los elementos horizontalmente */
   align-items: center; /* Alinea verticalmente al centro */
   padding: 10px 20px;
-  background: rgb(255,255,252);
-background: radial-gradient(circle, rgba(255,255,252,1) 0%, rgba(216,36,219,1) 100%);
+  background: rgb(255, 255, 252);
+  background: radial-gradient(
+    circle,
+    rgba(255, 255, 252, 1) 0%,
+    rgba(216, 36, 219, 1) 100%
+  );
 
   border-bottom: 1px solid #ddd; /* Línea separadora opcional */
   position: fixed; /* Hace que el menú se quede fijo */
@@ -20,14 +24,13 @@ background: radial-gradient(circle, rgba(255,255,252,1) 0%, rgba(216,36,219,1) 1
 
 /* Espaciado para evitar que el contenido quede detrás del menú */
 
-
 /* Estilo para el logo */
 .image-logo {
   height: 65px;
   cursor: pointer;
   /* border: 1px solid white; */
   border-radius: 10px;
- filter: drop-shadow(1px 10px 5px);
+  filter: drop-shadow(1px 10px 5px);
 }
 
 /* Estilo para el contenedor de categorías */
@@ -88,7 +91,6 @@ background: radial-gradient(circle, rgba(255,255,252,1) 0%, rgba(216,36,219,1) 1
   /* border: 1px solid white; */
 }
 .titulo-categorias {
-  
   top: 20px;
   position: relative;
   border-bottom: 1px solid black;
@@ -153,4 +155,21 @@ background: radial-gradient(circle, rgba(255,255,252,1) 0%, rgba(216,36,219,1) 1
 
 .cart-menu.open {
   right: 0px;
+  overflow-y: scroll;
+
+  height: 700px;
+}
+/* estilo para la solapa de carrito */
+.cart-items {
+  overflow: scroll;
+  display: flex;
+  flex-direction: column;
+  
+}
+.cart-item {
+  border: 1px solid grey;
+}
+.imagen-items-carrito {
+  width: 60px;
+  height: 60px;
 }
