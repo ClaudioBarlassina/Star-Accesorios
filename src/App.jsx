@@ -4,15 +4,28 @@ import Menu from "../src/Components/Menu";
 import Home from "./Components/Home";
 import Details from "./Components/Details";
 import { CartProvider } from "./Context/CartContext";
+import { EstadoProvider } from "./Context/EstadoCom";
+import Notificacion from "./Components/Notificacion";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css"
+
 
 function App() {
+
+
+
+
   return (
     <>
     
       <Router>
-
+  <EstadoProvider>
         <CartProvider>
         <Menu></Menu>
+       
+        {/* //NOTIFICACION CON TOAST */}
+       <ToastContainer  ></ToastContainer>   
+       
         <Routes>
           <Route path="/" element={<Home></Home>}></Route>
           <Route path="/Details/:productoId"
@@ -20,6 +33,7 @@ function App() {
           ></Route>
         </Routes>
         </CartProvider>
+        </EstadoProvider>
       </Router>
     
     </>

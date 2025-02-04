@@ -99,3 +99,16 @@
     transition: transform 1s cubic-bezier(0.075, 0.82, 0.165, 1);
     background-color: white;
   }
+
+  /* Notificacion menu */
+  .notificacion-menu{
+    display: flex;
+    
+    background-color: white;
+    height: 150px;
+    top: 110px;
+  }
+  .image-notificacion{
+    width: 100px;
+    height:100px;
+  }

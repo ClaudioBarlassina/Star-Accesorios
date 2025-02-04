@@ -1,5 +1,5 @@
 import React from "react";
-import { useState } from "react";
+import { useState , useContext, useEffect} from "react";
 import "./Menu.css";
 // import Data from "../assets/Data.json";
 import DataCateg from "../assets/DataCateg.json";
@@ -9,13 +9,13 @@ import logo from "../assets/logo2-capa.png";
 import { useNavigate } from "react-router-dom";
 import { useFilters } from "../Hook/Usefilter";
 import {useCart } from "../Hook/useCart";
+import { EstadoContext } from "../Context/EstadoCom";
 
 const Menu = () => {
   const { filters, setFilters } = useFilters();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [isCartOpen, setCartOpen] = useState(false);
-  const [active, setActive] = useState(null);
-  
+   const [active, setActive] = useState(null);
+  const {isCartOpen, setisCartOpen} = useContext(EstadoContext);
 
   const{cart} = useCart();
    const navigate = useNavigate();
@@ -24,9 +24,11 @@ const Menu = () => {
     setIsMenuOpen(!isMenuOpen);
   };
   const handlerCartClic = () => {
-    setCartOpen(!isCartOpen);
+    setisCartOpen(!isCartOpen);
+    
   };
 
+ 
   const buttonAcordeon = (index) => {
     setActive(active === index ? null : index);
   };
@@ -118,6 +120,7 @@ const Menu = () => {
       <div>
         {/* boton Carrito */}
         <CiShoppingCart className="icono-cart" onClick={handlerCartClic} />
+        <span></span>
         <div className={`cart-menu ${isCartOpen ? "open" : ""}`}>
          
           {/* Agregamos la lista de productos */}
