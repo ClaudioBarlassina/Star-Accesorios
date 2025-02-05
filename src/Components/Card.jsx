@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import "./Card.css";
 import { MdAddShoppingCart } from "react-icons/md";
 import { useCart } from "../Hook/useCart";
-import { toast } from "react-toastify";
+import { toast} from "react-toastify";
 
 
 function Card({ id, image, nombre, precio }) {
@@ -24,14 +24,9 @@ function Card({ id, image, nombre, precio }) {
     
     
     </div>,{
-      position: "top-center",
-      // autoClose: 3000,
-      hideProgressBar: true,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-     // Opciones: "light", "dark", "colored"
+     
      className:"notificacion-menu",
+    
     });
   };
 

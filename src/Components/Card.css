@@ -103,12 +103,25 @@
   /* Notificacion menu */
   .notificacion-menu{
     display: flex;
-    
     background-color: white;
     height: 150px;
     top: 110px;
+  
+    
   }
   .image-notificacion{
     width: 100px;
     height:100px;
   }
+
+ @keyframes entrada {
+  0%{
+    opacity: 0%;
+    transform: translateX(100%);
+  }
+  100%{
+    opacity: 100%;
+    transform: translateX(0);
+    
+  }
+ }
