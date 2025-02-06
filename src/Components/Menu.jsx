@@ -1,5 +1,5 @@
 import React from "react";
-import { useState , useContext, useEffect} from "react";
+import { useState, useContext, useEffect } from "react";
 import "./Menu.css";
 // import Data from "../assets/Data.json";
 import DataCateg from "../assets/DataCateg.json";
@@ -8,41 +8,38 @@ import { RxHamburgerMenu } from "react-icons/rx";
 import logo from "../assets/logo2-capa.png";
 import { useNavigate } from "react-router-dom";
 import { useFilters } from "../Hook/Usefilter";
-import {useCart } from "../Hook/useCart";
+import { useCart } from "../Hook/useCart";
 import { EstadoContext } from "../Context/EstadoCom";
 
 const Menu = () => {
   const { filters, setFilters } = useFilters();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-   const [active, setActive] = useState(null);
-  const {isCartOpen, setisCartOpen} = useContext(EstadoContext);
+  const [active, setActive] = useState(null);
+  const { isCartOpen, setisCartOpen } = useContext(EstadoContext);
   const [contador, setContador] = useState(0);
 
+  const { cart } = useCart();
 
- 
-  const{cart} = useCart();
+  //contador numerito
 
+  const contadores = cart.reduce((total, item) => total + item.quantity, 0);
 
- //contador 
-  
- const contadores = cart.reduce((total, item) => total + item.quantity, 0);
+  //
 
-console.log(contadores)
+  // contador total 
+  const totalPrecio = cart.reduce((total, item) => total + item.precio * item.quantity,0 );
+ console.log(totalPrecio)
  //
 
-
-
-   const navigate = useNavigate();
+  const navigate = useNavigate();
 
   const handlerCategoriaClick = () => {
     setIsMenuOpen(!isMenuOpen);
   };
   const handlerCartClic = () => {
     setisCartOpen(!isCartOpen);
-    
   };
 
- 
   const buttonAcordeon = (index) => {
     setActive(active === index ? null : index);
   };
@@ -51,10 +48,9 @@ console.log(contadores)
       ...prevFilters,
       categoria: categoria,
       subcategoria: subcategoria,
-      
     }));
     setIsMenuOpen(false);
-    navigate("/")
+    navigate("/");
     console.log(categoria, subcategoria);
   };
 
@@ -76,7 +72,7 @@ console.log(contadores)
 
             {/* todas las categorias --------------------------------------------------------- */}
             <ul>
-              <li >
+              <li>
                 {/* <a
                   href="#"
                   onClick={(e) => {
@@ -86,16 +82,25 @@ console.log(contadores)
                 >
                   Todas las categorías
                 </a> */}
-                <button className="boton-categoria" onClick={()=>handlerSeleccion("all", "all")}> Todas las categorias</button>
+                <button
+                  className="boton-categoria"
+                  onClick={() => handlerSeleccion("all", "all")}
+                >
+                  {" "}
+                  Todas las categorias
+                </button>
               </li>
 
               {/*----------------------------------------------------------------------- */}
-              
+
               <div>
                 {DataCateg.map((categ, index) => (
                   <div key={index}>
-                    <button className="boton-categoria"onClick={() => buttonAcordeon(index)}>
-                      {categ.title} 
+                    <button
+                      className="boton-categoria"
+                      onClick={() => buttonAcordeon(index)}
+                    >
+                      {categ.title}
                     </button>
                     <div
                       className={`acordeon-cont${
@@ -105,15 +110,13 @@ console.log(contadores)
                         maxHeight: active === index ? "400px" : "0",
                         overflow: "hidden",
                         transition: "max-height 1s ease",
-                        
-                        
                       }}
                     >
                       <ul>
                         {categ.items.map((item, idx) => (
                           <div
                             key={idx}
-                           className="item-subcategoria"
+                            className="item-subcategoria"
                             onClick={() => handlerSeleccion(categ.title, item)}
                           >
                             {item}
@@ -134,34 +137,36 @@ console.log(contadores)
       <div>
         {/* boton Carrito */}
         <div className="conjunto-carrito-numero">
+          <CiShoppingCart className="icono-cart" onClick={handlerCartClic} />
 
-        <CiShoppingCart className="icono-cart" onClick={handlerCartClic} />
-       
-       
-       
-        <span className="contador-carrito">{contadores}</span>
+          {contadores > 0 && (
+            <span className="contador-carrito">{contadores}</span>
+          )}
         </div>
         <div className={`cart-menu ${isCartOpen ? "open" : ""}`}>
-         
           {/* Agregamos la lista de productos */}
-        <div className="cart-items">
+          <div className="cart-items">
           {cart.length > 0 ? (
-            cart.map((item, index) => (
-              <div key={index} className="cart-item">
-                <img src={item.image} alt="" className="imagen-items-carrito"/>
-                <p>{item.nombre}</p>
-                <p>Cantidad: {item.quantity}</p>
-                <p>Precio: ${item.precio}</p>
-              </div>
-            ))
-          ) : (
-            <p>El carrito está vacío</p>
-          )}
+  <>
+    {cart.map((item, index) => (
+      <div key={index} className="cart-item">
+        <img src={item.image} alt="" className="imagen-items-carrito" />
+        <p>{item.nombre}</p>
+        <p>Cantidad: {item.quantity}</p>
+        <p>Precio: ${item.precio}</p>
+      </div>
+    ))}
 
-          
+    {/* Contador total después de la lista de productos */}
+    <span>{`Cantidad Total: ${contadores}`}</span>
+    <span>{`Total a pagar: $${totalPrecio}`}</span>
+  </>
+) : (
+  <p>El carrito está vacío</p>
+)}
+          </div>
         </div>
       </div>
-    </div>
     </div>
   );
 };
