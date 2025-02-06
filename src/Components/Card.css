@@ -125,3 +125,24 @@
     
   }
  }
+
+ /* contador carrito */
+
+ .contador-carrito{
+  display: flex;
+  background-color: rgb(250, 248, 248);
+  border-radius: 100%;
+  width: 15px;
+  height: 15px;
+  overflow: visible;
+ justify-content: center;
+ align-items: center;
+ /* border: 1px solid gray; */
+ color: rgb(245, 4, 4);
+ box-shadow: 0 0 10px white;
+ font-family: sans-serif;
+ }
+
+ .conjunto-carrito-numero{
+  display: flex;
+ }

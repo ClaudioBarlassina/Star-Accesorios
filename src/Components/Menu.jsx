@@ -16,8 +16,22 @@ const Menu = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
    const [active, setActive] = useState(null);
   const {isCartOpen, setisCartOpen} = useContext(EstadoContext);
+  const [contador, setContador] = useState(0);
 
+
+ 
   const{cart} = useCart();
+
+
+ //contador 
+  
+ const contadores = cart.reduce((total, item) => total + item.quantity, 0);
+
+console.log(contadores)
+ //
+
+
+
    const navigate = useNavigate();
 
   const handlerCategoriaClick = () => {
@@ -119,8 +133,14 @@ const Menu = () => {
       </div>
       <div>
         {/* boton Carrito */}
+        <div className="conjunto-carrito-numero">
+
         <CiShoppingCart className="icono-cart" onClick={handlerCartClic} />
-        <span></span>
+       
+       
+       
+        <span className="contador-carrito">{contadores}</span>
+        </div>
         <div className={`cart-menu ${isCartOpen ? "open" : ""}`}>
          
           {/* Agregamos la lista de productos */}
@@ -137,6 +157,8 @@ const Menu = () => {
           ) : (
             <p>El carrito está vacío</p>
           )}
+
+          
         </div>
       </div>
     </div>
