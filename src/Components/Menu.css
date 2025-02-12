@@ -175,16 +175,21 @@
   width: 60px;
   height: 60px;
 }
-.cant-precio{
+.cant-nombre{
   display: flex;
   flex-direction: column;
-  /* border: 1px solid black; */
-}
-.img-nomb{
-  display: flex;
-  /* border: 1px solid black; */
   width: 150px;
+  /* border: 1px solid black; */
+
 }
+
 .cantidad{
   margin-bottom: 15px;
+}
+.boton-borrar{
+  
+  position: relative;
+ width: 20px;
+ height: 20px;
+ left: 10px;
 }

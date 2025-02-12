@@ -19,7 +19,7 @@ function Card({ id, image, nombre, precio }) {
     <div className="cuerpo-datos">
 
     <h1 className="N-datos">{productos.nombre}</h1>
-    <span className="N-precio">{productos.precio}</span>
+    <span className="N-precio">${productos.precio}</span>
     </div>
     
     
@@ -37,7 +37,7 @@ function Card({ id, image, nombre, precio }) {
       </Link>
       <div className="info-card">
         <h2>{nombre}</h2>
-        <h3>{precio}</h3>
+        <h3> ${precio}</h3>
       </div>
 
       <MdAddShoppingCart className="icon-cart" onClick={HandlerAdd} />

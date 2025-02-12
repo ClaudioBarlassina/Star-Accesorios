@@ -10,13 +10,13 @@ import { useNavigate } from "react-router-dom";
 import { useFilters } from "../Hook/Usefilter";
 import { useCart } from "../Hook/useCart";
 import { EstadoContext } from "../Context/EstadoCom";
-
+import { FaRegTrashAlt } from "react-icons/fa";
 const Menu = () => {
   const { filters, setFilters } = useFilters();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [active, setActive] = useState(null);
   const { isCartOpen, setisCartOpen } = useContext(EstadoContext);
-  const [contador, setContador] = useState(0);
+  // const [contador, setContador] = useState(0);
 
   const { cart } = useCart();
 
@@ -27,8 +27,8 @@ const Menu = () => {
   //
 
   // contador total 
-  const totalPrecio = cart.reduce((total, item) => total + item.precio * item.quantity,0 );
- console.log(totalPrecio)
+  const totalPrecio = cart.reduce((total, item) => total + (item.precio * item.quantity),0 );
+ 
  //
 
   const navigate = useNavigate();
@@ -150,22 +150,26 @@ const Menu = () => {
   <>
     {cart.map((item, index) => (
       <div key={index} className="cart-item">
-        <div className="img-nomb">
 
         <img src={item.image} alt="" className="imagen-items-carrito" />
+        
+        <div className="cant-nombre">
         <p>{item.nombre}</p>
-        </div>
-        <div className="cant-precio">
 
-        <p className="cantidad">Cantidad: {item.quantity}</p>
-        <p>Precio: {item.precio}</p>
+        <p className="cantidad">Cant: {item.quantity}</p>
         </div>
+        <div >
+        <FaRegTrashAlt className="boton-borrar" />
+        <p>${item.precio}</p>
       </div>
+        </div>
     ))}
 
     {/* Contador total después de la lista de productos */}
     <span>{`Cantidad Total: ${contadores}`}</span>
     <span>{`Total a pagar: $${totalPrecio}`}</span>
+    
+ 
   </>
 ) : (
   <p>El carrito está vacío</p>

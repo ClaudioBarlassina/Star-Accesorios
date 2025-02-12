@@ -5,7 +5,7 @@
         "nombre":"Aros1",
         "Categoria":"Acero Quirurgico",
         "SubCategoria":"Aros",
-        "precio":"$100",
+        "precio":100,
         "descripcion": "Anillo Fabricado en Acero Quirúrgico 316L Con Baño Dorado."
     },
     {
@@ -14,7 +14,7 @@
         "nombre":"Anillo Esmaltado  ",
         "Categoria":"Acero Quirurgico",
         "SubCategoria":"Anillos",
-        "precio":"$100",
+        "precio":100,
         "descripcion": "Anillo Fabricado en Acero Quirúrgico 316L Con Baño Dorado."
     },{
         "id":"03",
@@ -22,7 +22,7 @@
         "nombre":"Cadenas 3",
         "Categoria":"Acero Blanco",
         "SubCategoria":"Cadenas con Dije",
-        "precio":"$100",
+        "precio":100,
         "descripcion": ""
     },{
         "id":"04",
@@ -30,7 +30,7 @@
         "nombre":"Cadenas 4",
         "Categoria":"Acero Dorado",
         "SubCategoria":"Cadenas con Dije",
-        "precio":"$100",
+        "precio":100,
         "descripcion": ""
     },{
         "id":"05",
@@ -38,7 +38,7 @@
         "nombre":"Aros5",
         "Categoria":"Acero Dorado",
         "SubCategoria":"Aros",
-        "precio":"$100",
+        "precio":100,
         "descripcion": ""
     },{
         "id":"06",
@@ -46,7 +46,7 @@
         "nombre":"Aros",
         "Categoria":"Acero Quirurgico",
         "SubCategoria":"Aros",
-        "precio":"$100",
+        "precio":120,
         "descripcion": ""
     },{
         "id":"07",
@@ -54,7 +54,7 @@
         "nombre":"Pulseras",
         "Categoria":"Acero Blanco",
         "SubCategoria":"Pulseras",
-        "precio":"$100",
+        "precio":500,
         "descripcion": ""
     },{
         "id":"08",
@@ -62,7 +62,7 @@
         "nombre":"Aros",
         "Categoria":"Acero Blanco",
         "SubCategoria":"Aros",
-        "precio":"$100",
+        "precio":200,
         "descripcion": ""
     },{
         "id":"09",
@@ -70,7 +70,7 @@
         "nombre":"Anillos",
         "Categoria":"Acero Quirurgico",
         "SubCategoria":"Anillos",
-        "precio":"$100",
+        "precio":180,
         "descripcion": ""
     },{
         "id":"10",
@@ -78,7 +78,7 @@
         "nombre":"Anillos",
         "Categoria":"Acero Dorado",
         "SubCategoria":"Anillos",
-        "precio":"$100",
+        "precio":800,
         "descripcion": ""
     }
         
