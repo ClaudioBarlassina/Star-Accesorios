@@ -150,10 +150,16 @@ const Menu = () => {
   <>
     {cart.map((item, index) => (
       <div key={index} className="cart-item">
+        <div className="img-nomb">
+
         <img src={item.image} alt="" className="imagen-items-carrito" />
         <p>{item.nombre}</p>
-        <p>Cantidad: {item.quantity}</p>
-        <p>Precio: ${item.precio}</p>
+        </div>
+        <div className="cant-precio">
+
+        <p className="cantidad">Cantidad: {item.quantity}</p>
+        <p>Precio: {item.precio}</p>
+        </div>
       </div>
     ))}
 

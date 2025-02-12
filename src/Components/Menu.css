@@ -140,7 +140,7 @@
   position: fixed;
   top: 107px;
   right: -300px;
-  width: 250px;
+  width: 300px;
   height: 100%;
   background-color: white;
   /* background: linear-gradient(
@@ -168,8 +168,23 @@
 }
 .cart-item {
   border: 1px solid grey;
+  border-radius: 10px;
+  display: flex;
 }
 .imagen-items-carrito {
   width: 60px;
   height: 60px;
+}
+.cant-precio{
+  display: flex;
+  flex-direction: column;
+  /* border: 1px solid black; */
+}
+.img-nomb{
+  display: flex;
+  /* border: 1px solid black; */
+  width: 150px;
+}
+.cantidad{
+  margin-bottom: 15px;
 }

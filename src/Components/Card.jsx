@@ -18,8 +18,8 @@ function Card({ id, image, nombre, precio }) {
   <img src={productos.image} alt="" className="image-notificacion"/>
     <div className="cuerpo-datos">
 
-    <span>{productos.nombre}</span>
-    <span>{productos.precio}</span>
+    <h1 className="N-datos">{productos.nombre}</h1>
+    <span className="N-precio">{productos.precio}</span>
     </div>
     
     

@@ -109,6 +109,30 @@
   
     
   }
+  .cuerpo-notificacion{
+    display: flex;
+   
+  }
+  .cuerpo-datos{
+    display: flex;
+    flex-direction: column;
+    width: 200px;
+    border: 1px solid rgba(0, 0, 0, 0.253);
+    border-radius: 10px;
+    align-items: flex-start;
+
+  }
+ .N-datos{
+  color: #d824db;
+  font-size: 25px;
+  /* border: 1px solid black; */
+  width: 100%
+ }
+ .N-precio{
+  color:gray;
+  font-size: 20px;
+  margin-top: 10px;
+ }
   .image-notificacion{
     width: 100px;
     height:100px;
