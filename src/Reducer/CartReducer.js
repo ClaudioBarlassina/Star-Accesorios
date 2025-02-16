@@ -29,6 +29,13 @@ export const CartReducer = (state, action) => {
         },
       ];
     }
+    case"REMOVE_ITEM":{
+      const {id} = actionPayload;
+      const updateState = state.filter(item => item.id != id )
+     
+      console.log(JSON.stringify(updateState))
+      return updateState
+    }
 
     default:
       return state;

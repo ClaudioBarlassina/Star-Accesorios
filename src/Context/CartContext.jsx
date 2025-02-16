@@ -17,10 +17,16 @@ export function CartProvider({ children }) {
       payload: product,
     });
 
+    const removeItem = id => dispatch({
+      type:"REMOVE_ITEM",
+      payload:{id}
+
+    })
+
   const removeToCart = (product) => dispatch({});
 
   return (
-    <CartContext.Provider value={{ cart: state, addToCart, removeToCart }}>
+    <CartContext.Provider value={{ cart: state, addToCart, removeItem }}>
       {children}
     </CartContext.Provider>
   );

@@ -18,7 +18,7 @@ const Menu = () => {
   const { isCartOpen, setisCartOpen } = useContext(EstadoContext);
   // const [contador, setContador] = useState(0);
 
-  const { cart } = useCart();
+  const { cart, removeItem } = useCart();
 
   //contador numerito
 
@@ -159,7 +159,7 @@ const Menu = () => {
         <p className="cantidad">Cant: {item.quantity}</p>
         </div>
         <div >
-        <FaRegTrashAlt className="boton-borrar" />
+        <FaRegTrashAlt className="boton-borrar" onClick={()=>removeItem(item.id)} />
         <p>${item.precio}</p>
       </div>
         </div>
@@ -169,6 +169,8 @@ const Menu = () => {
     <span>{`Cantidad Total: ${contadores}`}</span>
     <span>{`Total a pagar: $${totalPrecio}`}</span>
     
+    <button>ir al Carrito</button>
+    <button>Confirmar</button>
  
   </>
 ) : (
