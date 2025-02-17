@@ -1,4 +1,4 @@
-import { useReducer } from "react";
+import { useReducer, useEffect} from "react";
 import { createContext } from "react";
 import { cartInicialState,CartReducer} from "../Reducer/CartReducer";
 
@@ -9,7 +9,16 @@ export const CartContext = createContext();
 //creamnos el provider
 
 export function CartProvider({ children }) {
-  const [state, dispatch] = useReducer(CartReducer, cartInicialState); //reducer y el estado inicial
+  
+ // Estado inicial con localStorage
+ const initialCart = JSON.parse(localStorage.getItem("cart")) || cartInicialState;
+
+ const [state, dispatch] = useReducer(CartReducer, initialCart);
+
+ // Guardar en localStorage cada vez que cambie el carrito
+ useEffect(() => {
+   localStorage.setItem("cart", JSON.stringify(state));
+ }, [state]);
 
   const addToCart = (product) =>
     dispatch({

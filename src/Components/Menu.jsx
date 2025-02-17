@@ -6,7 +6,7 @@ import DataCateg from "../assets/DataCateg.json";
 import { CiShoppingCart } from "react-icons/ci";
 import { RxHamburgerMenu } from "react-icons/rx";
 import logo from "../assets/logo2-capa.png";
-import { useNavigate } from "react-router-dom";
+import { useNavigate , Link} from "react-router-dom";
 import { useFilters } from "../Hook/Usefilter";
 import { useCart } from "../Hook/useCart";
 import { EstadoContext } from "../Context/EstadoCom";
@@ -168,8 +168,10 @@ const Menu = () => {
     {/* Contador total después de la lista de productos */}
     <span>{`Cantidad Total: ${contadores}`}</span>
     <span>{`Total a pagar: $${totalPrecio}`}</span>
+    <Link to={"/Carrito"}>
     
-    <button>ir al Carrito</button>
+    <button >ir al Carrito</button>
+    </Link>
     <button>Confirmar</button>
  
   </>

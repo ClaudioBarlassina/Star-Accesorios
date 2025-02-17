@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Menu from "../src/Components/Menu";
 import Home from "./Components/Home";
 import Details from "./Components/Details";
+import Cart from "./Components/Cart";
 import { CartProvider } from "./Context/CartContext";
 import { EstadoProvider } from "./Context/EstadoCom";
 
@@ -19,8 +20,8 @@ function App() {
 
             {/* //NOTIFICACION CON TOAST */}
             <ToastContainer
-              transition={Zoom} // Puedes probar otros como Zoom, Bounce o Flip
-              autoClose={3000}
+              transition={Flip} // Puedes probar otros como Zoom, Bounce o Flip
+              autoClose={2000}
               hideProgressBar
               transitionDuration={10}
             ></ToastContainer>
@@ -31,6 +32,7 @@ function App() {
                 path="/Details/:productoId"
                 element={<Details></Details>}
               ></Route>
+              <Route path="/Carrito" element={<Cart></Cart>}></Route>
             </Routes>
           </CartProvider>
         </EstadoProvider>
