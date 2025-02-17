@@ -33,8 +33,12 @@ const Cart = () => {
            </div>
            <div >
            <FaRegTrashAlt className="boton-borrar" onClick={()=>removeItem(item.id)} />
-           <p>${item.precio}</p>
+           <p> c/u ${item.precio}</p>
+           
+
+         
          </div>
+           <p>  ${item.precio*item.quantity}</p>
            </div>
        ))}
 

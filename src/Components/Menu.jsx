@@ -30,8 +30,15 @@ const Menu = () => {
   const totalPrecio = cart.reduce((total, item) => total + (item.precio * item.quantity),0 );
  
  //
+ // contador de items
+ 
+
 
   const navigate = useNavigate();
+
+  const HandlerCarrito = () =>{
+    setisCartOpen(!isCartOpen);
+  }
 
   const handlerCategoriaClick = () => {
     setIsMenuOpen(!isMenuOpen);
@@ -160,7 +167,7 @@ const Menu = () => {
         </div>
         <div >
         <FaRegTrashAlt className="boton-borrar" onClick={()=>removeItem(item.id)} />
-        <p>${item.precio}</p>
+        <p>${item.precio*item.quantity}</p>
       </div>
         </div>
     ))}
@@ -170,7 +177,7 @@ const Menu = () => {
     <span>{`Total a pagar: $${totalPrecio}`}</span>
     <Link to={"/Carrito"}>
     
-    <button >ir al Carrito</button>
+    <button onClick={()=>HandlerCarrito()}>ir al Carrito</button>
     </Link>
     <button>Confirmar</button>
  
