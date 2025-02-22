@@ -13,7 +13,7 @@ server.use(morgan("dev"));
 server.use(cors());
 
 //-------------------------------------------------------------------------
-server.use(router);
+server.use(router);  //router
 // server.use(router)  //implementa las rutas
 
 //--------------------------------------------------------------------------
