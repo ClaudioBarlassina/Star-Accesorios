@@ -1,0 +1,200 @@
+import React from "react";
+import { useState, useContext, useEffect } from "react";
+import "./Menu.css";
+// import Data from "../assets/Data.json";
+import DataCateg from "../assets/DataCateg.json";
+import { CiShoppingCart } from "react-icons/ci";
+import { RxHamburgerMenu } from "react-icons/rx";
+import logo from "../assets/logo2-capa.png";
+import { useNavigate , Link} from "react-router-dom";
+import { useFilters } from "../Hook/Usefilter";
+import { useCart } from "../Hook/useCart";
+import { EstadoContext } from "../Context/EstadoCom";
+import { FaRegTrashAlt } from "react-icons/fa";
+const Menu = () => {
+  const { filters, setFilters } = useFilters();
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [active, setActive] = useState(null);
+  const { isCartOpen, setisCartOpen } = useContext(EstadoContext);
+   const [cantidad, setCantidad] = useState()
+
+  const { cart, removeItem } = useCart();
+
+  //contador numerito
+
+  const contadores = cart.reduce((total, item) => total + item.quantity, 0);
+
+  //
+
+  // contador total 
+  const totalPrecio = cart.reduce((total, item) => total + (item.precio * item.quantity),0 );
+ 
+ //
+ // contador de items
+ 
+
+
+  const navigate = useNavigate();
+
+  const HandlerCarrito = () =>{
+    setisCartOpen(!isCartOpen);
+  }
+
+  const handlerCategoriaClick = () => {
+    setIsMenuOpen(!isMenuOpen);
+  };
+  const handlerCartClic = () => {
+    setisCartOpen(!isCartOpen);
+  };
+
+  const buttonAcordeon = (index) => {
+    setActive(active === index ? null : index);
+  };
+  const handlerSeleccion = (categoria, subcategoria) => {
+    setFilters((prevFilters) => ({
+      ...prevFilters,
+      categoria: categoria,
+      subcategoria: subcategoria,
+    }));
+    setIsMenuOpen(false);
+    navigate("/");
+    console.log(categoria, subcategoria);
+  };
+
+  return (
+    <div className="conteiner-general">
+      <div>
+        {/* Categorías ----------------------------------------------------------------*/}
+        <div className="categorias-container">
+          {/* Boton Abrir / Cerrar ----------------------------------------------------*/}
+          <button onClick={handlerCategoriaClick} className="toggle-button">
+            <RxHamburgerMenu />
+          </button>
+
+          {/* Menu Lateral ----------------------------------------------------------- */}
+          <div className={`categoria-list ${isMenuOpen ? "open" : ""}`}>
+            {/* <div className="titulo-categorias"> 
+              <h2>Categorias</h2>
+            </div> */}
+
+            {/* todas las categorias --------------------------------------------------------- */}
+            <ul>
+              <li>
+                {/* <a
+                  href="#"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    handlerSeleccion("all", "all");
+                  }}
+                >
+                  Todas las categorías
+                </a> */}
+                <button
+                  className="boton-categoria"
+                  onClick={() => handlerSeleccion("all", "all")}
+                >
+                  {" "}
+                  Todas las categorias
+                </button>
+              </li>
+
+              {/*----------------------------------------------------------------------- */}
+
+              <div>
+                {DataCateg.map((categ, index) => (
+                  <div key={index}>
+                    <button
+                      className="boton-categoria"
+                      onClick={() => buttonAcordeon(index)}
+                    >
+                      {categ.title}
+                    </button>
+                    <div
+                      className={`acordeon-cont${
+                        active === index ? "active" : ""
+                      }`}
+                      style={{
+                        maxHeight: active === index ? "400px" : "0",
+                        overflow: "hidden",
+                        transition: "max-height 1s ease",
+                      }}
+                    >
+                      <ul>
+                        {categ.items.map((item, idx) => (
+                          <div
+                            key={idx}
+                            className="item-subcategoria"
+                            onClick={() => handlerSeleccion(categ.title, item)}
+                          >
+                            {item}
+                          </div>
+                        ))}
+                      </ul>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div>
+        <img src={logo} className="image-logo" alt="" />
+      </div>
+      <div>
+        {/* boton Carrito */}
+        <div className="conjunto-carrito-numero">
+          <CiShoppingCart className="icono-cart" onClick={handlerCartClic} />
+
+          {contadores > 0 && (
+            <span className="contador-carrito">{contadores}</span>
+          )}
+        </div>
+        <div className={`cart-menu ${isCartOpen ? "open" : ""}`}>
+          {/* Agregamos la lista de productos */}
+          <div className="cart-items">
+          {cart.length > 0 ? (
+  <>
+    {cart.map((item, index) => (
+      <div key={index} className="cart-item">
+
+        <img src={item.image} alt="" className="imagen-items-carrito" />
+        
+        <div className="cant-nombre">
+        <p>{item.nombre}</p>
+        <div>
+            <button onClick={() => setCantidad((prev) => Math.max(prev - 1, 1))}>-</button>
+           <span>{cantidad}</span>
+            <button onClick={() => setCantidad((prev) => prev + 1)}>+</button>
+          </div>
+      
+
+        </div>
+        <div >
+        <FaRegTrashAlt className="boton-borrar" onClick={()=>removeItem(item.id)} />
+        <p>${item.precio*item.quantity}</p>
+      </div>
+        </div>
+    ))}
+
+    {/* Contador total después de la lista de productos */}
+    <span>{`Cantidad Total: ${contadores}`}</span>
+    <span>{`Total a pagar: $${totalPrecio}`}</span>
+    <Link to={"/Carrito"}>
+    
+    <button onClick={()=>HandlerCarrito()}>ir al Carrito</button>
+    </Link>
+    <button>Confirmar</button>
+ 
+  </>
+) : (
+  <p>El carrito está vacío</p>
+)}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default Menu;
