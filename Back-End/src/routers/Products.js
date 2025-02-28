@@ -1,10 +1,10 @@
 const { Router } = require("express");
-const createUser = require("../Controllers/postUsers");
+
 const updateUsers = require("../Controllers/updateUser");
 const SearchUser = require("../Controllers/SearchUser");
 const DeleteUsers = require("../Controllers/DeleteUsers");
 const getAllproducts = require("../Controllers/getAllproducts");
-const createProducts = require("../Controllers/postUsers");
+const createProducts = require("../Controllers/postProducts");
 
 const router = Router();
 
