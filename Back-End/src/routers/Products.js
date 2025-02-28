@@ -1,28 +1,29 @@
 const { Router } = require("express");
-const getAllUsers = require("../Controllers/getAllUsers");
 const createUser = require("../Controllers/postUsers");
 const updateUsers = require("../Controllers/updateUser");
 const SearchUser = require("../Controllers/SearchUser");
 const DeleteUsers = require("../Controllers/DeleteUsers");
+const getAllproducts = require("../Controllers/getAllproducts");
+const createProducts = require("../Controllers/postUsers");
 
 const router = Router();
 
 //---------------------------------------------------------------------
 //---Lee los Usuarios----------
 router.get("/", async (req, res) => {
-  const users = await getAllUsers();
-  res.status(200).json(users);
+  const products = await getAllproducts();
+  res.status(200).json(products);
   // res.send("users")
 });
 
 //----------------------------------------------------------------------
 //-------Ingresa los usuarios------------------
-router.post("/users", async (req, res) => {
+router.post("/products", async (req, res) => {
   // try {
-    const userdata = req.body; // en el caso de postgres local poner req.body[0]
-    console.log(userdata);
-    const newUsers = await createUser(userdata);
-    res.status(200).json(newUsers);
+  const productdata = req.body; // en el caso de postgres local poner req.body[0]
+  console.log(productdata);
+  const newProduct = await createProducts(productdata);
+  res.status(200).json(newProduct);
   // } catch (error) {
   //   res.send(error.detail);
   // }
@@ -47,7 +48,6 @@ router.put("/users/:usersID", async (req, res) => {
 //--------------------------------------------------------------------------------
 //Busqueda por ID
 router.get("/users/:usersID", async (req, res) => {
-
   const userID = req.params.usersID;
   const search = await SearchUser(userID);
 
@@ -57,17 +57,11 @@ router.get("/users/:usersID", async (req, res) => {
 //----------------------------------------------------------------------------------
 // Eliminar un registro
 
-
 router.delete("/users/:userID", async (req, res) => {
   const userID = req.params.userID;
 
-
-    const user = await DeleteUsers(userID)
+  const user = await DeleteUsers(userID);
   res.status(200).json(user);
-   
-      
-
- 
-})
+});
 
 module.exports = router;

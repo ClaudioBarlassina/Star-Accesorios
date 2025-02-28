@@ -41,7 +41,7 @@ sequelize.models = Object.fromEntries(capsEntries);
 
 //-------------------------------------------------------------------------------------------------------------
 // defino los modelos 
-const { USUARIOS } = sequelize.models;                // en models esta el modelo que se va a crear en POSTGRES
+const { PRODUCTOS } = sequelize.models;                // en models esta el modelo que se va a crear en POSTGRES
 
 //------------------------------------------------------------------------------------------------------------------
 
