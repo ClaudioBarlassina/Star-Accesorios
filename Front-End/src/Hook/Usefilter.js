@@ -5,6 +5,7 @@ export function useFilters() {
     const { filters, setFilters } = useContext(FilterContext);
 
     const filterProduct = (products) => {
+        console.log(products)
         return products.filter((product) => {
             return (
                 (filters.categoria === "all" || product.Categoria === filters.categoria) &&

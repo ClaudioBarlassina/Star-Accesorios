@@ -11,11 +11,13 @@ const Home = () => {
 
   const dispatch = useDispatch();
   const products = useSelector(state => state.Productos)
-    
+    console.log(products)
   //conexion por el JSON 
   // const [Product] = useState(data)
-  // const {filterProduct} = useFilters();
-  // const fitroProductos = filterProduct(Product)
+
+  const {filterProduct} = useFilters();
+  const filtroProductos = filterProduct(products.Productos)
+  console.log(filtroProductos)
 useEffect(()=>{
   HandlerUsers2(dispatch)
 
@@ -26,7 +28,7 @@ useEffect(()=>{
    
     <div> 
     
-    <Productos Prod={products}/></div>
+    <Productos Prod={filtroProductos}/></div>
     
   )
 }
