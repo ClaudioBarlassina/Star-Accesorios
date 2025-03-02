@@ -1,5 +1,9 @@
 .Cont-Cart{
-   
-    top:200px;
+   font-family: sans-serif;
+    top:150px;
     position: relative;
+}
+.carrito-pagina{
+    display: flex;
+    flex-direction: column;
 }

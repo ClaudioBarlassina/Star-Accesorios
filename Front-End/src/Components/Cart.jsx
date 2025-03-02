@@ -1,11 +1,12 @@
 import React from 'react'
 import "./Cart.css";
 import { FaRegTrashAlt } from "react-icons/fa";
+import { Link } from 'react-router-dom';
 
 import { useCart } from '../Hook/useCart';
 const Cart = () => {
  
-    const {cart, removeItem} = useCart()
+    const {cart, removeItem,updateQuantity } = useCart()
      //contador numerito
 
   const contadores = cart.reduce((total, item) => total + item.quantity, 0);
@@ -29,7 +30,11 @@ const Cart = () => {
            <div className="cant-nombre">
            <p>{item.nombre}</p>
    
-           <p className="cantidad">Cant: {item.quantity}</p>
+           <div className="conjunto-botones">
+        <button className="botton-carrito"onClick={() => updateQuantity(item.id, item.quantity - 1)} disabled={item.quantity <= 1}>-</button>
+        <span>{item.quantity}</span>
+        <button className="botton-carrito" onClick={() => updateQuantity(item.id, item.quantity + 1)}>+</button>
+          </div>
            </div>
            <div >
            <FaRegTrashAlt className="boton-borrar" onClick={()=>removeItem(item.id)} />
@@ -41,10 +46,15 @@ const Cart = () => {
            <p>  ${item.precio*item.quantity}</p>
            </div>
        ))}
+<div className='carrito-pagina'>
 
 <span>{`Cantidad Total: ${contadores}`}</span>
 <span>{`Total a pagar: $${totalPrecio}`}</span>
-    <button>Agregar </button>
+</div>
+<Link to={"/"
+}>
+    <button className='boton-confir'>Agregar </button>
+</Link>
 
     </div>
   )

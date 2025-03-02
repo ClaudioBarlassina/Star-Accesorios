@@ -31,11 +31,19 @@ export function CartProvider({ children }) {
       payload:{id}
 
     })
+    const updateQuantity = (id, newQuantity) => {
+      dispatch({
+        type: "UPDATE_QUANTITY",
+        payload: { id, newQuantity }
+      });
+    };
+    
+    
 
   const removeToCart = (product) => dispatch({});
 
   return (
-    <CartContext.Provider value={{ cart: state, addToCart, removeItem }}>
+    <CartContext.Provider value={{ cart: state, addToCart, removeItem,updateQuantity }}>
       {children}
     </CartContext.Provider>
   );

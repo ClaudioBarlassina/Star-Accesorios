@@ -36,6 +36,13 @@ export const CartReducer = (state, action) => {
       console.log(JSON.stringify(updateState))
       return updateState
     }
+    case "UPDATE_QUANTITY":
+  return state.map(item =>
+    item.id === action.payload.id
+      ? { ...item, quantity: action.payload.newQuantity }
+      : item
+  );
+
 
     default:
       return state;

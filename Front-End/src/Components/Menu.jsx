@@ -16,9 +16,9 @@ const Menu = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [active, setActive] = useState(null);
   const { isCartOpen, setisCartOpen } = useContext(EstadoContext);
-   const [cantidad, setCantidad] = useState()
+ 
 
-  const { cart, removeItem } = useCart();
+  const { cart, removeItem,updateQuantity } = useCart();
 
   //contador numerito
 
@@ -162,10 +162,11 @@ const Menu = () => {
         
         <div className="cant-nombre">
         <p>{item.nombre}</p>
-        <div>
-            <button onClick={() => setCantidad((prev) => Math.max(prev - 1, 1))}>-</button>
-           <span>{cantidad}</span>
-            <button onClick={() => setCantidad((prev) => prev + 1)}>+</button>
+        
+        <div className="conjunto-botones">
+        <button className="botton-carrito"onClick={() => updateQuantity(item.id, item.quantity - 1)} disabled={item.quantity <= 1}>-</button>
+        <span>{item.quantity}</span>
+        <button className="botton-carrito" onClick={() => updateQuantity(item.id, item.quantity + 1)}>+</button>
           </div>
       
 
@@ -180,12 +181,15 @@ const Menu = () => {
     {/* Contador total después de la lista de productos */}
     <span>{`Cantidad Total: ${contadores}`}</span>
     <span>{`Total a pagar: $${totalPrecio}`}</span>
+    <div className="botones-finales">
+
     <Link to={"/Carrito"}>
-    
-    <button onClick={()=>HandlerCarrito()}>ir al Carrito</button>
+     <button className="boton-confir"onClick={()=>HandlerCarrito()}>ir al Carrito</button>
     </Link>
-    <button>Confirmar</button>
+
+    <button className="boton-confir">Confirmar</button>
  
+    </div>
   </>
 ) : (
   <p>El carrito está vacío</p>
