@@ -1,6 +1,6 @@
-const server = require("./src/server.js");
+const server = require("./Back-End/src/server.js");
 
-const { conn } = require("./src/db.js");
+const { conn } = require("./Back-End/src/db.js");
 const PORT = 3001;
 
 //-----------------------------------------------------------------------------------------------------
