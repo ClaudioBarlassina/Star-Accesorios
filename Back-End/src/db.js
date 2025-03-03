@@ -7,18 +7,24 @@ const path = require("path"); // manejo de rutas de archivos
 //-------------------------------------------------------------------------------------------------------------------
 //CONEXION CON LAS VARIABLES AL ARCHIVO .ENV
 
-const { DB_USER, DB_PASSWORD, DB_HOST } = process.env; //llamo las variables de conexion
+// Usa la variable DATABASE_URL proporcionada por Render
+const sequelize = new Sequelize(process.env.DATABASE_URL, {
+  logging: false,
+  native: false,
+  dialectOptions: {
+    ssl: {
+      rejectUnauthorized: false, // Esto es necesario para usar SSL en Render
+    },
+  },
+});
 
-const sequelize = new Sequelize(
-  `postgres://${DB_USER}:${DB_PASSWORD}@${DB_HOST}/postgres`,
-  {
-    logging: false,
-    native: false,
-    dialectOptions: {
-      ssl: false,
-    }
-  }
-);
+sequelize.authenticate()
+  .then(() => {
+    console.log('Conexión exitosa a la base de datos');
+  })
+  .catch(err => {
+    console.error('Error de conexión', err);
+  });
 
 // ------------------------------------------------------------------------------------------------------------------/
 //crea la tabla 
