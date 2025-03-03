@@ -20,9 +20,9 @@ router.get("/", async (req, res) => {
 //-------Ingresa los usuarios------------------
 router.post("/products", async (req, res) => {
   // try {
-  const productdata = req.body; // en el caso de postgres local poner req.body[0]
+  const{productdata, stock} = req.body; // en el caso de postgres local poner req.body[0]
   console.log(productdata);
-  const newProduct = await createProducts(productdata);
+  const newProduct = await createProducts(productdata, stock);
   res.status(200).json(newProduct);
   // } catch (error) {
   //   res.send(error.detail);
