@@ -2,7 +2,7 @@ import {productosBD }from "../../Redux/Reducer.js";
 
 export const HandlerUsers2 = async dispatch => {
   try {
-    const response = await fetch("http://localhost:3001");
+    const response = await fetch("https://star-accesorios.onrender.com/");
 
     if (!response.ok) {
       throw new Error("La respuesta de la red no fue exitosa");
