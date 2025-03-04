@@ -13,7 +13,8 @@ const sequelize = new Sequelize(process.env.DATABASE_URL, {
   native: false,
   dialectOptions: {
     ssl: {
-      rejectUnauthorized: false, // Esto es necesario para usar SSL en Render
+      rejectUnauthorized: false,
+      require:true // Esto es necesario para usar SSL en Render
     },
   },
 });
