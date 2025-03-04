@@ -7,17 +7,17 @@ const path = require("path"); // manejo de rutas de archivos
 //-------------------------------------------------------------------------------------------------------------------
 //CONEXION CON LAS VARIABLES AL ARCHIVO .ENV
 
-// Usa la variable DATABASE_URL proporcionada por Render
+// Usa la variable DATABASE_URL de superbase
 const sequelize = new Sequelize(process.env.DATABASE_URL, {
-  logging: false,
-  native: false,
+  dialect: "postgres",
   dialectOptions: {
     ssl: {
-      rejectUnauthorized: false,
-      require:true // Esto es necesario para usar SSL en Render
+      require: true,
+      rejectUnauthorized: false, // Necesario para evitar errores con certificados
     },
   },
 });
+
 
 sequelize.authenticate()
   .then(() => {
