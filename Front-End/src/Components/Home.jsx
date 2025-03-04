@@ -18,6 +18,23 @@ const Home = () => {
   const {filterProduct} = useFilters();
   const filtroProductos = filterProduct(products.Productos)
   console.log(filtroProductos)
+
+
+  const agruparProductosUnicos = (productos) => {
+    const vistos = new Set();
+    return productos.filter(producto => {
+      if (!vistos.has(producto.nombre)) {
+        vistos.add(producto.nombre);
+        return true;
+      }
+      return false;
+    });
+  };
+
+
+  const productosUnicos = agruparProductosUnicos(filtroProductos);
+
+
 useEffect(()=>{
   HandlerUsers2(dispatch)
 
@@ -28,7 +45,7 @@ useEffect(()=>{
    
     <div> 
     
-    <Productos Prod={filtroProductos}/></div>
+    <Productos Prod={productosUnicos}/></div>
     
   )
 }
