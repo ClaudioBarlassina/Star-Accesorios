@@ -20,19 +20,34 @@ const Home = () => {
   console.log(filtroProductos)
 
 
-  const agruparProductosUnicos = (productos) => {
-    const vistos = new Set();
-    return productos.filter(producto => {
-      if (!vistos.has(producto.nombre)) {
-        vistos.add(producto.nombre);
-        return true;
+  const agruparProductosConStock = (productos) => {
+    return productos.reduce((acc, producto) => {
+      const existente = acc.find(p => p.nombre === producto.nombre);
+      if (existente) {
+        existente.stock += 1; // 🔹 Cuenta cuántos productos iguales hay
+        existente.cantidad += producto.cantidad; // 🔹 Suma las cantidades
+      } else {
+        acc.push({ ...producto, stock: 1 }); // 🔹 Inicializa stock y cantidad
       }
-      return false;
-    });
+      return acc;
+    }, []);
   };
 
+  // const agruparProductosConStock = (productos) => {
+  //   return productos.reduce((acc, producto) => {
+  //     const existente = acc.find(p => p.nombre === producto.nombre);
+  //     if (existente) {
+  //       existente.stock += 1; // 🔹 Cuenta cuántos productos iguales hay
+  //       existente.cantidad += producto.cantidad; // 🔹 Suma las cantidades
+  //     } else {
+  //       acc.push({ ...producto, stock: 1 }); // 🔹 Agrega la primera vez con stock = 1
+  //     }
+  //     return acc;
+  //   }, []);
+  // };
+  
 
-  const productosUnicos = agruparProductosUnicos(filtroProductos);
+  const productosUnicos = agruparProductosConStock(filtroProductos);
 
 
 useEffect(()=>{

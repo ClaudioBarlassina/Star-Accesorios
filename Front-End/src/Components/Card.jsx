@@ -6,7 +6,7 @@ import { useCart } from "../Hook/useCart";
 import { toast} from "react-toastify";
 
 
-function Card({ id, image, nombre, precio }) {
+function Card({ id, image, nombre, precio, stock }) {
   const { addToCart, cart } = useCart();
 
   const HandlerAdd = () => {
@@ -41,6 +41,9 @@ function Card({ id, image, nombre, precio }) {
       </div>
 
       <MdAddShoppingCart className="icon-cart" onClick={HandlerAdd} />
+    <div>
+      <strong>Stock: {stock}</strong>
+    </div>
     </div>
   );
 }

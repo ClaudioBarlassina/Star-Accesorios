@@ -19,7 +19,7 @@ function Productos( {Prod }) {
             image={"https://img.freepik.com/vector-premium/bolsa-compras-3d-que-ha-convertido-malla-vectorial-que-puede-ampliar-cualquier-tamano_331343-1.jpg?w=740"}
             nombre={item.nombre}
             precio={item.precio}
-            descripcion={item.descripcion}
+            stock={item.stock}
           />
         ))}
       </div>
