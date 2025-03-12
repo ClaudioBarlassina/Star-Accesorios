@@ -4,10 +4,7 @@ import Card from "./Card";
 
 function Productos( {Prod }) { 
   console.log(Prod) // Extraemos Prod del objeto de props
-  // if (!Prod || !Array.isArray(Prod.Productos)) {
-  //   console.error("Prod.Productos no es un array", Prod);
-  //   return null;  // Evita errores si la estructura no es la esperada.
-  // }
+ 
 
   return (
     <div className="productos">
