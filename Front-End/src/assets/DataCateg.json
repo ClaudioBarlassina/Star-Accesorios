@@ -1,16 +1,22 @@
 [
     {
       "title": "Acero Quirurgico",
-      "items": ["Anillos", "Cadenas con Dije", "Aros","Pulseras"]
+      "items": ["Anillos", "Colgantes", "Aros","Pulseras","Piercing", "Accesorios"]
     },
     {
      "title": "Acero Blanco",
-      "items": ["Anillos", "Cadenas con Dije", "Aros","Pulseras"]
+      "items": ["Anillos", "Colgantes", "Aros","Pulseras"]
     },{
       "title": "Acero Dorado",
-     "items": ["Anillos", "Cadenas con Dije", "Aros","Pulseras"]
+     "items": ["Anillos", "Colgantes", "Aros","Pulseras"]
     },{
-        "title": "Accesorios",
-       "items": ["Para el Cabello"]
+        "title": "Piedras Naturales",
+       "items": ["Dijes", "Kits"]
+      },{
+        "title": "Fantasia",
+       "items": ["Anillos", "Aros", "Accesorios Cabello", "Pulseras"]
+      },{
+        "title": "Cosmeticos",
+       "items": ["Todos"]
       }
   ]

@@ -16,7 +16,7 @@ function Productos( {Prod }) {
           <Card
             key={item.id}
             id={item.id}
-            image={"https://img.freepik.com/vector-premium/bolsa-compras-3d-que-ha-convertido-malla-vectorial-que-puede-ampliar-cualquier-tamano_331343-1.jpg?w=740"}
+            image={item.Image}
             nombre={item.nombre}
             precio={item.precio}
             stock={item.stock}

@@ -4,6 +4,7 @@ import Menu from "../src/Components/Menu";
 import Home from "./Components/Home";
 import Details from "./Components/Details";
 import Cart from "./Components/Cart";
+import CargaDatos from "./Components/CargaDatos"
 import { CartProvider } from "./Context/CartContext";
 import { EstadoProvider } from "./Context/EstadoCom";
 
@@ -33,6 +34,8 @@ function App() {
                 element={<Details></Details>}
               ></Route>
               <Route path="/Carrito" element={<Cart></Cart>}></Route>
+            <Route path="/Admin" element={<CargaDatos></CargaDatos>}></Route>
+            
             </Routes>
           </CartProvider>
         </EstadoProvider>
