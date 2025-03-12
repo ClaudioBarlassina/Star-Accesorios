@@ -23,6 +23,7 @@ const Home = () => {
   const agruparProductosConStock = (productos) => {
     return productos.reduce((acc, producto) => {
       const existente = acc.find(p => p.nombre === producto.nombre);
+      console.log(existente)
       if (existente) {
         existente.stock += 1; // 🔹 Cuenta cuántos productos iguales hay
         existente.cantidad += producto.cantidad; // 🔹 Suma las cantidades
