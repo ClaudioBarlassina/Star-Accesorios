@@ -18,7 +18,7 @@ const Details = () => {
   const handlerAddCart = () => {
     const productos = {
       id: product.id,
-      image: product.image,
+      image: product.Image,
       nombre: product.nombre,
       precio: product.precio,
       quantity: cantidad,
@@ -31,7 +31,7 @@ const Details = () => {
   return (
     <div className="Details-conteiner">
       <div>
-        <img src="https://img.freepik.com/vector-premium/bolsa-compras-3d-que-ha-convertido-malla-vectorial-que-puede-ampliar-cualquier-tamano_331343-1.jpg?w=740" alt="" className="Details-image" />
+        <img src={product.Image} alt="" className="Details-image" />
       </div>
       <div className="Details-info">
         <div>
