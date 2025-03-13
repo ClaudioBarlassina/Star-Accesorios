@@ -388,8 +388,10 @@ const AddProduct = () => {
   };
 
   return (
-    <>
+    <>   <div className="conteiner-cargadatos">
+       <button className="botton-listado">Listado Productos </button>
       <form className="Formulario" onSubmit={handleSubmit}>
+        <h2>INGRESO DE PRODUCTOS</h2>
         <input
           type="text"
           value={name}
@@ -454,6 +456,7 @@ const AddProduct = () => {
           <p><strong>Cantidad:</strong> {cantidad}</p>
         </div>
       )}
+      </div>
     </>
   );
 };

@@ -1,8 +1,15 @@
 .Formulario{
-    top:150px;
+    top:100px;
     position: relative;
+    display: flex;
+    flex-direction: column;
 }
 .Previsualizacion{
-    top: 150px;
+    top: 100px;
+    position: relative;
+}
+
+.botton-listado{
+    top: 100px;
     position: relative;
 }
