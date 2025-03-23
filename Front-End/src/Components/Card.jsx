@@ -25,7 +25,7 @@ function Card({ id, image, nombre, precio, stock }) {
     
     </div>,{
      
-     className:"notificacion-menu",
+     className:"notificacion-men",
     
     });
   };
