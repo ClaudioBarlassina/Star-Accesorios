@@ -228,7 +228,7 @@ import React, { useState } from 'react';
 import "./Cart.css";
 import { FaRegTrashAlt } from "react-icons/fa";
 import { useCart } from '../Hook/useCart';
-import enviarEmail from "../complements/enviarEmail";
+import enviarEmail from "../complements/EnviarEmail";
 
 const Cart = () => {
   const { cart, removeItem, updateQuantity } = useCart();
