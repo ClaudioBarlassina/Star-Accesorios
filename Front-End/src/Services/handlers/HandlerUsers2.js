@@ -27,7 +27,7 @@ export const HandlerUsers2 = async (dispatch) => {
     // Realizar la solicitud a Supabase para obtener los productos
     const { data, error } = await supabase
       .from('Productos')  // Cambia 'Productos' por el nombre de tu tabla en Supabase
-      .select('id ,nombre, precio, "Image", Categoria, SubCategoria'); // Seleccionamos las columnas necesarias
+      .select('id ,nombre, precio, "Image", Categoria, SubCategoria,stock'); // Seleccionamos las columnas necesarias
 
     // Manejo de errores en caso de que la consulta falle
     if (error) {

@@ -1,0 +1,68 @@
+.order-summary-container {
+    max-width: 600px;
+    top: 120px;
+    position: relative;
+    margin: 20px auto;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    background: #fff;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    font-family: sans-serif;  
+}
+  
+  .order-summary-title {
+    text-align: center;
+    font-size: 22px;
+    font-weight: bold;
+  }
+  
+  .order-summary-subtitle {
+    text-align: center;
+    font-size: 18px;
+    font-weight: bold;
+    margin-top: 10px;
+  }
+  
+  .order-summary-list {
+    list-style: none;
+    padding: 0;
+  }
+  
+  .order-summary-item {
+    border-bottom: 1px solid #ddd;
+    padding: 8px 0;
+  }
+  
+  .order-summary-total {
+    text-align: right;
+    font-size: 18px;
+    font-weight: bold;
+    margin-top: 10px;
+  }
+  
+  .order-summary-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 20px;
+  }
+  
+  .order-summary-button {
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+  }
+  
+  .order-summary-button.download {
+    background: #007bff;
+    color: white;
+  }
+  
+  .order-summary-button.back {
+    background: #28a745;
+    color: white;
+  }
+  

@@ -42,6 +42,9 @@ export const CartReducer = (state, action) => {
       ? { ...item, quantity: action.payload.newQuantity }
       : item
   );
+  case "CLEAR_CART":
+  return [];
+
 
 
     default:

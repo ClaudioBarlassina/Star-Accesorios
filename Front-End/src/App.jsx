@@ -5,6 +5,8 @@ import Home from "./Components/Home";
 import Details from "./Components/Details";
 import Cart from "./Components/Cart";
 import CargaDatos from "./Components/CargaDatos"
+import ProductsList from "./Components/ProductsList"
+import OrderSummary from "./Components/OrderSummary";
 import { CartProvider } from "./Context/CartContext";
 import { EstadoProvider } from "./Context/EstadoCom";
 
@@ -35,7 +37,8 @@ function App() {
               ></Route>
               <Route path="/Carrito" element={<Cart></Cart>}></Route>
             <Route path="/Admin" element={<CargaDatos></CargaDatos>}></Route>
-            
+            <Route path="/Order" element={<OrderSummary />}></Route>
+            <Route path="/Productos" element={<ProductsList/>}></Route>
             </Routes>
           </CartProvider>
         </EstadoProvider>

@@ -99,6 +99,16 @@
     transition: transform 1s cubic-bezier(0.075, 0.82, 0.165, 1);
     background-color: white;
   }
+  .sin-stock {
+    color: red;
+    font-weight: bold;
+  }
+  
+  .icon-cart.disabled {
+    pointer-events: none; /* Evita clics en el icono */
+    opacity: 0.5;
+  }
+  
 
   /* Notificacion menu */
   .notificacion-menu{

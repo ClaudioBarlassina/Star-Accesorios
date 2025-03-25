@@ -7,3 +7,21 @@
     display: flex;
     flex-direction: column;
 }
+
+/* FORMULARIO DATOS USUARIOS */
+
+.form-datos{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    
+}
+.form-datos label{
+  display: flex;
+  
+}
+.form-datos input{
+    display: flex;
+    
+}
+

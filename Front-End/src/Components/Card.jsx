@@ -10,6 +10,7 @@ function Card({ id, image, nombre, precio, stock }) {
   const { addToCart, cart } = useCart();
 
   const HandlerAdd = () => {
+    if (stock === 0) return;
     const productos = { id, image, nombre, precio, quantity: 1 };
     addToCart(productos);
 
@@ -40,11 +41,19 @@ function Card({ id, image, nombre, precio, stock }) {
         <h3> ${precio}</h3>
       </div>
 
-      <MdAddShoppingCart className="icon-cart" onClick={HandlerAdd} />
-    <div>
-      <strong>Stock: {stock}</strong>
+      {stock === 0 ? (
+        <span className="sin-stock">Sin stock</span>
+      ) : (
+        <strong>Stock: {stock}</strong>
+      )}
+
+      <MdAddShoppingCart
+        className={`icon-cart ${stock === 0 ? "disabled" : ""}`}
+        onClick={HandlerAdd}
+        style={{ cursor: stock === 0 ? "not-allowed" : "pointer", opacity: stock === 0 ? 0.5 : 1 }}
+      />
     </div>
-    </div>
+  
   );
 }
 
