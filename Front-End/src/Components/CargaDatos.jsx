@@ -107,7 +107,7 @@ const AddProduct = () => {
       <div className="conteiner-cargadatos">
         <div>
         <button className="botton-listado" onClick={() => navigate("/Productos") }>Listado Productos </button>
-        <button className="botton-listado">Listado de Pedidos </button>
+        <button className="botton-listado" onClick={() => navigate("/Pedidos")}>Listado de Pedidos </button>
         </div>
          
         <form className="Formulario" onSubmit={handleSubmit}>

@@ -3,6 +3,7 @@
     position: relative;
     display: flex;
     flex-direction: column;
+    font-family: sans-serif;
 }
 .Previsualizacion{
     top: 100px;

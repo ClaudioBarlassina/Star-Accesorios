@@ -1,0 +1,73 @@
+.orders-list-container{
+    position: relative;
+    top:120px
+}
+
+.tabla-productos {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+  }
+  .tabla-productos th, .tabla-productos td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+  }
+  .tabla-productos th {
+    background-color: #f4f4f4;
+    font-weight: bold;
+  }
+  .tabla-productos tr:nth-child(even) {
+    background-color: #f9f9f9;
+  }
+  .tabla-productos tr:hover {
+    background-color: #e3e3e3;
+  }
+
+  /* Estilo de la lista de pedidos */
+.pedido-item {
+    padding: 15px;
+    margin-bottom: 10px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background-color: white;
+    transition: background-color 0.3s ease;
+  }
+  
+  .pedido-item.leido {
+    background-color: #f1f1f1; /* Fondo gris cuando el pedido está marcado como leído */
+  }
+  
+  .pedido-item .info-pedido p {
+    margin: 5px 0;
+  }
+  
+  label input {
+    margin-right: 5px;
+  }
+  
+  .tabla-productos {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+  }
+  
+  .tabla-productos th, .tabla-productos td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+  }
+  
+  .tabla-productos th {
+    background-color: #f4f4f4;
+    font-weight: bold;
+  }
+  
+  .tabla-productos tr:nth-child(even) {
+    background-color: #f9f9f9;
+  }
+  
+  .tabla-productos tr:hover {
+    background-color: #e3e3e3;
+  }
+  
