@@ -194,11 +194,22 @@ const Cart = () => {
         <div>
           <label htmlFor="metodoPago">Método de Pago:</label>
           <select id="metodoPago" name="metodoPago" value={formData.metodoPago} onChange={handleInputChange} required>
-            <option value="efectivo">Efectivo</option>
-            <option value="transferencia">Transferencia</option>
+            <option value="Efectivo">Efectivo</option>
+            <option value="Transferencia">Transferencia</option>
           </select>
         </div>
-
+         {/* Mostrar los detalles de la cuenta para transferencia si el método de pago es transferencia */}
+       {formData.metodoPago === 'Transferencia' && (
+          <div className="transferencia-info">
+            <h4>Detalles para la Transferencia:</h4>
+            <p><strong>Alias de Cuenta:</strong> MiAliasDeCuenta</p>
+            <p><strong>Banco:</strong> Banco XYZ</p>
+            <p><strong>Cbu:</strong> 1234567890123456789012</p>
+            <p><strong>Concepto:</strong> Compra en tienda online</p>
+            <p><strong>Valor a Transferir:</strong> ${totalPrecio}</p>
+            <p><em>Realiza la transferencia con los datos anteriores. Una vez realizada, por favor espera la confirmación de tu compra.</em></p>
+          </div>
+        )}
         <button type="submit" className="btn-finalizar">
           Confirmar Datos y Finalizar Compra
         </button>

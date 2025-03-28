@@ -65,4 +65,26 @@
     background: #28a745;
     color: white;
   }
+  /* tabla */
+  .order-summary-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 15px;
+  }
+  
+  .order-summary-table th,
+  .order-summary-table td {
+    border: 1px solid #ddd;
+    padding: 3px;
+    text-align: center;
+  }
+  
+  .order-summary-table th {
+    background-color: #f4f4f4;
+    font-weight: bold;
+  }
+  
+  .order-summary-table tr:nth-child(even) {
+    background-color: #f9f9f9;
+  }
   
