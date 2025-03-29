@@ -18,7 +18,23 @@ const AddProduct = () => {
   const [loading, setLoading] = useState(false);
    
   const navigate = useNavigate();
-
+  const categorias = [
+    "Acero Quirurgico",
+    "Acero Blanco",
+    "Acero Dorado",
+    "Piedras Naturales",
+    "Fantasía",
+    "Cosméticos",
+  ];
+  
+  const subCategorias = {
+    "Acero Quirurgico": [ "Anillos", "Colgantes", "Aros", "Pulseras", "Piercing", "Accesorios"],
+    "Acero Blanco": ["Anillos", "Colgantes", "Aros", "Pulseras"],
+    "Acero Dorado": ["Anillos", "Colgantes", "Aros", "Pulseras"],
+    "Piedras Naturales": ["Dijes", "Kits"],
+    "Fantasía": ["Anillos", "Aros", "Accesorios Cabello", "Pulseras"],
+    "Cosméticos": ["Todos"],
+  };
 
   useEffect(() => {
     return () => {
@@ -127,27 +143,27 @@ const AddProduct = () => {
             required
           />
 
-          <select value={categoria} onChange={handleCategoriaChange} required>
-            <option value="">Selecciona una categoría</option>
-            <option value="Acero Quirurgico">Acero Quirurgico</option>
-            <option value="Acero Blanco">Acero Blanco</option>
-            <option value="Acero Dorado">Acero Dorado</option>
-            <option value="Piedras Naturales">Piedras Naturales</option>
-            <option value="Fantasía">Fantasía</option>
-            <option value="Cosméticos">Cosméticos</option>
-          </select>
+           {/* Selección de categoría */}
+      <select value={categoria} onChange={handleCategoriaChange} required>
+        <option value="">Selecciona una categoría</option>
+        {categorias.map((cat) => (
+          <option key={cat} value={cat}>
+            {cat}
+          </option>
+        ))}
+      </select>
 
-          {categoria && (
-            <select value={subCategoria} onChange={(e) => setSubCategoria(e.target.value)} required>
-              <option value="">Selecciona una subcategoría</option>
-              <option value="Anillos">Anillos</option>
-              <option value="Colgantes">Colgantes</option>
-              <option value="Aros">Aros</option>
-              <option value="Pulseras">Pulseras</option>
-              <option value="Piercing">Piercing</option>
-              <option value="Accesorios">Accesorios</option>
-            </select>
-          )}
+      {/* Selección de subcategoría */}
+      {categoria && (
+        <select value={subCategoria} onChange={(e) => setSubCategoria(e.target.value)} required>
+          <option value="">Selecciona una subcategoría</option>
+          {subCategorias[categoria]?.map((subCat) => (
+            <option key={subCat} value={subCat}>
+              {subCat}
+            </option>
+          ))}
+        </select>
+      )}
 
           <input type="file" onChange={handleImageChange} accept="image/*" required />
 
