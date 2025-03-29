@@ -55,9 +55,10 @@ const PedidosList = () => {
             className={`pedido-item ${pedido.tomado ? 'leido' : ''}`}
           >
             <div className="info-pedido">
-              <p><strong>Cliente:</strong> {pedido.Cliente.nombre}</p>
-              <p><strong>Localidad:</strong> {pedido.Cliente.ciudad}</p>
-              <p><strong>Dirección:</strong> {pedido.Cliente.direccion}</p>
+            <p><strong>Fecha:</strong> {new Date(pedido.created_at).toLocaleString()}</p>
+              <p><strong>Cliente:</strong> {pedido.Cliente[0].nombre}</p>
+              <p><strong>Localidad:</strong> {pedido.Cliente[0].ciudad}</p>
+              <p><strong>Dirección:</strong> {pedido.Cliente[0].direccion}</p>
              
              
             </div>
