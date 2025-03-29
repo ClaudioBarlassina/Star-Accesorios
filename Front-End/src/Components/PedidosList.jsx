@@ -77,7 +77,7 @@ const PedidosList = () => {
                     <tr key={producto.id}>
                       <td>{producto.nombre}</td>
                       <td>{producto.cantidad}</td>
-                      <td>${producto.importe}</td>
+                      <td>${producto.total}</td>
                     </tr>
                   ))}
                 </tbody>

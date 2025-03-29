@@ -1,6 +1,7 @@
 .orders-list-container{
     position: relative;
-    top:120px
+    top:120px;
+   
 }
 
 .tabla-productos {
@@ -70,4 +71,6 @@
   .tabla-productos tr:hover {
     background-color: #e3e3e3;
   }
-  
+  .lista-pedidos{
+    list-style: none
+  }
