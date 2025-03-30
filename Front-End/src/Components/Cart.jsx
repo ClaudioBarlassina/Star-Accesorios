@@ -141,23 +141,36 @@ const Cart = () => {
     <div className='Cont-Cart'>
       <h2>PREPARAMOS TU PEDIDO </h2>
       {cart.map((item, index) => (
-        <div key={index} className="cart-item">
-          <img src={item.image} alt="" className="imagen-items-carrito" />
-          <div className="cant-nombre">
-            <p>{item.nombre}</p>
-            <div className="conjunto-botones">
-              <button className="botton-carrito" onClick={() => updateQuantity(item.id, item.quantity - 1)} disabled={item.quantity <= 1}>-</button>
-              <span>{item.quantity}</span>
-              <button className="botton-carrito" onClick={() => updateQuantity(item.id, item.quantity + 1)}>+</button>
-            </div>
-          </div>
-          <div>
-            <FaRegTrashAlt className="boton-borrar" onClick={() => removeItem(item.id)} />
-            <p> c/u ${item.precio}</p>
-          </div>
-          <p> ${item.precio * item.quantity}</p>
-        </div>
-      ))}
+  <div key={index} className="cart-item">
+    <img src={item.image} alt="" className="imagen-items-carrito" />
+    <div className="cant-nombre">
+      <p>{item.nombre}</p>
+      <div className="conjunto-botones">
+        <button 
+          className="botton-carrito" 
+          onClick={() => updateQuantity(item.id, item.quantity - 1)} 
+          disabled={item.quantity <= 1}
+        >
+          -
+        </button>
+        <span>{item.quantity}</span>
+        <button 
+          className="botton-carrito" 
+          onClick={() => updateQuantity(item.id, Math.min(item.quantity + 1, item.stock))} 
+          disabled={item.quantity >= item.stock}
+        >
+          +
+        </button>
+      </div>
+    </div>
+    <div>
+      <FaRegTrashAlt className="boton-borrar" onClick={() => removeItem(item.id)} />
+      <p> c/u ${item.precio}</p>
+    </div>
+    <p> ${item.precio * item.quantity}</p>
+  </div>
+))}
+
       <div className='carrito-pagina'>
         <span>{`Cantidad Total: ${contadores}`}</span>
         <span>{`Total a pagar: $${totalPrecio}`}</span>

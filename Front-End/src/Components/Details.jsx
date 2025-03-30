@@ -1,64 +1,85 @@
 import React, { useState } from "react";
-import { useParams, Link } from "react-router-dom";
-
-import "./Details.css";
+import { useParams } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
 import { useCart } from "../Hook/useCart";
-import { useSelector } from "react-redux";
+import { reducirStock } from "../Redux/Reducer/"; // Importar la acción de Redux
+import "./Details.css";
 
 const Details = () => {
-  const { addToCart, cart } = useCart();
-  const DataState = useSelector((state) => state.Productos);
-
+  const { addToCart } = useCart();
+  const dispatch = useDispatch();
   const { productoId } = useParams();
 
-  const product = DataState.Productos.find((item) => item.id === Number(productoId));
+  // Obtener producto desde Redux
+  const product = useSelector((state) =>
+    state.Productos.Productos.find((item) => item.id === Number(productoId))
+  );
 
   const [cantidad, setCantidad] = useState(1);
-
+  const handleImageClick = () => {
+    window.open(product.Image, "_blank");
+  };
   const handlerAddCart = () => {
-    const productos = {
-      id: product.id,
-      image: product.Image,
-      nombre: product.nombre,
-      precio: product.precio,
-      quantity: cantidad,
-    };
+    if (product.stock >= cantidad) {
+      const productos = {
+        id: product.id,
+        image: product.Image,
+        nombre: product.nombre,
+        precio: product.precio,
+        quantity: cantidad,
+      };
 
-    addToCart(productos);
-    console.log(cart);
+      addToCart(productos);
+
+      // Reducir stock en Redux
+      dispatch(reducirStock(product.id));
+    }
   };
 
   return (
     <div className="Details-conteiner">
-      <div>
-        <img src={product.Image} alt="" className="Details-image" />
-      </div>
+      <img
+  src={product.Image}
+  alt=""
+  className="Details-image"
+  onClick={handleImageClick} // Abre la imagen en una nueva ventana
+  style={{ cursor: "pointer" }} // Hace que el cursor cambie al pasar por encima
+/>
       <div className="Details-info">
-        <div>
-          <p className="Details-Nombre"> {product.nombre}</p>
-        </div>
-
-        <p className="Details-Categoria"> {product.Categoria}</p>
-        <p className="Details-Precio">Precio : {product.precio}</p>
+        <p className="Details-Nombre">{product.nombre}</p>
+        <p className="Details-Categoria">{product.Categoria}</p>
+        <p className="Details-Precio">Precio: {product.precio}</p>
         <div className="separador"></div>
-        <p> {product.descripcion}</p>
+        <p>{product.descripcion}</p>
         <div className="select-cantidad">
-          <p>Cantidad</p>
-          <div>
-            <button
-              onClick={() => setCantidad((prev) => Math.max(prev - 1, 1))}
-            >
-              -
-            </button>
-            <span>{cantidad}</span>
-            <button onClick={() => setCantidad((prev) => prev + 1)}>+</button>
-          </div>
-        </div>
+  <p>Cant:</p>
+  <div>
+    <button onClick={() => setCantidad((prev) => Math.max(prev - 1, 1))}>-</button>
+    <span>{cantidad}</span>
+    <button 
+      onClick={() => setCantidad((prev) => (prev < product.stock ? prev + 1 : prev))}
+    >
+      +
+    </button>
+  </div>
+  <div>
+    {product.stock === 0 ? (
+      <span className="sin-stock">Sin stock</span>
+    ) : (
+      <strong>Stock: {product.stock}</strong>
+    )}
+  </div>
+</div>
+
         <div className="separador"></div>
       </div>
 
-      <button className="button-card " onClick={handlerAddCart}>
-        Agregar Al Carrito
+      <button
+        className="button-card"
+        onClick={handlerAddCart}
+        disabled={product.stock === 0}
+      >
+        {product.stock === 0 ? "Sin stock" : "Agregar al carrito"}
       </button>
     </div>
   );
