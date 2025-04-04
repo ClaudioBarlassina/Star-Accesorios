@@ -8,8 +8,8 @@ import CargaDatos from "./Components/CargaDatos"
 import ProductsList from "./Components/ProductsList"
 import OrderSummary from "./Components/OrderSummary";
 import PedidosList from "./Components/PedidosList";
-import { CartProvider } from "./Context/CartContext";
-import { EstadoProvider } from "./Context/EstadoCom";
+// import { CartProvider } from "./Context/CartContext";
+// import { EstadoProvider } from "./Context/EstadoCom";
 
 import { ToastContainer, toast, Slide, Flip, Bounce, Zoom } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -18,8 +18,8 @@ function App() {
   return (
     < >
       <Router>
-        <EstadoProvider>
-          <CartProvider>
+        {/* <EstadoProvider>
+          <CartProvider> */}
             <Menu></Menu>
 
             {/* //NOTIFICACION CON TOAST */}
@@ -42,8 +42,8 @@ function App() {
             <Route path="/Productos" element={<ProductsList/>}></Route>
             <Route path="/Pedidos" element={<PedidosList/>}></Route>
             </Routes>
-          </CartProvider>
-        </EstadoProvider>
+          {/* </CartProvider>
+        </EstadoProvider> */}
       </Router>
     </>
   );

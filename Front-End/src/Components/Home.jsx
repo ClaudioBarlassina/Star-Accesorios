@@ -1,69 +1,28 @@
-import React, { useEffect } from 'react'
-import {useDispatch, useSelector} from "react-redux"
-import Productos from "../Components/Productos"
-import { HandlerUsers2 } from '../Services/handlers/HandlerUsers2';
-import data from "../assets/Data.json";
-import { useState } from 'react'
-import { useFilters } from '../Hook/Usefilter'
-
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import Productos from "../Components/Productos";
+import { fetchProductos, selectFilteredProducts } from "../Redux/Reducer"; // Importa la acción y el selector
 
 const Home = () => {
-
   const dispatch = useDispatch();
-  const products = useSelector(state => state.Productos)
-    console.log(products)
-  //conexion por el JSON 
-  // const [Product] = useState(data)
-
-  const {filterProduct} = useFilters();
-  const filtroProductos = filterProduct(products.Productos)
-  console.log(filtroProductos)
-
-
-  // const agruparProductosConStock = (productos) => {
-  //   return productos.reduce((acc, producto) => {
-  //     const existente = acc.find(p => p.nombre === producto.nombre);
-  //     console.log(existente)
-  //     if (existente) {
-  //       existente.stock += 1; // 🔹 Cuenta cuántos productos iguales hay
-  //       existente.cantidad += producto.cantidad; // 🔹 Suma las cantidades
-  //     } else {
-  //       acc.push({ ...producto, stock: 1 }); // 🔹 Inicializa stock y cantidad
-  //     }
-  //     return acc;
-  //   }, []);
-  // };
-
-  // const agruparProductosConStock = (productos) => {
-  //   return productos.reduce((acc, producto) => {
-  //     const existente = acc.find(p => p.nombre === producto.nombre);
-  //     if (existente) {
-  //       existente.stock += 1; // 🔹 Cuenta cuántos productos iguales hay
-  //       existente.cantidad += producto.cantidad; // 🔹 Suma las cantidades
-  //     } else {
-  //       acc.push({ ...producto, stock: 1 }); // 🔹 Agrega la primera vez con stock = 1
-  //     }
-  //     return acc;
-  //   }, []);
-  // };
   
+  // Obtiene los productos filtrados directamente de Redux
+  const products = useSelector(selectFilteredProducts);
+  // const loading = useSelector((state) => state.productos.loading);
+  // const error = useSelector((state) => state.productos.error);
 
-  // const productosUnicos = agruparProductosConStock(filtroProductos);
+  useEffect(() => {
+    dispatch(fetchProductos()); // Carga productos desde Supabase al montar el componente
+  }, [dispatch]);
 
-
-useEffect(()=>{
-  HandlerUsers2(dispatch)
-
-},[dispatch])
+  // if (loading) return <p>Cargando productos...</p>;
+  // if (error) return <p>Error al cargar productos: {error}</p>;
 
   return (
-    
-   
-    <div> 
-    
-    <Productos Prod={filtroProductos}/></div>
-    
-  )
-}
+    <div>
+      <Productos Prod={products} />
+    </div>
+  );
+};
 
-export default Home
+export default Home;

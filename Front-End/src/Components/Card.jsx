@@ -1,35 +1,32 @@
 import React from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { useCart } from "../Hook/useCart";
 import { toast } from "react-toastify";
 import { Link } from "react-router-dom";
-import { reducirStock } from "../Redux/Reducer"; // Importar la acción de Redux
 import "./Card.css";
+import { useDispatch, useSelector } from "react-redux";
+import { addToCart } from "../Redux/Reducer";
 
 function Card({ id, image, nombre, precio }) {
   const dispatch = useDispatch();
-  const { addToCart } = useCart();
 
-  // Obtener el stock actualizado desde Redux
-  const stock = useSelector((state) =>
-    state.Productos.Productos.find((p) => p.id === id)?.stock ?? 0
-  );
+  // Obtener el stock desde state.Productos.stock usando el id del producto
+  const stock = useSelector(state => state.Productos.stock[id] || 0);
+
+  console.log(`Stock del producto ${id}:`, stock);
 
   const HandlerAdd = () => {
     if (stock > 0) {
-      const productos = { id, image, nombre, precio, quantity: 1 };
-      addToCart(productos);
+      const producto = { id, image, nombre, precio, quantity: 1 };
 
-      // Reducir stock en Redux
-      dispatch(reducirStock(id));
+      // Añadir el producto al carrito
+      dispatch(addToCart(producto));
 
       // Notificación con Toast
       toast(
         <div className="cuerpo-notificacion">
-          <img src={productos.image} alt="" className="image-notificacion" />
+          <img src={producto.image} alt="" className="image-notificacion" />
           <div className="cuerpo-datos">
-            <h1 className="N-datos">{productos.nombre}</h1>
-            <span className="N-precio">${productos.precio}</span>
+            <h1 className="N-datos">{producto.nombre}</h1>
+            <span className="N-precio">${producto.precio}</span>
           </div>
         </div>,
         { className: "notificacion-men" }
@@ -49,12 +46,12 @@ function Card({ id, image, nombre, precio }) {
       </div>
 
       <div className="stock-info">
-        {/* {stock === 0 ? <span className="sin-stock">Sin stock</span> : <strong>Stock: {stock}</strong>} */}
+        {stock === 0 ? <span className="sin-stock">Sin stock</span> : <strong>Stock: {stock}</strong>}
       </div>
 
       <button
         onClick={HandlerAdd}
-        disabled={stock === 0} // Desactiva el botón cuando no hay stock
+        disabled={stock === 0}
         style={{
           cursor: stock === 0 ? "not-allowed" : "pointer",
           opacity: stock === 0 ? 0.5 : 1,

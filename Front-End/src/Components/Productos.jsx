@@ -16,7 +16,7 @@ function Productos( {Prod }) {
             image={item.Image}
             nombre={item.nombre}
             precio={item.precio}
-            stock={item.stock}
+            
           />
         ))}
       </div>

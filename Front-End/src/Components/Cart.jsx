@@ -1,15 +1,17 @@
 import React, { useState } from 'react';
 import "./Cart.css";
 import { FaRegTrashAlt } from "react-icons/fa";
-import { useCart } from '../Hook/useCart';
+
 import { supabase } from "../supabaseClient.js";
 import { useNavigate } from 'react-router-dom';
-
+import { useSelector } from 'react-redux';
 
 
 const Cart = () => {
-  const { cart, removeItem, updateQuantity,clearCart } = useCart();
+  const cart = useSelector(state => state.Productos.cart)
   const navigate = useNavigate()
+
+ 
 
   const contadores = cart.reduce((total, item) => total + item.quantity, 0);
   const totalPrecio = cart.reduce((total, item) => total + (item.precio * item.quantity), 0);
@@ -146,22 +148,22 @@ const Cart = () => {
     <div className="cant-nombre">
       <p>{item.nombre}</p>
       <div className="conjunto-botones">
-        <button 
-          className="botton-carrito" 
-          onClick={() => updateQuantity(item.id, item.quantity - 1)} 
-          disabled={item.quantity <= 1}
-        >
-          -
-        </button>
-        <span>{item.quantity}</span>
-        <button 
-          className="botton-carrito" 
-          onClick={() => updateQuantity(item.id, Math.min(item.quantity + 1, item.stock))} 
-          disabled={item.quantity >= item.stock}
-        >
-          +
-        </button>
-      </div>
+  <button
+    className="botton-carrito"
+    onClick={() => updateQuantity(item.id, item.quantity - 1)}
+    disabled={item.quantity <= 1}  // Deshabilitado si la cantidad es 1 o menor
+  >
+    -
+  </button>
+  <span>{item.quantity}</span>
+  <button
+    className="botton-carrito"
+    onClick={() => updateQuantity(item.id, Math.min(item.quantity+1))}
+    disabled={item.quantity >= item.stock}  // Deshabilitado si la cantidad es igual o mayor al stock disponible
+  >
+    +
+  </button>
+</div>
     </div>
     <div>
       <FaRegTrashAlt className="boton-borrar" onClick={() => removeItem(item.id)} />

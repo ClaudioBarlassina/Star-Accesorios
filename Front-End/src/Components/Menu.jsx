@@ -8,17 +8,32 @@ import { RxHamburgerMenu } from "react-icons/rx";
 import logo from "../assets/logo2-capa.png";
 import { useNavigate , Link} from "react-router-dom";
 import { useFilters } from "../Hook/Usefilter";
-import { useCart } from "../Hook/useCart";
+// import { useCart } from "../Hook/useCart";
 import { EstadoContext } from "../Context/EstadoCom";
 import { FaRegTrashAlt } from "react-icons/fa";
+import { useSelector,useDispatch } from "react-redux";
+
+import { setCategoria, setSubcategoria } from "../Redux/Reducer"; // Asegúrate de importar las acciones correctas
+
+
+
+
+
+
 const Menu = () => {
-  const { filters, setFilters } = useFilters();
+  
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const filters = useSelector((state) => state.Productos.filters);
+  console.log(JSON.stringify(filters))
+
+
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [active, setActive] = useState(null);
-  const { isCartOpen, setisCartOpen } = useContext(EstadoContext);
- 
+  
+   const [isCartOpen, setisCartOpen] = useState(false)
 
-  const { cart, removeItem,updateQuantity } = useCart();
+const cart = useSelector(state => state.Productos.cart)
 
   //contador numerito
 
@@ -30,11 +45,10 @@ const Menu = () => {
   const totalPrecio = cart.reduce((total, item) => total + (item.precio * item.quantity),0 );
  
  //
- // contador de items
+
  
 
 
-  const navigate = useNavigate();
 
   const HandlerCarrito = () =>{
     setisCartOpen(!isCartOpen);
@@ -51,15 +65,13 @@ const Menu = () => {
     setActive(active === index ? null : index);
   };
   const handlerSeleccion = (categoria, subcategoria) => {
-    setFilters((prevFilters) => ({
-      ...prevFilters,
-      categoria: categoria,
-      subcategoria: subcategoria,
-    }));
+    dispatch(setCategoria(categoria));
+    dispatch(setSubcategoria(subcategoria));
+   navigate("/")
     setIsMenuOpen(false);
-    navigate("/");
-    console.log(categoria, subcategoria);
-  };
+    
+};
+
 
   return (
     <div className="conteiner-general">

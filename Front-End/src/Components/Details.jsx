@@ -1,12 +1,12 @@
 import React, { useState } from "react";
 import { useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { useCart } from "../Hook/useCart";
+// import { useCart } from "../Hook/useCart";
 import { reducirStock } from "../Redux/Reducer/"; // Importar la acción de Redux
 import "./Details.css";
 
 const Details = () => {
-  const { addToCart } = useCart();
+  
   const dispatch = useDispatch();
   const { productoId } = useParams();
 
