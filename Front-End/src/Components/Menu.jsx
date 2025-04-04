@@ -9,7 +9,7 @@ import logo from "../assets/logo2-capa.png";
 import { useNavigate , Link} from "react-router-dom";
 import { useFilters } from "../Hook/Usefilter";
 // import { useCart } from "../Hook/useCart";
-import { EstadoContext } from "../Context/EstadoCom";
+import  {removeItem, clearCart } from "../Redux/Reducer";
 import { FaRegTrashAlt } from "react-icons/fa";
 import { useSelector,useDispatch } from "react-redux";
 
@@ -184,7 +184,10 @@ const cart = useSelector(state => state.Productos.cart)
 
         </div>
         <div >
-        <FaRegTrashAlt className="boton-borrar" onClick={()=>removeItem(item.id)} />
+          {console.log(item.id)}
+        <FaRegTrashAlt className="boton-borrar"onClick={() => dispatch(removeItem(item.id ))}
+        
+/>
         <p>${item.precio*item.quantity}</p>
       </div>
         </div>
@@ -199,7 +202,7 @@ const cart = useSelector(state => state.Productos.cart)
      <button className="boton-confir"onClick={()=>HandlerCarrito()}>ir al Carrito</button>
     </Link>
 
-    <button className="boton-confir">Confirmar</button>
+    <button className="boton-confir" onClick={()=> dispatch(clearCart())}>Borrar Carrito</button>
  
     </div>
   </>

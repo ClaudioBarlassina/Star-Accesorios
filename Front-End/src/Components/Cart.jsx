@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import "./Cart.css";
 import { FaRegTrashAlt } from "react-icons/fa";
-
 import { supabase } from "../supabaseClient.js";
 import { useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
+import removeItem from "../Redux/Reducer.js"
 
 
 const Cart = () => {

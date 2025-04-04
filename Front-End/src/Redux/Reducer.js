@@ -68,7 +68,8 @@ const productosSlice = createSlice({
 
     // Remover del carrito y restaurar stock
     removeItem: (state, action) => {
-      const { id } = action.payload;
+      const  id  = action.payload;
+      console.log(JSON.stringify(action.payload))
       const item = state.cart.find((item) => item.id === id);
       if (item && state.stock[id] !== undefined) {
         state.stock[id] += item.quantity;
