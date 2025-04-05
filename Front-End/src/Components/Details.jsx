@@ -1,8 +1,9 @@
 import React, { useState } from "react";
 import { useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-// import { useCart } from "../Hook/useCart";
-import { reducirStock } from "../Redux/Reducer/"; // Importar la acción de Redux
+
+import  {reducirStock} from "../Redux/Reducer/"; 
+import {addToCart} from "../Redux/Reducer"// Importar la acción de Redux
 import "./Details.css";
 
 const Details = () => {
@@ -15,12 +16,15 @@ const Details = () => {
     state.Productos.Productos.find((item) => item.id === Number(productoId))
   );
 
+  const stock = useSelector((state) => state.Productos.stock[productoId]);
+
+  console.log(stock)
   const [cantidad, setCantidad] = useState(1);
   const handleImageClick = () => {
     window.open(product.Image, "_blank");
   };
   const handlerAddCart = () => {
-    if (product.stock >= cantidad) {
+    if (stock >= cantidad) {
       const productos = {
         id: product.id,
         image: product.Image,
@@ -28,12 +32,11 @@ const Details = () => {
         precio: product.precio,
         quantity: cantidad,
       };
-
-      addToCart(productos);
-
-      // Reducir stock en Redux
-      dispatch(reducirStock(product.id));
+    
+      dispatch(addToCart(productos));
+      dispatch(reducirStock(product.id, cantidad));
     }
+    
   };
 
   return (
@@ -57,18 +60,18 @@ const Details = () => {
     <button onClick={() => setCantidad((prev) => Math.max(prev - 1, 1))}>-</button>
     <span>{cantidad}</span>
     <button 
-      onClick={() => setCantidad((prev) => (prev < product.stock ? prev + 1 : prev))}
-    >
-      +
-    </button>
+  onClick={() => setCantidad((prev) => (prev < stock ? prev + 1 : prev))}
+>
+  +
+</button>
   </div>
   <div>
-    {product.stock === 0 ? (
-      <span className="sin-stock">Sin stock</span>
-    ) : (
-      <strong>Stock: {product.stock}</strong>
-    )}
-  </div>
+  {stock === 0 ? (
+    <span className="sin-stock">Sin stock</span>
+  ) : (
+    <strong>Stock: {stock}</strong>
+  )}
+</div>
 </div>
 
         <div className="separador"></div>

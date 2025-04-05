@@ -11,7 +11,7 @@ const loadFromLocalStorage = (key, defaultValue) => {
 const initialState = {
   Productos: [],
   cart: loadFromLocalStorage("cart", []),
-  stock: loadFromLocalStorage("stock", {}), // Objeto para almacenar el stock actual
+  stock: {},
   loading: false,
   error: null,
   filters: {

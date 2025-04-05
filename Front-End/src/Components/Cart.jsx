@@ -3,16 +3,16 @@ import "./Cart.css";
 import { FaRegTrashAlt } from "react-icons/fa";
 import { supabase } from "../supabaseClient.js";
 import { useNavigate } from 'react-router-dom';
-import { useSelector } from 'react-redux';
-import removeItem from "../Redux/Reducer.js"
-
+import { useDispatch, useSelector } from 'react-redux';
+import {removeItem} from "../Redux/Reducer.js"
+import { clearCart } from '../Redux/Reducer.js';
 
 const Cart = () => {
   const cart = useSelector(state => state.Productos.cart)
   const navigate = useNavigate()
 
  
-
+const dispatch = useDispatch()
   const contadores = cart.reduce((total, item) => total + item.quantity, 0);
   const totalPrecio = cart.reduce((total, item) => total + (item.precio * item.quantity), 0);
 
@@ -121,7 +121,7 @@ const Cart = () => {
   
     // **Vaciar el carrito**
     navigate("/Order", { state: { pedido } });
-    clearCart();
+    dispatch(clearCart());
     // **Limpiar los campos de cliente**
     setFormData({
       nombre: '',

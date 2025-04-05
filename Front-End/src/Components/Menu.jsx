@@ -16,10 +16,6 @@ import { useSelector,useDispatch } from "react-redux";
 import { setCategoria, setSubcategoria } from "../Redux/Reducer"; // Asegúrate de importar las acciones correctas
 
 
-
-
-
-
 const Menu = () => {
   
   const navigate = useNavigate();
@@ -45,10 +41,6 @@ const cart = useSelector(state => state.Productos.cart)
   const totalPrecio = cart.reduce((total, item) => total + (item.precio * item.quantity),0 );
  
  //
-
- 
-
-
 
   const HandlerCarrito = () =>{
     setisCartOpen(!isCartOpen);
