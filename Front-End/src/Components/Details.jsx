@@ -78,7 +78,8 @@ const Details = () => {
       </div>
 
       <button
-        className="button-card"
+        className="button-card-details {
+"
         onClick={handlerAddCart}
         disabled={product.stock === 0}
       >

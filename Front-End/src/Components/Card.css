@@ -22,7 +22,7 @@
     display: flex;
    
     width: 200px;
-    height: 200px;
+    height: 180px;
     object-fit: cover;
     top: -10px;
     position: relative;
@@ -38,8 +38,9 @@
     justify-content: start;
     align-items: center;
     width: 180px;
-    padding: 10px;
-    gap: 5px;
+    padding: 5px;
+    margin-top:15px ;
+    gap: 3px;
   }
   
   .info-card h2 {

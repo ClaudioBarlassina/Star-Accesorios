@@ -232,4 +232,11 @@
 .boton-confir{
   width: 100px;
   height: 40px;
+  border: none;
+  transition: box-shadow 1s ease-in-out, color 1s ease-in-out;
+}
+
+.boton-confir:hover{
+  box-shadow: 0 0 20px #d824db;
+  color:#d824db
 }

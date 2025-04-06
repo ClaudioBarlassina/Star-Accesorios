@@ -9,6 +9,7 @@
     background: #ffffff;
     border-radius: 10px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  font-family: sans-serif;
   }
   
   /* Imagen del producto */
@@ -24,12 +25,14 @@
     width: 100%;
     text-align: center;
     margin-top: 20px;
+    
   }
   
   .Details-Nombre {
     font-size: 24px;
     font-weight: bold;
     color: #333;
+    
   }
   
   .Details-Categoria {
@@ -87,20 +90,22 @@
   }
   
   /* Botón agregar al carrito */
-  .button-card {
-    background: #28a745;
-    color: white;
+  .button-card-details {
+  
+   border:white;
+    color: rgb(15, 15, 15);
     font-size: 18px;
     padding: 10px 20px;
     border: none;
     border-radius: 5px;
     cursor: pointer;
     margin-top: 20px;
-    transition: background 0.3s ease;
+    transition: box-shadow 1s cubic-bezier(0.455, 0.03, 0.515, 0.955), color 1s cubic-bezier(0.455, 0.03, 0.515, 0.955);
   }
   
-  .button-card:hover {
-    background: #218838;
+  .button-card-details:hover {
+    box-shadow: 0 0 20px #d824db;
+    color:#d824db
   }
   
   .button-card:disabled {
