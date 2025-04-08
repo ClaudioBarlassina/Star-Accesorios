@@ -13,6 +13,7 @@ import PedidosList from "./Components/PedidosList";
 
 import { ToastContainer, toast, Slide, Flip, Bounce, Zoom } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import LandingPage from "./Components/landingPage";
 
 function App() {
   return (
@@ -41,6 +42,7 @@ function App() {
             <Route path="/Order" element={<OrderSummary />}></Route>
             <Route path="/Productos" element={<ProductsList/>}></Route>
             <Route path="/Pedidos" element={<PedidosList/>}></Route>
+            <Route path="/Landing" element={<LandingPage/>}></Route>
             </Routes>
           {/* </CartProvider>
         </EstadoProvider> */}
