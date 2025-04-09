@@ -4,23 +4,23 @@ import Menu from "../src/Components/Menu";
 import Home from "./Components/Home";
 import Details from "./Components/Details";
 import Cart from "./Components/Cart";
+import LandingPage from "./Components/landingPage";
 import CargaDatos from "./Components/CargaDatos"
 import ProductsList from "./Components/ProductsList"
 import OrderSummary from "./Components/OrderSummary";
 import PedidosList from "./Components/PedidosList";
-// import { CartProvider } from "./Context/CartContext";
-// import { EstadoProvider } from "./Context/EstadoCom";
+import ScrollToTop from "./Components/scrollToTop";
 
 import { ToastContainer, toast, Slide, Flip, Bounce, Zoom } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import LandingPage from "./Components/landingPage";
+
 
 function App() {
   return (
     < >
       <Router>
-        {/* <EstadoProvider>
-          <CartProvider> */}
+      <ScrollToTop />
+       
             <Menu></Menu>
 
             {/* //NOTIFICACION CON TOAST */}
@@ -32,7 +32,8 @@ function App() {
             ></ToastContainer>
 
             <Routes>
-              <Route path="/" element={<Home></Home>}></Route>
+            <Route path="/" element={<LandingPage></LandingPage>}></Route>
+              <Route path="/home" element={<Home></Home>}></Route>
               <Route
                 path="/Details/:productoId"
                 element={<Details></Details>}

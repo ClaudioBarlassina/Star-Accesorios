@@ -2,9 +2,18 @@ import React from 'react';
 import './landingPage.css';
 import Carrusel from './Carrusel';
 import ProductosCarrusel from './ProductosCarrusel';
+import { useNavigate } from 'react-router-dom';
 
 
 const LandingPage = () => {
+
+
+  const navigate = useNavigate()
+  const irProductos = () => {
+    navigate("/Home")
+  }
+
+  
   return (
     <div className="landing-page">
      
@@ -33,7 +42,7 @@ const LandingPage = () => {
 
       
       <div className='boton-ir-productos'>
-        <button >Ir a los Productos</button>
+        <button className='boton-categoria' onClick={()=> irProductos()}>Mas Productos</button>
       </div>
 
       {/* Beneficios */}

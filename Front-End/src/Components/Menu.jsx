@@ -59,7 +59,7 @@ const cart = useSelector(state => state.Productos.cart)
   const handlerSeleccion = (categoria, subcategoria) => {
     dispatch(setCategoria(categoria));
     dispatch(setSubcategoria(subcategoria));
-   navigate("/")
+   navigate("/home")
     setIsMenuOpen(false);
     
 };
