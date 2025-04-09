@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import './LandingPage.css';
+import './landingPage.css';
 
 const slides = [
   {
