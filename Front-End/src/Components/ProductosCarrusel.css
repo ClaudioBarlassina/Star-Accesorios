@@ -1,39 +1,83 @@
-.productos-carrusel {
-  display: flex;
-  overflow-x: hidden;
-  scroll-snap-type: x mandatory;
-  scroll-behavior: smooth;
-  width: 100%;
-  position: relative;
-  justify-content: center;
+.carrusel-container {
+  text-align: center;
+  padding: 2rem;
+  background: #ffe4ec;
+  overflow: hidden;
 }
 
-.producto-card {
-  flex: 0 0 100%;
-  scroll-snap-align: start;
-  padding: 1rem;
+.carrusel {
   display: flex;
-  flex-direction: column;
   align-items: center;
   justify-content: center;
+  position: relative;
 }
 
-.producto-imagen {
-  width: 250px;
-  height: 250px;
-  object-fit: cover;
-  border-radius: 12px;
-  margin-bottom: 1rem;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+.carrusel-viewport {
+  width: 780px; /* 3 productos de 260px */
+  overflow: hidden;
 }
 
-.producto-nombre {
-  font-size: 1.2rem;
-  margin-bottom: 0.5rem;
+.carrusel-slider {
+  display: flex;
+  transition: transform 0.6s ease; /* Desplazamiento suave */
 }
 
-.producto-descripcion {
-  font-size: 0.95rem;
+.carrusel-item {
+  flex: 0 0 260px;
+  margin: 0 10px;
+  background-color: white;
+  border-radius: 10px;
+  padding: 10px;
   text-align: center;
-  max-width: 300px;
+}
+
+.carrusel-item img {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+.carrusel-item h3 {
+  font-size: 1rem;
+  margin-top: 0.5rem;
+}
+
+.flecha {
+  background: #fff;
+  border: none;
+  font-size: 2rem;
+  cursor: pointer;
+  padding: 0.5rem 1rem;
+  z-index: 2;
+  color: #333;
+}
+
+.flecha.izquierda {
+  position: absolute;
+  left: 0;
+}
+
+.flecha.derecha {
+  position: absolute;
+  right: 0;
+}
+
+.indicadores {
+  margin-top: 1rem;
+}
+
+.dot {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  margin: 0 4px;
+  background-color: #bbb;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.dot.activo {
+  background-color: #333;
 }

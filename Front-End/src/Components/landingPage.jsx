@@ -32,7 +32,9 @@ const LandingPage = () => {
       <ProductosCarrusel></ProductosCarrusel>
 
       
-
+      <div className='boton-ir-productos'>
+        <button >Ir a los Productos</button>
+      </div>
 
       {/* Beneficios */}
       <section id="beneficios" className="landing-section beneficios-section">
