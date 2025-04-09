@@ -1,5 +1,5 @@
 import React from 'react';
-import './LandingPage.css';
+import './landingPage.css';
 import Carrusel from './Carrusel';
 import ProductosCarrusel from './ProductosCarrusel';
 
