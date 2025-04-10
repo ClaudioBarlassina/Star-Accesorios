@@ -80,7 +80,8 @@ const AddProduct = () => {
         const data = await response.json();
         if (!response.ok) throw new Error("Error al subir la imagen");
 
-        imageUrl = data.secure_url;
+        imageUrl = data.secure_url.replace('/upload/', '/upload/f_auto,q_auto/');
+
       }
 
       const priceNumber = parseFloat(price);
