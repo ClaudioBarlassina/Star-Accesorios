@@ -17,45 +17,55 @@ import whats from "../src/assets/social.png"
 
 function App() {
   return (
-    <>
-      <Router>
-        <ScrollToTop />
+    <div>
+      {/* Esto se ve solo en pantallas grandes */}
+      <div className="only-mobile" style={{ padding: '2rem', textAlign: 'center' }}>
+        <h2>¡Esta página solo está disponible en dispositivos móviles!</h2>
+        <p>Por favor, accedé desde tu celular.</p>
+      </div>
 
-        <a
-          href="https://wa.me/5491123456789?text=Hola!%20Quiero%20más%20info%20sobre%20Star-Accesorios"
-          className="whatsapp-float"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <img className="image-whats" src={whats} alt="WhatsApp" />
-        </a>
+      {/* Esto es el sitio real, que se oculta en pantallas grandes */}
+      <div className="not-mobile">
+        <Router>
+          <ScrollToTop />
 
-        <Menu />
+          <a
+            href="https://wa.me/5491123456789?text=Hola!%20Quiero%20más%20info%20sobre%20Star-Accesorios"
+            className="whatsapp-float"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <img className="image-whats" src={whats} alt="WhatsApp" />
+          </a>
 
-        <ToastContainer
-          transition={Flip}
-          autoClose={2000}
-          hideProgressBar
-          transitionDuration={10}
-        />
+          <Menu />
 
-        <div className="app-container">
-          <Routes>
-            <Route path="/" element={<LandingPage />} />
-            <Route path="/home" element={<Home />} />
-            <Route path="/Details/:productoId" element={<Details />} />
-            <Route path="/Carrito" element={<Cart />} />
-            <Route path="/Admin" element={<CargaDatos />} />
-            <Route path="/Order" element={<OrderSummary />} />
-            <Route path="/Productos" element={<ProductsList />} />
-            <Route path="/Pedidos" element={<PedidosList />} />
-            <Route path="/Landing" element={<LandingPage />} />
-          </Routes>
-        </div>
+          <ToastContainer
+            transition={Flip}
+            autoClose={2000}
+            hideProgressBar
+            transitionDuration={10}
+          />
 
-   
-      </Router>
-    </>
+          <div className="app-container">
+            <Routes>
+              <Route path="/" element={<LandingPage />} />
+              <Route path="/home" element={<Home />} />
+              <Route path="/Details/:productoId" element={<Details />} />
+              <Route path="/Carrito" element={<Cart />} />
+              <Route path="/Admin" element={<CargaDatos />} />
+              <Route path="/Order" element={<OrderSummary />} />
+              <Route path="/Productos" element={<ProductsList />} />
+              <Route path="/Pedidos" element={<PedidosList />} />
+              <Route path="/Landing" element={<LandingPage />} />
+            </Routes>
+          </div>
+
+          {/* <Footer /> */}
+        </Router>
+      </div>
+    </div>
   );
 }
+
 export default App;

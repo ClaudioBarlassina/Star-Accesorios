@@ -19,3 +19,21 @@
  filter: drop-shadow(0 0 20px);
   
 }
+/* Ocultamos el sitio por defecto */
+.only-mobile {
+  display: block;
+}
+.not-mobile{
+  display: none;
+}
+
+/* Mostramos el sitio solo si el ancho de la pantalla es menor o igual a 768px */
+@media (width < 768px) {
+  .only-mobile {
+    display: none;
+  }
+
+  .not-mobile {
+    display: block;
+  }
+}
