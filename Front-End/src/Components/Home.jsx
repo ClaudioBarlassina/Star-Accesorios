@@ -19,7 +19,7 @@ const Home = () => {
   // if (error) return <p>Error al cargar productos: {error}</p>;
 
   return (
-    <div>
+    <div >
       <Productos Prod={products} />
     </div>
   );

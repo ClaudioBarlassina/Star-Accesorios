@@ -1,25 +1,35 @@
-import "./App.css";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import Menu from "../src/Components/Menu";
-import Home from "./Components/Home";
-import Details from "./Components/Details";
-import Cart from "./Components/Cart";
-import LandingPage from "./Components/landingPage";
-import CargaDatos from "./Components/CargaDatos"
-import ProductsList from "./Components/ProductsList"
-import OrderSummary from "./Components/OrderSummary";
-import PedidosList from "./Components/PedidosList";
-import ScrollToTop from "./Components/scrollToTop";
-import Footer from "./Components/fotter";
-import { ToastContainer, toast, Slide, Flip, Bounce, Zoom } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
-import whats from "../src/assets/social.png"
+import './App.css'
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
+import Menu from '../src/Components/Menu'
+import Home from './Components/Home'
+import Details from './Components/Details'
+import Cart from './Components/Cart'
+import LandingPage from './Components/landingPage'
+import CargaDatos from './Components/CargaDatos'
+import ProductsList from './Components/ProductsList'
+import OrderSummary from './Components/OrderSummary'
+import PedidosList from './Components/PedidosList'
+import ScrollToTop from './Components/scrollToTop'
+import Footer from './Components/fotter'
+import {
+  ToastContainer,
+  toast,
+  Slide,
+  Flip,
+  Bounce,
+  Zoom,
+} from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
+import whats from '../src/assets/social.png'
 
 function App() {
   return (
     <div>
       {/* Esto se ve solo en pantallas grandes */}
-      <div className="only-mobile" style={{ padding: '2rem', textAlign: 'center' }}>
+      <div
+        className="only-mobile"
+        style={{ padding: '2rem', textAlign: 'center' }}
+      >
         <h2>¡Esta página solo está disponible en dispositivos móviles!</h2>
         <p>Por favor, accedé desde tu celular.</p>
       </div>
@@ -47,7 +57,7 @@ function App() {
             transitionDuration={10}
           />
 
-          <div className="app-container">
+          <div className="">
             <Routes>
               <Route path="/" element={<LandingPage />} />
               <Route path="/home" element={<Home />} />
@@ -65,7 +75,7 @@ function App() {
         </Router>
       </div>
     </div>
-  );
+  )
 }
 
-export default App;
+export default App
