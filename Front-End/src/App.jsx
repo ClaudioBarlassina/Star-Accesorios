@@ -10,46 +10,52 @@ import ProductsList from "./Components/ProductsList"
 import OrderSummary from "./Components/OrderSummary";
 import PedidosList from "./Components/PedidosList";
 import ScrollToTop from "./Components/scrollToTop";
-
+import Footer from "./Components/fotter";
 import { ToastContainer, toast, Slide, Flip, Bounce, Zoom } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-
+import whats from "../src/assets/social.png"
 
 function App() {
   return (
-    < >
+    <>
       <Router>
-      <ScrollToTop />
-       
-            <Menu></Menu>
+        <ScrollToTop />
 
-            {/* //NOTIFICACION CON TOAST */}
-            <ToastContainer
-              transition={Flip} // Puedes probar otros como Zoom, Bounce o Flip
-              autoClose={2000}
-              hideProgressBar
-              transitionDuration={10}
-            ></ToastContainer>
+        <a
+          href="https://wa.me/5491123456789?text=Hola!%20Quiero%20más%20info%20sobre%20Star-Accesorios"
+          className="whatsapp-float"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <img className="image-whats" src={whats} alt="WhatsApp" />
+        </a>
 
-            <Routes>
-            <Route path="/" element={<LandingPage></LandingPage>}></Route>
-              <Route path="/home" element={<Home></Home>}></Route>
-              <Route
-                path="/Details/:productoId"
-                element={<Details></Details>}
-              ></Route>
-              <Route path="/Carrito" element={<Cart></Cart>}></Route>
-            <Route path="/Admin" element={<CargaDatos></CargaDatos>}></Route>
-            <Route path="/Order" element={<OrderSummary />}></Route>
-            <Route path="/Productos" element={<ProductsList/>}></Route>
-            <Route path="/Pedidos" element={<PedidosList/>}></Route>
-            <Route path="/Landing" element={<LandingPage/>}></Route>
-            </Routes>
-          {/* </CartProvider>
-        </EstadoProvider> */}
+        <Menu />
+
+        <ToastContainer
+          transition={Flip}
+          autoClose={2000}
+          hideProgressBar
+          transitionDuration={10}
+        />
+
+        <div className="app-container">
+          <Routes>
+            <Route path="/" element={<LandingPage />} />
+            <Route path="/home" element={<Home />} />
+            <Route path="/Details/:productoId" element={<Details />} />
+            <Route path="/Carrito" element={<Cart />} />
+            <Route path="/Admin" element={<CargaDatos />} />
+            <Route path="/Order" element={<OrderSummary />} />
+            <Route path="/Productos" element={<ProductsList />} />
+            <Route path="/Pedidos" element={<PedidosList />} />
+            <Route path="/Landing" element={<LandingPage />} />
+          </Routes>
+        </div>
+
+   
       </Router>
     </>
   );
 }
-
 export default App;

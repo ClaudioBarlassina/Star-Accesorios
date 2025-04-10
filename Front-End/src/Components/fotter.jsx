@@ -1,17 +1,28 @@
-import React from 'react'
-import "./fotter.css"
+import React from "react";
+import { FaInstagram, FaWhatsapp } from "react-icons/fa";
+import "./footer.css";
 
-const fotter = (datos) => {
+const Footer = () => {
   return (
-    <div className='conteiner-fotter'>
-        <h3>
-        {JSON.stringify(datos)}
-            </h3>
-            
-            
-            
-            </div>
-  )
-}
+    <footer id="contacto" className="footer-container">
+      <div className="footer-content">
+        <p>&copy; {new Date().getFullYear()} Star-Accesorios - Todos los derechos reservados</p>
 
-export default fotter
+        <div className="footer-redes">
+          <a
+            href="https://www.instagram.com/tu_usuario"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="footer-link"
+          >
+            
+            {/* <FaWhatsapp className="icono" />
+            WhatsApp */}
+          </a>
+        </div>
+      </div>
+    </footer>
+  );
+};
+
+export default Footer;

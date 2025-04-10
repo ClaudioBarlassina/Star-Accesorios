@@ -1,7 +1,21 @@
 *{
   margin: 2px;
-  padding: 2px
-  ;
+  padding: 2px;
+
   
 }
 
+
+.whatsapp-float{
+  top: 550px;
+  position: fixed;
+  z-index: 1;
+   display: flex;
+   left: 350px;
+ 
+}
+.image-whats{
+  width: 50px;
+ filter: drop-shadow(0 0 20px);
+  
+}

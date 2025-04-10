@@ -72,13 +72,7 @@ const filtrarCategoria = (categoria, subcategoria) => {
       </section>
 
       {/* Footer */}
-      <footer id="contacto" className="landing-footer">
-        <p>&copy; {new Date().getFullYear()} Star-Accesorios - Todos los derechos reservados</p>
-        <div className="footer-redes">
-          <a href="#" className="footer-link">Instagram</a>
-          <a href="#" className="footer-link">WhatsApp</a>
-        </div>
-      </footer>
+    
     </div>
   );
 };
