@@ -9,7 +9,7 @@ import logo from '../assets/logo2-capa.png'
 import { useNavigate, Link } from 'react-router-dom'
 import { useFilters } from '../Hook/Usefilter'
 // import { useCart } from "../Hook/useCart";
-import { removeItem, clearCart } from '../Redux/Reducer'
+import { removeItem, clearCart,updateQuantity } from '../Redux/Reducer'
 import { FaRegTrashAlt } from 'react-icons/fa'
 import { useSelector, useDispatch } from 'react-redux'
 
