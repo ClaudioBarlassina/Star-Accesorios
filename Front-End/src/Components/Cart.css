@@ -1,27 +1,103 @@
-.Cont-Cart{
-   font-family: sans-serif;
-    top:150px;
-    position: relative;
+.Cont-Cart {
+  font-family: sans-serif;
+  top: 130px;
+  position: relative;
+  padding: 2px;
 }
-.carrito-pagina{
-    display: flex;
-    flex-direction: column;
+.Cont-Cart h2 {
+  margin: 15px;
+}
+.carrito-pagina {
+  display: flex;
+  flex-direction: column;
+  margin: 10px;
+}
+.carrito-pagina span {
+  margin: 8px;
+}
+
+.cart-item {
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 252, 1) 38%,
+    rgba(216, 36, 219, 1) 100%
+  );
+
+  img {
+    margin: 7px;
+  }
+}
+.cart-nombre {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 43%;
+  gap: 15px;
+}
+.conjunto-botones {
+  gap: 10px;
+}
+.conjunto-borrar {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 20%;
+  align-items: center;
+  color: white;
+}
+.total-final {
+  color: white;
+}
+
+.conjunto-total {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 70px;
+  border-radius: 10px;
+  overflow: scroll;
+}
+.boton-borrar-cart{
+left: 385px;
+color:white;
+position: absolute;
 }
 
 /* FORMULARIO DATOS USUARIOS */
 
-.form-datos{
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    
-}
-.form-datos label{
+.form-datos {
   display: flex;
-  
-}
-.form-datos input{
-    display: flex;
-    
+  flex-direction: column;
+  justify-content: center;
+  margin: 10px;
 }
 
+.form-datos h3 {
+  margin-bottom: 15px;
+}
+.form-datos label {
+  display: flex;
+}
+.form-datos input {
+  display: flex;
+  height: 20px;
+}
+.form-datos select {
+  height: 30px;
+  width: 170px;
+}
+.form-datos div {
+  margin-bottom: 20px;
+}
+
+.btn-finalizar {
+  border: white;
+  height: 35px;
+  transition: box-shadow 1s ease-in-out, color 1s ease-in-out;
+}
+
+.btn-finalizar:hover {
+  box-shadow: 0 0 20px #d824db;
+  color: #d824db;
+}

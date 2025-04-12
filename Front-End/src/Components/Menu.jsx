@@ -159,13 +159,17 @@ const Menu = () => {
               <>
                 {cart.map((item, index) => (
                   <div key={index} className="cart-item">
+                     <FaRegTrashAlt
+                        className="boton-borrar"
+                        onClick={() => dispatch(removeItem(item.id))}
+                      />
                     <img
                       src={item.image}
                       alt=""
                       className="imagen-items-carrito"
                     />
 
-                    <div className="cant-nombre">
+                    <div className="cart-nombre">
                       <p>{item.nombre}</p>
 
                       <div className="conjunto-botones">
@@ -189,13 +193,10 @@ const Menu = () => {
                         </button>
                       </div>
                     </div>
-                    <div>
+                    <div className='conjunto-total' >
                       {console.log(item.id)}
-                      <FaRegTrashAlt
-                        className="boton-borrar"
-                        onClick={() => dispatch(removeItem(item.id))}
-                      />
-                      <p>${item.precio * item.quantity}</p>
+                     
+                      <p className='total-final'>${item.precio * item.quantity}</p>
                     </div>
                   </div>
                 ))}

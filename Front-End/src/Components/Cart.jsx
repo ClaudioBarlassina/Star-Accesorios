@@ -144,8 +144,9 @@ const dispatch = useDispatch()
       <h2>PREPARAMOS TU PEDIDO </h2>
       {cart.map((item, index) => (
   <div key={index} className="cart-item">
+    <FaRegTrashAlt className='boton-borrar-cart'></FaRegTrashAlt>
     <img src={item.image} alt="" className="imagen-items-carrito" />
-    <div className="cant-nombre">
+    <div className="cart-nombre">
       <p>{item.nombre}</p>
       <div className="conjunto-botones">
   <button
@@ -165,11 +166,18 @@ const dispatch = useDispatch()
   </button>
 </div>
     </div>
-    <div>
-      <FaRegTrashAlt className="boton-borrar" onClick={() => removeItem(item.id)} />
-      <p> c/u ${item.precio}</p>
+    <div className='conjunto-borrar'>
+      
+      <p>C/u</p>
+      <p> ${item.precio}</p>
     </div>
-    <p> ${item.precio * item.quantity}</p>
+    <div className='conjunto-total'>
+      <div>
+
+    
+      </div>
+    <p  className='total-final'> ${item.precio * item.quantity}</p>
+    </div>
   </div>
 ))}
 

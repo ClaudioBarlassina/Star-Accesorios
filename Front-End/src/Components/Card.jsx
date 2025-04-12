@@ -21,7 +21,7 @@ function Card({ id, image, nombre, precio }) {
       // Añadir el producto al carrito
       dispatch(addToCart(producto))
 
-      // Notificación con Toast
+      // Notificación con Toast 
       toast(
         <div className="cuerpo-notificacion">
           <img src={producto.image} alt="" className="image-notificacion" />
