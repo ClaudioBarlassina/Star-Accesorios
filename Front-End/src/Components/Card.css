@@ -26,9 +26,10 @@
     object-fit: cover;
     top: -10px;
     position: relative;
-    border-bottom-right-radius:50%;
+    box-shadow: 0 0 10px #d824db;
+    /* border-bottom-right-radius:50%;
     border-bottom-left-radius: 50%;
-  
+   */
     
   }
   
@@ -118,9 +119,7 @@
     display: flex;
     background-color: white;
     height: 150px;
-    top: 110px;
-  
-    
+    top: 110px; 
   }
   .cuerpo-notificacion{
     display: flex;
@@ -129,15 +128,19 @@
   .cuerpo-datos{
     display: flex;
     flex-direction: column;
-    width: 200px;
+    width: 300px;
     border: 1px solid rgba(0, 0, 0, 0.253);
     border-radius: 10px;
     align-items: flex-start;
+    height: 80px;
+   top: 150px;
 
   }
  .N-datos{
   color: #d824db;
   font-size: 20px;
+   margin-top: 5px;
+   margin-left: 10px;
   /* border: 1px solid black; */
   width: 100%
  }
@@ -145,10 +148,12 @@
   color:gray;
   font-size: 18px;
   margin-top: 10px;
+  margin-left: 10px;
  }
   .image-notificacion{
-    width: 100px;
-    height:100px;
+    width: 80px;
+    height:80px;
+    border-radius: 10px;
   }
 
  @keyframes entrada {
