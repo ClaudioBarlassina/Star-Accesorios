@@ -40,7 +40,7 @@ function App() {
           <ScrollToTop />
 
           <a
-            href="https://wa.me/5491123456789?text=Hola!%20Quiero%20más%20info%20sobre%20Star-Accesorios"
+            href="https://wa.me/5493537571489?text=Hola!%20Quiero%20más%20info%20sobre%20Star-Accesorios"
             className="whatsapp-float"
             target="_blank"
             rel="noopener noreferrer"
