@@ -58,7 +58,14 @@
     cursor: pointer;
     font-size: 14px;
   }
-  
+  .boton-volver{
+    background-color: #5cb85c;
+    width: 50px;
+    height: 30px;
+   color: white;
+   border-radius: 5px;
+   border: transparent;
+  }
   
   .boton.editar { background: #f0ad4e; color: white; }
   .boton.eliminar { background: #d9534f; color: white; }

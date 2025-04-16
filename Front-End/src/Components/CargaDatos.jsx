@@ -122,7 +122,7 @@ const AddProduct = () => {
   return (
     <>
       <div className="conteiner-cargadatos">
-        <div>
+        <div className="conjunto-botones-cart">
         <button className="botton-listado" onClick={() => navigate("/Productos") }>Listado Productos </button>
         <button className="botton-listado" onClick={() => navigate("/Pedidos")}>Listado de Pedidos </button>
         </div>
