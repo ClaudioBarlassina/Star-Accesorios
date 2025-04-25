@@ -64,7 +64,8 @@ const Menu = () => {
   }
 
   return (
-    <div className="conteiner-general">
+    <div className="conteiner-general" data-aos="fade-down"
+    >
       <div>
         {/* Categorías ----------------------------------------------------------------*/}
         <div className="categorias-container">
@@ -93,7 +94,7 @@ const Menu = () => {
                 </a> */}
                 <button
                   className="boton-categoria"
-                  onClick={() => handlerSeleccion('all', 'all')}
+                  onClick={() => handlerSeleccion('Todos Los Productos','Todo')}
                 >
                   {' '}
                   Todas las categorias

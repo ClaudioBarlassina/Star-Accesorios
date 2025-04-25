@@ -9,7 +9,8 @@ import CargaDatos from './Components/CargaDatos'
 import ProductsList from './Components/ProductsList'
 import OrderSummary from './Components/OrderSummary'
 import PedidosList from './Components/PedidosList'
-import ScrollToTop from './Components/scrollToTop'
+import { useEffect } from 'react'
+import AOS from "aos";
 import Footer from './Components/fotter'
 import {
   ToastContainer,
@@ -23,6 +24,13 @@ import 'react-toastify/dist/ReactToastify.css'
 import whats from '../src/assets/social.png'
 
 function App() {
+
+  useEffect(( ) => {
+    AOS.init({duration:2000})
+  },[])
+
+
+
   return (
     <div>
       {/* Esto se ve solo en pantallas grandes */}
@@ -37,7 +45,7 @@ function App() {
       {/* Esto es el sitio real, que se oculta en pantallas grandes */}
       <div className="not-mobile">
         <Router>
-          <ScrollToTop />
+        
 
           <a
             href="https://wa.me/5493537571489?text=Hola!%20Quiero%20más%20info%20sobre.. "

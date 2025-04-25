@@ -52,14 +52,14 @@
   top: 97px;
   left: -250px;
   width: 250px;
-  height: 100%;
+  /* height: %; */
   /* background: rgb(7, 17, 26); */
   /* background: linear-gradient(
     90deg,
     rgba(7, 17, 26, 1) 0%,
     rgba(219, 193, 140, 1) 72%
   ); */
-  background-color: white;
+  background-color: rgb(248, 244, 244);
   box-shadow: 2px 0 5px rgb(0, 0, 0, 0.1);
   transition: left 0.5s ease;
 }

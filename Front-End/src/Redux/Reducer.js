@@ -15,8 +15,8 @@ const initialState = {
   loading: false,
   error: null,
   filters: {
-    categoria: "all",
-    subcategoria: "all",
+    categoria: "Todos Los Productos",
+    subcategoria: "Todo",
   },
 };
 
@@ -149,8 +149,8 @@ const productosSlice = createSlice({
 export const selectFilteredProducts = (state) => {
   const { categoria, subcategoria } = state.Productos.filters;
   return state.Productos.Productos.filter((product) =>
-    (categoria === "all" || product.Categoria === categoria) &&
-    (subcategoria === "all" || product.SubCategoria === subcategoria)
+    (categoria === "Todos Los Productos" || product.Categoria === categoria) &&
+    (subcategoria === "Todo" || product.SubCategoria === subcategoria)
   );
 };
 

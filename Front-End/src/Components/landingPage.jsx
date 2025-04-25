@@ -1,10 +1,14 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import './landingPage.css'
 import Carrusel from './Carrusel'
 import ProductosCarrusel from './ProductosCarrusel'
 import { useNavigate } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
 import { setCategoria, setSubcategoria } from '../Redux/Reducer'
+import AOS from "aos";
+import "aos/dist/aos.css"
+
+
 const LandingPage = () => {
   const dispatch = useDispatch()
 
@@ -18,8 +22,10 @@ const LandingPage = () => {
     navigate('/home')
   }
 
+ 
+
   return (
-    <div className="landing-page">
+    <div className="landing-page" >
       {/* Hero */}
       <Carrusel />
       {/* Botones */}
@@ -27,8 +33,8 @@ const LandingPage = () => {
       <section className="landing-section botones-con-imagen">
         <div className="botones-grid">
           <button
-            className="boton-imagen"
-            onClick={() => filtrarCategoria('Acero Quirurgico', 'all')}
+            className="boton-imagen" data-aos="zoom-in" data-aos-delay="200"
+            onClick={() => filtrarCategoria('Acero Quirurgico', 'Todo')}
             style={{
               backgroundImage: `url('https://joyasdeaceroquirurgico.com/imagenes-mayorista-joyas-acero-quirurgico/bh-mayorista-joyas-de-acero-quirurgico.jpg')`,
             }}
@@ -36,8 +42,8 @@ const LandingPage = () => {
             <span>Acero quirurgico</span>
           </button>
           <button
-            className="boton-imagen"
-            onClick={() => filtrarCategoria('Acero Dorado', 'all')}
+            className="boton-imagen" data-aos="zoom-in" data-aos-delay="300"
+            onClick={() => filtrarCategoria('Acero Dorado', 'Todo')}
             style={{
               backgroundImage: `url('https://cdn.shopify.com/s/files/1/0416/9682/1401/products/S120A10230-1_480x480.jpg?v=1622486575')`,
             }}
@@ -45,8 +51,8 @@ const LandingPage = () => {
             <span>Acero Dorado</span>
           </button>
           <button
-            className="boton-imagen"
-            onClick={() => filtrarCategoria('Acero Blanco', 'all')}
+            className="boton-imagen" data-aos="zoom-in" data-aos-delay="500"
+            onClick={() => filtrarCategoria('Acero Blanco', 'Todo')}
             style={{
               backgroundImage: `url('https://i0.wp.com/maiklibertad.com/wp-content/uploads/2019/10/stainless-878324_1920.jpg?resize=870%2C490&ssl=1')`,
             }}

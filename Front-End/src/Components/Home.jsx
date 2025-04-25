@@ -14,6 +14,7 @@ const Home = () => {
 
   return (
     <div>
+      
       <Productos Prod={products} />
     </div>
   )

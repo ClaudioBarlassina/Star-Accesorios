@@ -31,7 +31,7 @@ const Carrusel = () => {
   }, []);
 
   return (
-    <div className="carrusel-slide-wrapper">
+    <div className="carrusel-slide-wrapper" data-aos="fade-up">
       <div
         className="carrusel-track"
         style={{ transform: `translateX(-${index * 100}%)` }}
