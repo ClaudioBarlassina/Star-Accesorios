@@ -2,6 +2,8 @@ import React from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { jsPDF } from "jspdf";
 import "../Components/OrderSummary.css";
+import { logoBase64 } from "../assets/logobase64";
+
 
 const OrderSummary = () => {
   const location = useLocation();
@@ -16,63 +18,65 @@ const OrderSummary = () => {
   const handleDownloadPDF = () => {
     const doc = new jsPDF();
   
-    // Encabezado del documento
-    doc.setFontSize(18);
-    doc.text("Recibo de Compra", 10, 10);
-    doc.setFontSize(12);
-    doc.text(`Pedido N°: ${pedido.id || "0001"}`, 10, 20);
-    doc.text(`Fecha: ${new Date().toLocaleDateString()}`, 150, 20);
-    doc.line(10, 25, 200, 25);
+    // === Logo ===
+   
+
+    doc.addImage(logoBase64, "PNG", 150, 5, 25,25); // (x, y, width, height)
   
-    // Datos del Cliente
-    doc.setFontSize(14);
-    doc.text("Datos del Cliente:", 10, 35);
+    // === Membrete de la empresa ===
+    doc.setFontSize(22);
+    doc.setTextColor(40, 40, 40);
+    doc.setFont("helvetica", "bold");
+    doc.text("Star-Accesorios", 10, 15); // Ajustado para dejar espacio al logo
+  
+    // === Encabezado del documento ===
+    doc.setFontSize(18);
+    doc.setTextColor(0, 0, 0);
+    doc.setFont("helvetica", "normal");
+    doc.text("Recibo de Compra", 10, 25);
     doc.setFontSize(12);
-    doc.text(`Nombre: ${pedido.Cliente[0].nombre}`, 10, 45);
-    doc.text(`Dirección: ${pedido.Cliente[0].direccion}`, 10, 55);
-    doc.text(`Teléfono: ${pedido.Cliente[0].telefono}`, 10, 65);
-    doc.text(`Email: ${pedido.Cliente[0].email}`, 10, 75);
-    doc.text(`Ciudad: ${pedido.Cliente[0].ciudad}`, 10, 85);
-    doc.text(`Método de Pago: ${pedido.Cliente[0].metodoPago}`, 10, 95);
-    doc.line(10, 100, 200, 100);
+    doc.text(`Pedido N°: ${pedido.id || "0001"}`, 10, 35);
+    doc.text(`Fecha: ${new Date().toLocaleDateString()}`, 150, 35);
+    doc.line(10, 40, 200, 40);
+  
+    let y = 50; // Reacomodamos el contenido para no superponer
+    // ... el resto de tu contenido sigue desde acá ...
+  
+    
+    doc.setFontSize(14);
+    doc.text("Datos del Cliente:", 10, y);
+    doc.setFontSize(12);
+    doc.text(`Nombre: ${pedido.Cliente[0].nombre}`, 10, (y += 10));
+    doc.text(`Dirección: ${pedido.Cliente[0].direccion}`, 10, (y += 10));
+    doc.text(`Teléfono: ${pedido.Cliente[0].telefono}`, 10, (y += 10));
+    doc.text(`Email: ${pedido.Cliente[0].email}`, 10, (y += 10));
+    doc.text(`Ciudad: ${pedido.Cliente[0].ciudad}`, 10, (y += 10));
+    doc.text(`Método de Pago: ${pedido.Cliente[0].metodoPago}`, 10, (y += 10));
+    doc.line(10, (y += 5), 200, y);
   
     // Tabla de productos
     doc.setFontSize(14);
-    doc.text("Productos:", 10, 110);
+    doc.text("Productos:", 10, (y += 10));
     doc.setFontSize(12);
-  
-    let y = 120;
-    
-    // Encabezados de la tabla
     doc.setFont("helvetica", "bold");
-    doc.text("Producto", 10, y);
+    doc.text("Producto", 10, (y += 10));
     doc.text("Cant", 80, y);
-    
     doc.text("Total", 160, y);
     doc.setFont("helvetica", "normal");
+    doc.line(10, (y += 5), 200, y);
     y += 5;
   
-    // Línea separadora
-    doc.line(10, y, 200, y);
-    y += 5;
-  
-    // Recorrer productos y agregarlos a la tabla
     pedido.Productos.forEach((prod) => {
       doc.text(prod.nombre, 10, y);
       doc.text(prod.cantidad.toString(), 85, y);
-      
       doc.text(`$${prod.total}`, 160, y);
       y += 10;
     });
   
-    // Línea final de la tabla
     doc.line(10, y + 5, 200, y + 5);
-  
-    // Total a pagar
     doc.setFont("helvetica", "bold");
-    doc.text(`Total a Pagar:    $${pedido.Total.toFixed(2)}`, 125, y += 10);
-    
-    // Agregar datos de transferencia si el método de pago es "transferencia"
+    doc.text(`Total a Pagar:    $${pedido.Total.toFixed(2)}`, 125, (y += 10));
+  
     if (esTransferencia) {
       y += 25;
       doc.setFontSize(14);
@@ -97,9 +101,7 @@ const OrderSummary = () => {
         { maxWidth: 180 }
       );
     }
-
-
-
+  
     // Guardar el PDF
     doc.save(`Factura_${pedido.id || "0001"}.pdf`);
   };
