@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import { supabase } from '../supabaseClient'
 import './PedidosList.css'
 import { jsPDF } from 'jspdf'
-import { LogoBase64 } from "../assets/LogoBase64";
+import LogoBase64  from "../assets/LogoBase64";
 
 const PedidosList = () => {
   const [pedidos, setPedidos] = useState([])
