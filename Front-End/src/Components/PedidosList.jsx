@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import { supabase } from '../supabaseClient'
 import './PedidosList.css'
 import { jsPDF } from 'jspdf'
-import { logoBase64 } from '../assets/LogoBase64' // Ajustá la ruta según donde pusiste el archivo
+import { logoBase64 } from '../assets/LogoBase64.js' // Ajustá la ruta según donde pusiste el archivo
 
 const PedidosList = () => {
   const [pedidos, setPedidos] = useState([])
