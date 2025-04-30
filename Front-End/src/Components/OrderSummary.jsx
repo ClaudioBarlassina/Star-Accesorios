@@ -3,7 +3,7 @@ import { useLocation, useNavigate, } from "react-router-dom";
 
 import { jsPDF } from "jspdf";
 import "../Components/OrderSummary.css";
-import { logoBase64 } from "../assets/logobase64";
+import { logoBase64 } from "../assets/logobase64.js";
 
 
 const OrderSummary = () => {
