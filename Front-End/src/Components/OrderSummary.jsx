@@ -1,5 +1,6 @@
 import React from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate, } from "react-router-dom";
+
 import { jsPDF } from "jspdf";
 import "../Components/OrderSummary.css";
 import { logoBase64 } from "../assets/logobase64";
@@ -9,6 +10,8 @@ const OrderSummary = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const { pedido } = location.state || {};
+ 
+
 
   if (!pedido) {
     return <div>No hay información de la compra.</div>;
@@ -35,7 +38,7 @@ const OrderSummary = () => {
     doc.setFont("helvetica", "normal");
     doc.text("Recibo de Compra", 10, 25);
     doc.setFontSize(12);
-    doc.text(`Pedido N°: ${pedido.id || "0001"}`, 10, 35);
+    doc.text(`Pedido N°: ${"0001" }`, 10, 35);
     doc.text(`Fecha: ${new Date().toLocaleDateString()}`, 150, 35);
     doc.line(10, 40, 200, 40);
   
