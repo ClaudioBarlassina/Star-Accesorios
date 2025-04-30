@@ -3,7 +3,7 @@ import { useLocation, useNavigate } from 'react-router-dom'
 
 import { jsPDF } from 'jspdf'
 import '../Components/OrderSummary.css'
-import { logoBase64 } from '../assets/LogoBase64.js'
+import { LogoBase64 } from '../assets/LogoBase64.js'
 
 const OrderSummary = () => {
   const location = useLocation()
@@ -20,7 +20,7 @@ const OrderSummary = () => {
 
     // === Logo ===
 
-    doc.addImage(logoBase64, 'PNG', 150, 5, 25, 25) // (x, y, width, height)
+    doc.addImage(LogoBase64, 'PNG', 150, 5, 25, 25) // (x, y, width, height)
 
     // === Membrete de la empresa ===
     doc.setFontSize(22)
