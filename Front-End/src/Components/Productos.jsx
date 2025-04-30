@@ -4,7 +4,7 @@ import Card from "./Card";
 import { useSelector } from "react-redux";
 
 function Productos( {Prod }) { 
-  console.log(Prod) // Extraemos Prod del objeto de props
+ 
  
  const filtro = useSelector(state =>  state.Productos.filters)
   console.log(filtro.categoria)

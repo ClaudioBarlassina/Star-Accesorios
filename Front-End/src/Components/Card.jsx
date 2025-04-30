@@ -11,9 +11,7 @@ function Card({ id, image, nombre, precio }) {
   // Obtener el stock desde state.Productos.stock usando el id del producto
   const stock = useSelector((state) => state.Productos.stock[id] || 0)
 
-  // console.log(`Stock del producto ${id}:`, stock);
-  console.log()
-
+ 
   const HandlerAdd = () => {
     if (stock > 0) {
       const producto = { id, image, nombre, precio, quantity: 1 }

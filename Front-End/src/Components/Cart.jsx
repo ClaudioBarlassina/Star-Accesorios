@@ -8,7 +8,7 @@ import { clearCart, updateQuantity, removeItem } from '../Redux/Reducer.js'
 
 const Cart = () => {
   const cart = useSelector((state) => state.Productos.cart)
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   const dispatch = useDispatch()
   const contadores = cart.reduce((total, item) => total + item.quantity, 0)
