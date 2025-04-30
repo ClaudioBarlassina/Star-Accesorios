@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import { supabase } from '../supabaseClient'
 import './PedidosList.css'
 import { jsPDF } from 'jspdf'
-import { logoBase64 } from '../assets/LogoBase64.js' // Ajustá la ruta según donde pusiste el archivo
+import { LogoBase64 } from "../assets/LogoBase64.js";
 
 const PedidosList = () => {
   const [pedidos, setPedidos] = useState([])
@@ -52,7 +52,7 @@ const PedidosList = () => {
     const doc = new jsPDF()
 
     // === Logo ===
-    doc.addImage(logoBase64, 'PNG', 150, 5, 25, 25) // (x, y, width, height)
+    doc.addImage(LogoBase64, 'PNG', 150, 5, 25, 25) // (x, y, width, height)
 
     // === Membrete de la empresa ===
     doc.setFontSize(22)
