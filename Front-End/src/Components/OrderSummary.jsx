@@ -3,7 +3,7 @@ import { useLocation, useNavigate } from 'react-router-dom'
 
 import { jsPDF } from 'jspdf'
 import '../Components/OrderSummary.css'
-import { LogoBase64 } from '../assets/LogoBase64'
+import  LogoBase64  from '../assets/LogoBase64'
 
 const OrderSummary = () => {
   const location = useLocation()
