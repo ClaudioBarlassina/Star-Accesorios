@@ -52,7 +52,7 @@ const PedidosList = () => {
     const doc = new jsPDF()
 
     // === Logo ===
-    doc.addImage(LogoBase64, 'PNG', 150, 5, 25, 25) // (x, y, width, height)
+    // doc.addImage(LogoBase64, 'PNG', 150, 5, 25, 25) // (x, y, width, height)
 
     // === Membrete de la empresa ===
     doc.setFontSize(22)
