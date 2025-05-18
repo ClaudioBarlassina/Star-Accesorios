@@ -174,7 +174,7 @@ const Menu = () => {
                       <p>{item.nombre}</p>
 
                       <div className="conjunto-botones">
-                        <button
+                        {/* <button
                           className="botton-carrito"
                           onClick={() =>
                             updateQuantity(item.id, item.quantity - 1)
@@ -182,16 +182,16 @@ const Menu = () => {
                           disabled={item.quantity <= 1}
                         >
                           -
-                        </button>
-                        <span>{item.quantity}</span>
-                        <button
+                        </button> */}
+                        <span>Cantidad : {item.quantity}</span>
+                        {/* <button
                           className="botton-carrito"
                           onClick={() =>
                             updateQuantity(item.id, item.quantity + 1)
                           }
                         >
                           +
-                        </button>
+                        </button> */}
                       </div>
                     </div>
                     <div className='conjunto-total' >

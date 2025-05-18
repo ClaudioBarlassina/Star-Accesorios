@@ -158,15 +158,15 @@ const Cart = () => {
           <div className="cart-nombre">
             <p>{item.nombre}</p>
             <div className="conjunto-botones">
-              <button
+              {/* <button
                 className="botton-carrito"
                 onClick={() =>dispatch(updateQuantity(item.id, item.quantity - 1)) }
                 disabled={item.quantity <= 1} // Deshabilitado si la cantidad es 1 o menor
               >
                 -
-              </button>
-              <span>{item.quantity}</span>
-              <button
+              </button> */}
+              <span>Cantidad: {item.quantity}</span>
+              {/* <button
                 className="botton-carrito"
                 onClick={() =>
                    dispatch(updateQuantity(item.id, Math.min(item.quantity + 1)))
@@ -174,7 +174,7 @@ const Cart = () => {
                 disabled={item.quantity >= item.stock} // Deshabilitado si la cantidad es igual o mayor al stock disponible
               >
                 +
-              </button>
+              </button> */}
             </div>
           </div>
           <div className="conjunto-borrar">
