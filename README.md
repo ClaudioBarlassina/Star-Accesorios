@@ -10,7 +10,7 @@ El proyecto incluye funcionalidades completas tanto para **usuarios** como para 
 ### ✅ Carrito de compras interactivo
 Permite a los usuarios agregar, ver y quitar productos de forma dinámica.
 
-![Carrito de Compras](./vistas/carrito.png)
+![Carrito de Compras](./screenshots/carrito.png)
 
 ---
 
