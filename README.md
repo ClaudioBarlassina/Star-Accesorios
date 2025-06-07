@@ -17,7 +17,7 @@ Permite a los usuarios agregar, ver y quitar productos de forma dinámica.
 ### 📦 Gestión de stock en tiempo real
 El stock se actualiza automáticamente al confirmar un pedido o editar un producto desde el panel de admin.
 
-![Stock en Tiempo Real](./Front-End/screenshots/stock.png)
+![Stock en Tiempo Real](./Front-End/screenshots/ingresoProductos.png)
 
 ---
 
