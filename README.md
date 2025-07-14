@@ -10,14 +10,14 @@ El proyecto incluye funcionalidades completas tanto para **usuarios** como para 
 ### ✅ Carrito de compras interactivo
 Permite a los usuarios agregar, ver y quitar productos de forma dinámica.
 
-![Carrito de Compras](./vistas/carrito.png)
+![Carrito de Compras](./Front-End/screenshots/carrito.png)
 
 ---
 
 ### 📦 Gestión de stock en tiempo real
 El stock se actualiza automáticamente al confirmar un pedido o editar un producto desde el panel de admin.
 
-![Stock en Tiempo Real](./vistas/stock.png)
+![Stock en Tiempo Real](./Front-End/screenshots/ingresoProductos.png)
 
 ---
 
@@ -26,14 +26,14 @@ El stock se actualiza automáticamente al confirmar un pedido o editar un produc
 #### ➕ Crear, editar y eliminar productos  
 #### 🖼️ Subir imágenes y actualizar precios o descripciones
 
-![Panel de Administración - Productos](./vistas/miniatura6.png)
+![Panel de Administración - Productos](./Front-End/screenshots/miniatura6.png)
 
 ---
 
 ### 📋 Sección de pedidos
 Lista de pedidos detallada con opción de **descargar en PDF** para facilitar la administración.
 
-![Lista de Pedidos](./vistas/Pedidos.png)
+![Lista de Pedidos](./Front-End/screenshots/Pedidos.png)
 
 ---
 
@@ -41,7 +41,7 @@ Lista de pedidos detallada con opción de **descargar en PDF** para facilitar la
 
 La interfaz fue diseñada con enfoque mobile-first para ofrecer una navegación intuitiva desde celulares.
 
-![Vista Mobile Principal](./vistas/miniatura-Star.png)
+![Vista Mobile Principal](./Front-End/screenshots/miniatura-Star.png)
 
 ---
 
