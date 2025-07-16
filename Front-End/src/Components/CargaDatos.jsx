@@ -25,6 +25,7 @@ const AddProduct = () => {
     "Piedras Naturales",
     "Fantasía",
     "Cosméticos",
+    "Relojes",
   ];
   
   const subCategorias = {
@@ -34,6 +35,7 @@ const AddProduct = () => {
     "Piedras Naturales": ["Dijes", "Kits"],
     "Fantasía": ["Anillos", "Aros", "Accesorios Cabello", "Pulseras"],
     "Cosméticos": ["Todos"],
+    "Relojes": ["Todos"],
   };
 
   useEffect(() => {
