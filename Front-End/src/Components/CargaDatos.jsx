@@ -1,134 +1,158 @@
-
-
-import { useState, useEffect } from "react";
-import { supabase } from "../supabaseClient";
-import "./CargaDatos.css";
-import { useNavigate } from "react-router-dom";
-
-
+import { useState, useEffect } from 'react'
+import { supabase } from '../supabaseClient'
+import './CargaDatos.css'
+import { useNavigate } from 'react-router-dom'
 
 const AddProduct = () => {
-  const [name, setName] = useState("");
-  const [price, setPrice] = useState("");
-  const [image, setImage] = useState(null);
-  const [previewImage, setPreviewImage] = useState(null);
-  const [categoria, setCategoria] = useState("");
-  const [subCategoria, setSubCategoria] = useState("");
-  const [cantidad, setCantidad] = useState(1);
-  const [loading, setLoading] = useState(false);
-   
-  const navigate = useNavigate();
+  const [name, setName] = useState('')
+  const [price, setPrice] = useState('')
+  const [images, setImages] = useState([])
+  const [previewImages, setPreviewImages] = useState([])
+  const [categoria, setCategoria] = useState('')
+  const [subCategoria, setSubCategoria] = useState('')
+  const [cantidad, setCantidad] = useState(1)
+  const [loading, setLoading] = useState(false)
+
+  const navigate = useNavigate()
   const categorias = [
-    "Acero Quirurgico",
-    "Acero Blanco",
-    "Acero Dorado",
-    "Piedras Naturales",
-    "Fantasía",
-    "Cosméticos",
-    "Relojes",
-  ];
-  
+    'Acero Quirurgico',
+    'Acero Blanco',
+    'Acero Dorado',
+    'Piedras Naturales',
+    'Fantasía',
+    'Cosméticos',
+    'Relojes',
+  ]
+
   const subCategorias = {
-    "Acero Quirurgico": [ "Anillos", "Colgantes", "Aros", "Pulseras", "Piercing", "Accesorios"],
-    "Acero Blanco": ["Anillos", "Colgantes", "Aros", "Pulseras"],
-    "Acero Dorado": ["Anillos", "Colgantes", "Aros", "Pulseras"],
-    "Piedras Naturales": ["Dijes", "Kits"],
-    "Fantasía": ["Anillos", "Aros", "Accesorios Cabello", "Pulseras"],
-    "Cosméticos": ["Todos"],
-    "Relojes": ["Todos"],
-  };
+    'Acero Quirurgico': [
+      'Anillos',
+      'Colgantes',
+      'Aros',
+      'Pulseras',
+      'Piercing',
+      'Accesorios',
+    ],
+    'Acero Blanco': ['Anillos', 'Colgantes', 'Aros', 'Pulseras'],
+    'Acero Dorado': ['Anillos', 'Colgantes', 'Aros', 'Pulseras'],
+    'Piedras Naturales': ['Dijes', 'Kits'],
+    Fantasía: ['Anillos', 'Aros', 'Accesorios Cabello', 'Pulseras'],
+    Cosméticos: ['Todos'],
+    Relojes: ['Todos'],
+  }
 
   useEffect(() => {
     return () => {
-      if (previewImage) URL.revokeObjectURL(previewImage);
-    };
-  }, [image]);
+      if (previewImages) URL.revokeObjectURL(previewImages)
+    }
+  }, [images])
 
   const handleImageChange = (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      setImage(file);
-      setPreviewImage(URL.createObjectURL(file)); // Mostrar previsualización en tiempo real
-    }
-  };
+    // const file = e.target.files[0];
+    // if (file) {
+    //   setImage(file);
+    //   setPreviewImage(URL.createObjectURL(file)); // Mostrar previsualización en tiempo real
+    // }
+    const files = Array.from(e.target.files)
+    setImages(files)
+    const previews = files.map((file) => URL.createObjectURL(file))
+    setPreviewImages(previews)
+  }
 
   const handleCategoriaChange = (e) => {
-    setCategoria(e.target.value);
-    setSubCategoria("");
-  };
+    setCategoria(e.target.value)
+    setSubCategoria('')
+  }
 
   const handleCantidadChange = (e) => {
-    const value = parseInt(e.target.value, 10);
-    setCantidad(isNaN(value) || value <= 0 ? 1 : value);
-  };
+    const value = parseInt(e.target.value, 10)
+    setCantidad(isNaN(value) || value <= 0 ? 1 : value)
+  }
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
-    setLoading(true);
+    e.preventDefault()
+    setLoading(true)
 
     try {
-      let imageUrl = "";
+      let imageUrl = []
 
-      if (image) {
-        const formData = new FormData();
-        formData.append("file", image);
-        formData.append("upload_preset", "activa");
+      for (const file of images) {
+        const formData = new FormData()
+        formData.append('file', file)
+        formData.append('upload_preset', 'activa')
 
-        const response = await fetch("https://api.cloudinary.com/v1_1/deo4yfqad/image/upload", {
-          method: "POST",
-          body: formData,
-        });
+        const response = await fetch(
+          'https://api.cloudinary.com/v1_1/deo4yfqad/image/upload',
+          {
+            method: 'POST',
+            body: formData,
+          }
+        )
 
-        const data = await response.json();
-        if (!response.ok) throw new Error("Error al subir la imagen");
+        const data = await response.json()
+        if (!response.ok) throw new Error('Error al subir la imagen')
 
-        imageUrl = data.secure_url.replace('/upload/', '/upload/f_auto,q_auto/');
-
+        imageUrl.push(data.secure_url.replace('/upload/', '/upload/f_auto,q_auto/'))
+        
       }
 
-      const priceNumber = parseFloat(price);
-      if (isNaN(priceNumber)) throw new Error("El precio debe ser un número válido.");
+      const priceNumber = parseFloat(price)
+      if (isNaN(priceNumber))
+        throw new Error('El precio debe ser un número válido.')
 
       // Insertar la cantidad de productos con el stock actualizado
       const productosAInsertar = {
         nombre: name,
         precio: priceNumber,
-        Image: imageUrl,
+        img: imageUrl,
         Categoria: categoria,
         SubCategoria: subCategoria,
         stock: cantidad, // Solo asignamos la cantidad ingresada al stock de un producto
-      };
+      }
 
       // productosAInsertar
 
-      const { error: insertError } = await supabase.from("Productos").insert(productosAInsertar);
+      const { error: insertError } = await supabase
+        .from('Productos')
+        .insert(productosAInsertar)
+         console.log(productosAInsertar)
+      if (insertError) throw insertError
 
-      if (insertError) throw insertError;
-
-      alert(`${cantidad} productos cargados exitosamente!`);
-      setName("");
-      setPrice("");
-      setImage(null);
-      setPreviewImage(null);
-      setCategoria("");
-      setSubCategoria("");
-      setCantidad(1);
+      alert(`${cantidad} productos cargados exitosamente!`)
+      setName('')
+      setPrice('')
+      setImages(null)
+      setPreviewImages(null)
+      setCategoria('')
+      setSubCategoria('')
+      setCantidad(1)
     } catch (error) {
-      console.error("Error al subir productos:", error);
-      alert("Hubo un error al subir los productos.");
+      console.log(error)
+      console.error('Error al subir productos:', error)
+      alert('Hubo un error al subir los productos.')
     } finally {
-      setLoading(false);
+      setLoading(false)
     }
-  };
+  }
 
   return (
     <>
       <div className="conteiner-cargadatos">
         <div className="conjunto-botones-cart">
-        <button className="botton-listado" onClick={() => navigate("/Productos") }>Listado Productos </button>
-        <button className="botton-listado" onClick={() => navigate("/Pedidos")}>Listado de Pedidos </button>
+          <button
+            className="botton-listado"
+            onClick={() => navigate('/Productos')}
+          >
+            Listado Productos{' '}
+          </button>
+          <button
+            className="botton-listado"
+            onClick={() => navigate('/Pedidos')}
+          >
+            Listado de Pedidos{' '}
+          </button>
         </div>
-         
+
         <form className="Formulario" onSubmit={handleSubmit}>
           <h2>INGRESO DE PRODUCTOS</h2>
           <input
@@ -146,29 +170,39 @@ const AddProduct = () => {
             required
           />
 
-           {/* Selección de categoría */}
-      <select value={categoria} onChange={handleCategoriaChange} required>
-        <option value="">Selecciona una categoría</option>
-        {categorias.map((cat) => (
-          <option key={cat} value={cat}>
-            {cat}
-          </option>
-        ))}
-      </select>
+          {/* Selección de categoría */}
+          <select value={categoria} onChange={handleCategoriaChange} required>
+            <option value="">Selecciona una categoría</option>
+            {categorias.map((cat) => (
+              <option key={cat} value={cat}>
+                {cat}
+              </option>
+            ))}
+          </select>
 
-      {/* Selección de subcategoría */}
-      {categoria && (
-        <select value={subCategoria} onChange={(e) => setSubCategoria(e.target.value)} required>
-          <option value="">Selecciona una subcategoría</option>
-          {subCategorias[categoria]?.map((subCat) => (
-            <option key={subCat} value={subCat}>
-              {subCat}
-            </option>
-          ))}
-        </select>
-      )}
+          {/* Selección de subcategoría */}
+          {categoria && (
+            <select
+              value={subCategoria}
+              onChange={(e) => setSubCategoria(e.target.value)}
+              required
+            >
+              <option value="">Selecciona una subcategoría</option>
+              {subCategorias[categoria]?.map((subCat) => (
+                <option key={subCat} value={subCat}>
+                  {subCat}
+                </option>
+              ))}
+            </select>
+          )}
 
-          <input type="file" onChange={handleImageChange} accept="image/*" required />
+          <input
+            type="file"
+            multiple
+            onChange={handleImageChange}
+            accept="img/*"
+            required
+          />
 
           <input
             type="number"
@@ -180,348 +214,52 @@ const AddProduct = () => {
           />
 
           <button type="submit" disabled={loading}>
-            {loading ? "Subiendo..." : `Subir ${cantidad} Producto(s)`}
+            {loading ? 'Subiendo...' : `Subir ${cantidad} Producto(s)`}
           </button>
         </form>
 
-        {name && price && previewImage && categoria && subCategoria && cantidad > 0 && (
-          <div className="Previsualizacion">
-            <h3>Previsualización</h3>
-            <img src={previewImage} alt="Previsualización" style={{ width: "150px", height: "150px" }} />
-            <p><strong>Nombre:</strong> {name}</p>
-            <p><strong>Precio:</strong> ${price}</p>
-            <p><strong>Categoría:</strong> {categoria}</p>
-            <p><strong>Subcategoría:</strong> {subCategoria}</p>
-            <p><strong>Cantidad:</strong> {cantidad}</p>
-          </div>
-        )}
+        {name &&
+          price &&
+          previewImages &&
+          categoria &&
+          subCategoria &&
+          cantidad > 0 && (
+            <div className="Previsualizacion">
+              <h3>Previsualización</h3>
+              <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap' }}>
+                {previewImages.map((img, i) => (
+                  <img
+                    key={i}
+                    src={img}
+                    alt={`Previsualización ${i}`}
+                    style={{
+                      width: '100px',
+                      height: '100px',
+                      objectFit: 'cover',
+                    }}
+                  />
+                ))}
+              </div>
+
+              <p>
+                <strong>Nombre:</strong> {name}
+              </p>
+              <p>
+                <strong>Precio:</strong> ${price}
+              </p>
+              <p>
+                <strong>Categoría:</strong> {categoria}
+              </p>
+              <p>
+                <strong>Subcategoría:</strong> {subCategoria}
+              </p>
+              <p>
+                <strong>Cantidad:</strong> {cantidad}
+              </p>
+            </div>
+          )}
       </div>
     </>
-  );
-};
-
-export default AddProduct;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// import { useState } from "react";
-// import { supabase } from "../supabaseClient"; // Asegúrate de importar Supabase correctamente
-// import "./CargaDatos.css";
-
-// const CLOUDINARY_UPLOAD_URL = "https://api.cloudinary.com/v1_1/<TU_CLOUD_NAME>/image/upload"; // Reemplaza con tu Cloud Name
-
-// const AddProduct = () => {
-//   const [name, setName] = useState("");
-//   const [price, setPrice] = useState("");
-//   const [image, setImage] = useState(null);
-//   const [categoria, setCategoria] = useState("");
-//   const [subCategoria, setSubCategoria] = useState("");
-//   const [loading, setLoading] = useState(false);
-
-//   const categorias = [
-//     "Acero Quirurgico",
-//     "Acero Blanco",
-//     "Acero Dorado",
-//     "Piedras Naturales",
-//     "Fantasía",
-//     "Cosméticos",
-//   ];
-  
-//   const subCategorias = {
-//     "Acero Quirurgico": ["Anillos", "Colgantes", "Aros", "Pulseras", "Piercing", "Accesorios"],
-//     "Acero Blanco": ["Anillos", "Colgantes", "Aros", "Pulseras"],
-//     "Acero Dorado": ["Anillos", "Colgantes", "Aros", "Pulseras"],
-//     "Piedras Naturales": ["Dijes", "Kits"],
-//     "Fantasía": ["Anillos", "Aros", "Accesorios Cabello", "Pulseras"],
-//     "Cosméticos": ["Todos"]
-//   };
-
-//   const handleImageChange = (e) => {
-//     setImage(e.target.files[0]);
-//   };
-
-//   const handleCategoriaChange = (e) => {
-//     setCategoria(e.target.value);
-//     setSubCategoria("");
-//   };
-
-//   const handleSubmit = async (e) => {
-//     e.preventDefault();
-//     setLoading(true);
-
-//     try {
-//       let imageUrl = "";
-
-//       if (image) {
-//         const formData = new FormData();
-//         formData.append("file", image);
-//         formData.append("upload_preset", "activa"); // Reemplaza con tu preset de Cloudinary
-
-//         const response = await fetch("https://api.cloudinary.com/v1_1/deo4yfqad/image/upload", {
-//           method: "POST",
-//           body: formData,
-//         });
-
-//         const data = await response.json();
-//         if (!response.ok) throw new Error("Error al subir la imagen");
-
-//         imageUrl = data.secure_url; // Obtener URL pública de Cloudinary
-//       }
-
-//       const priceNumber = parseFloat(price);
-//       if (isNaN(priceNumber)) throw new Error("El precio debe ser un número válido.");
-
-//       const { error: insertError } = await supabase.from("Productos").insert([
-//         {
-//           nombre: name,
-//           precio: priceNumber,
-//           Image: imageUrl,
-//           Categoria: categoria,
-//           SubCategoria: subCategoria,
-//         },
-//       ]);
-
-//       if (insertError) throw insertError;
-
-//       alert("Producto cargado exitosamente!");
-//       setName("");
-//       setPrice("");
-//       setImage(null);
-//       setCategoria("");
-//       setSubCategoria("");
-//     } catch (error) {
-//       console.error("Error al subir producto:", error);
-//       alert("Hubo un error al subir el producto.");
-//     } finally {
-//       setLoading(false);
-//     }
-//   };
-
-//   return (
-//     <form className="Formulario" onSubmit={handleSubmit}>
-//       <input
-//         type="text"
-//         value={name}
-//         onChange={(e) => setName(e.target.value)}
-//         placeholder="Nombre del producto"
-//         required
-//       />
-//       <input
-//         type="number"
-//         value={price}
-//         onChange={(e) => setPrice(e.target.value)}
-//         placeholder="Precio"
-//         required
-//       />
-      
-//       <select value={categoria} onChange={handleCategoriaChange} required>
-//         <option value="">Selecciona una categoría</option>
-//         {categorias.map((cat) => (
-//           <option key={cat} value={cat}>
-//             {cat}
-//           </option>
-//         ))}
-//       </select>
-
-//       {categoria && subCategorias[categoria] && (
-//         <select value={subCategoria} onChange={(e) => setSubCategoria(e.target.value)} required>
-//           <option value="">Selecciona una subcategoría</option>
-//           {subCategorias[categoria].map((sub) => (
-//             <option key={sub} value={sub}>
-//               {sub}
-//             </option>
-//           ))}
-//         </select>
-//       )}
-
-//       <input type="file" onChange={handleImageChange} accept="image/*" required />
-//       <button type="submit" disabled={loading}>
-//         {loading ? "Subiendo..." : "Subir Producto"}
-//       </button>
-//     </form>
-//   );
-// };
-
-// export default AddProduct;
-
-
-//-----------------------------------------------------------------------------------------------------
-
-
-
-
-// import { useState } from "react";
-// import { supabase } from "../supabaseClient"; // Asegúrate de importar Supabase correctamente
-// import "./CargaDatos.css";
-
-// const AddProduct = () => {
-//   const [name, setName] = useState("");
-//   const [price, setPrice] = useState("");
-//   const [image, setImage] = useState(null);
-//   const [categoria, setCategoria] = useState("");
-//   const [subCategoria, setSubCategoria] = useState("");
-//   const [cantidad, setCantidad] = useState(1); // Número de productos a subir
-//   const [loading, setLoading] = useState(false);
-
-//   const categorias = [
-//     "Acero Quirurgico",
-//     "Acero Blanco",
-//     "Acero Dorado",
-//     "Piedras Naturales",
-//     "Fantasía",
-//     "Cosméticos",
-//   ];
-  
-//   const subCategorias = {
-//     "Acero Quirurgico": ["Anillos", "Colgantes", "Aros", "Pulseras", "Piercing", "Accesorios"],
-//     "Acero Blanco": ["Anillos", "Colgantes", "Aros", "Pulseras"],
-//     "Acero Dorado": ["Anillos", "Colgantes", "Aros", "Pulseras"],
-//     "Piedras Naturales": ["Dijes", "Kits"],
-//     "Fantasía": ["Anillos", "Aros", "Accesorios Cabello", "Pulseras"],
-//     "Cosméticos": ["Todos"]
-//   };
-
-//   const handleImageChange = (e) => {
-//     setImage(e.target.files[0]);
-//   };
-
-//   const handleCategoriaChange = (e) => {
-//     setCategoria(e.target.value);
-//     setSubCategoria("");
-//   };
-
-//   const handleSubmit = async (e) => {
-//     e.preventDefault();
-//     setLoading(true);
-
-//     try {
-//       let imageUrl = "";
-
-//       if (image) {
-//         const formData = new FormData();
-//         formData.append("file", image);
-//         formData.append("upload_preset", "activa"); // Reemplaza con tu preset de Cloudinary
-
-//         const response = await fetch("https://api.cloudinary.com/v1_1/deo4yfqad/image/upload", {
-//           method: "POST",
-//           body: formData,
-//         });
-
-//         const data = await response.json();
-//         if (!response.ok) throw new Error("Error al subir la imagen");
-
-//         imageUrl = data.secure_url; // Obtener URL pública de Cloudinary
-//       }
-
-//       const priceNumber = parseFloat(price);
-//       if (isNaN(priceNumber)) throw new Error("El precio debe ser un número válido.");
-
-//       const productosAInsertar = Array.from({ length: cantidad }, () => ({
-//         nombre: name,
-//         precio: priceNumber,
-//         Image: imageUrl,
-//         Categoria: categoria,
-//         SubCategoria: subCategoria,
-//       }));
-
-//       const { error: insertError } = await supabase.from("Productos").insert(productosAInsertar);
-
-//       if (insertError) throw insertError;
-
-//       alert(`${cantidad} productos cargados exitosamente!`);
-//       setName("");
-//       setPrice("");
-//       setImage(null);
-//       setCategoria("");
-//       setSubCategoria("");
-//       setCantidad(1);
-//     } catch (error) {
-//       console.error("Error al subir productos:", error);
-//       alert("Hubo un error al subir los productos.");
-//     } finally {
-//       setLoading(false);
-//     }
-//   };
-
-//   return (
-//     <form className="Formulario" onSubmit={handleSubmit}>
-//       <input
-//         type="text"
-//         value={name}
-//         onChange={(e) => setName(e.target.value)}
-//         placeholder="Nombre del producto"
-//         required
-//       />
-//       <input
-//         type="number"
-//         value={price}
-//         onChange={(e) => setPrice(e.target.value)}
-//         placeholder="Precio"
-//         required
-//       />
-      
-//       <select value={categoria} onChange={handleCategoriaChange} required>
-//         <option value="">Selecciona una categoría</option>
-//         {categorias.map((cat) => (
-//           <option key={cat} value={cat}>
-//             {cat}
-//           </option>
-//         ))}
-//       </select>
-
-//       {categoria && subCategorias[categoria] && (
-//         <select value={subCategoria} onChange={(e) => setSubCategoria(e.target.value)} required>
-//           <option value="">Selecciona una subcategoría</option>
-//           {subCategorias[categoria].map((sub) => (
-//             <option key={sub} value={sub}>
-//               {sub}
-//             </option>
-//           ))}
-//         </select>
-//       )}
-
-//       <input type="file" onChange={handleImageChange} accept="image/*" required />
-
-//       {/* Campo para definir la cantidad de productos a subir */}
-//       <input
-//         type="number"
-//         value={cantidad}
-//         onChange={(e) => setCantidad(parseInt(e.target.value, 10))}
-//         placeholder="Cantidad"
-//         min="1"
-//         required
-//       />
-
-//       <button type="submit" disabled={loading}>
-//         {loading ? "Subiendo..." : `Subir ${cantidad} Producto(s)`}
-//       </button>
-//     </form>
-//   );
-// };
-
-// export default AddProduct;
+  )
+}
+export default AddProduct
