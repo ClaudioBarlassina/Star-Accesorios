@@ -16,8 +16,8 @@ function Productos( {Prod }) {
       {Prod.map((item, index) => (
         <div
           key={item.id}
-          data-aos="fade-up"
-          data-aos-delay={index * 100}
+          // data-aos="fade-up"
+          // data-aos-delay={index * 30}
         >
           <Card
             id={item.id}
