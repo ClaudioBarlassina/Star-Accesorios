@@ -45,6 +45,16 @@
     border-radius: 3px;
     font-size: 14px;
   }
+  .inputs{
+    display: flex;
+   align-items: center;
+   
+   
+  }
+  .inputs span{
+   width: 130px;
+   margin-left: 15px;
+  }
   
   .botones-edicion {
     display: flex;
