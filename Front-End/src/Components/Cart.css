@@ -11,9 +11,18 @@
   display: flex;
   flex-direction: column;
   margin: 10px;
+  border: 1px solid pink;
+  color: rgb(70, 69, 69);
+  border-radius: 10px;
+  /* border: 1px solid black; */
 }
 .carrito-pagina span {
   margin: 8px;
+}
+.total-cantidad{
+  display: flex;
+  justify-content: space-around;
+ 
 }
 
 .cart-item {
@@ -58,10 +67,10 @@
   border-radius: 10px;
   overflow: scroll;
 }
-.boton-borrar-cart{
-left: 385px;
-color:white;
-position: absolute;
+.boton-borrar-cart {
+  left: 385px;
+  color: white;
+  position: absolute;
 }
 
 /* FORMULARIO DATOS USUARIOS */

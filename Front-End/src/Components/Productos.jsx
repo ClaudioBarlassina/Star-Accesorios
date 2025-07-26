@@ -11,7 +11,7 @@ function Productos( {Prod }) {
 
   return (
     <div className="productos">
-    <h2> Productos / {filtro.categoria}</h2>
+    <h2>  {filtro.categoria} / {filtro.subcategoria}</h2>
     <div className="productos-grid">
       {Prod.map((item, index) => (
         <div
@@ -21,7 +21,7 @@ function Productos( {Prod }) {
         >
           <Card
             id={item.id}
-            image={item.Image}
+            img={Array.isArray(item.img) ? item.img[0] : item.img}
             nombre={item.nombre}
             precio={item.precio}
           />

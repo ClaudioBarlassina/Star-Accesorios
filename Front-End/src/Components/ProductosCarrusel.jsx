@@ -1,72 +1,49 @@
-import { useEffect, useState, useRef, useMemo } from "react";
+import { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { fetchProductos } from "../Redux/Reducer";
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Navigation, Pagination, Autoplay } from "swiper/modules";
+import "swiper/css";
+import "swiper/css/navigation";
+import "swiper/css/pagination";
 import "./ProductosCarrusel.css";
 
 const ProductosCarrusel = () => {
   const dispatch = useDispatch();
   const productos = useSelector((state) => state.Productos.Productos) || [];
-  const [index, setIndex] = useState(0);
-  const carruselRef = useRef(null);
 
   useEffect(() => {
     dispatch(fetchProductos());
   }, [dispatch]);
 
-  const productosAleatorios = useMemo(() => {
-    return [...productos].sort(() => Math.random() - 0.5);
-  }, [productos]);
-
-  useEffect(() => {
-    const intervalo = setInterval(() => {
-      setIndex((prev) => (prev + 1) % productosAleatorios.length);
-    }, 4000);
-    return () => clearInterval(intervalo);
-  }, [productosAleatorios.length]);
-
-  const handleAnterior = () => {
-    setIndex((prev) => (prev - 1 + productosAleatorios.length) % productosAleatorios.length);
-  };
-
-  const handleSiguiente = () => {
-    setIndex((prev) => (prev + 1) % productosAleatorios.length);
-  };
+  const productosAleatorios = [...productos].sort(() => Math.random() - 0.5);
 
   return (
     <section className="carrusel-container">
       <h2>Productos Destacados</h2>
-      <div className="carrusel">
-        <button className="flecha izquierda" onClick={handleAnterior}>‹</button>
-
-        <div className="carrusel-viewport">
-          <div
-            className="carrusel-slider"
-            ref={carruselRef}
-            style={{
-              transform: `translateX(-${Math.max(0, index - 1) * 300}px)`,
-            }}
-          >
-            {productosAleatorios.map((producto) => (
-              <div key={producto.id} className="carrusel-item">
-                <img src={producto.Image} alt={producto.nombre} />
-                <h3>{producto.nombre}</h3>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        <button className="flecha derecha" onClick={handleSiguiente}>›</button>
-      </div>
-
-      <div className="indicadores">
-        {productosAleatorios.map((_, i) => (
-          <span
-            key={i}
-            className={`dot ${i === index ? "activo" : ""}`}
-            onClick={() => setIndex(i)}
-          />
+      <Swiper
+        modules={[Navigation, Pagination, Autoplay]}
+        spaceBetween={20}
+        slidesPerView={1}
+        navigation
+        pagination={{ clickable: true }}
+        autoplay={{ delay: 4000 }}
+        loop={true}
+        breakpoints={{
+          640: { slidesPerView: 1 },
+          768: { slidesPerView: 2 },
+          1024: { slidesPerView: 3 },
+        }}
+      >
+        {productosAleatorios.map((producto) => (
+          <SwiperSlide key={producto.id}>
+            <div className="carrusel-item">
+              <img src={producto.img[0]} alt={producto.nombre} />
+              <h3>{producto.nombre}</h3>
+            </div>
+          </SwiperSlide>
         ))}
-      </div>
+      </Swiper>
     </section>
   );
 };

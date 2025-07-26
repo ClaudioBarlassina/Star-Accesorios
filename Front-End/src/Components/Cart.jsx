@@ -154,27 +154,14 @@ const Cart = () => {
             className="boton-borrar-cart"
             onClick={() => dispatch(removeItem(item.id))}
           ></FaRegTrashAlt>
-          <img src={item.image} alt="" className="imagen-items-carrito" />
+          <img src={item.img} alt="" className="imagen-items-carrito" />
+          
           <div className="cart-nombre">
             <p>{item.nombre}</p>
             <div className="conjunto-botones">
-              {/* <button
-                className="botton-carrito"
-                onClick={() =>dispatch(updateQuantity(item.id, item.quantity - 1)) }
-                disabled={item.quantity <= 1} // Deshabilitado si la cantidad es 1 o menor
-              >
-                -
-              </button> */}
+              
               <span>Cantidad: {item.quantity}</span>
-              {/* <button
-                className="botton-carrito"
-                onClick={() =>
-                   dispatch(updateQuantity(item.id, Math.min(item.quantity + 1)))
-                }
-                disabled={item.quantity >= item.stock} // Deshabilitado si la cantidad es igual o mayor al stock disponible
-              >
-                +
-              </button> */}
+             
             </div>
           </div>
           <div className="conjunto-borrar">
@@ -189,8 +176,14 @@ const Cart = () => {
       ))}
 
       <div className="carrito-pagina">
-        <span>{`Cantidad Total: ${contadores}`}</span>
-        <span>{`Total a pagar: $${totalPrecio}`}</span>
+        <div className='total-cantidad'>
+          <span>{<strong>Cantidad Total:</strong>}</span> <span>{contadores}</span>
+        </div>
+        <div className='total-cantidad'>
+          <span>{<strong>Total a pagar: $$</strong>}</span> <span>{totalPrecio}</span>
+        </div>
+        {/* <span>{`Cantidad Total: ${contadores}`}</span>
+        <span>{`Total a pagar: $${totalPrecio}`}</span> */}
       </div>
 
       <form onSubmit={handleSubmit} className="form-datos">

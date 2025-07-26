@@ -5,7 +5,7 @@ import './Card.css'
 import { useDispatch, useSelector } from 'react-redux'
 import { addToCart } from '../Redux/Reducer'
 
-function Card({ id, image, nombre, precio }) {
+function Card({ id, img, nombre, precio }) {
   const dispatch = useDispatch()
 
   // Obtener el stock desde state.Productos.stock usando el id del producto
@@ -14,7 +14,7 @@ function Card({ id, image, nombre, precio }) {
  
   const HandlerAdd = () => {
     if (stock > 0) {
-      const producto = { id, image, nombre, precio, quantity: 1 }
+      const producto = { id, img, nombre, precio, quantity: 1 }
 
       // Añadir el producto al carrito
       dispatch(addToCart(producto))
@@ -22,7 +22,7 @@ function Card({ id, image, nombre, precio }) {
       // Notificación con Toast 
       toast(
         <div className="cuerpo-notificacion">
-          <img src={producto.image} alt="" className="image-notificacion" />
+          <img src={producto.img} alt="" className="image-notificacion" />
           <div className="cuerpo-datos">
             <h1 className="N-datos">{producto.nombre}</h1>
             <span className="N-precio">${producto.precio}</span>
@@ -37,7 +37,7 @@ function Card({ id, image, nombre, precio }) {
     <div className="conteiner-card">
       <Link to={`/Details/${id}`}>
         <img
-          src={image}
+          src={img}
           alt={nombre}
           className="imagen"
           style={{ cursor: 'pointer' }}

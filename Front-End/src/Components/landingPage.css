@@ -1,4 +1,5 @@
 
+
 /* General */
 .landing-page {
   font-family: 'Segoe UI', sans-serif;
@@ -174,7 +175,7 @@
   position: relative;
   overflow: hidden;
   width: 100%;
-  height: 300px;
+  height: 100%;
 }
 
 .carrusel-track {
@@ -186,7 +187,7 @@
 
 .carrusel-slide-horizontal {
   min-width: 100%;
-  height: 100%;
+  height: 600px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -253,19 +254,19 @@
 .boton-imagen {
   justify-self: center;
   position: relative;
-  width: 300px;
+  width:100%;
   height: 200px;
   background-size: cover;
   background-position: center;
   border: none;
-  border-radius: 15px;
+  /* border-radius: 10px; */
   overflow: hidden;
   cursor: pointer;
   color: #fff;
   font-size: 1.5rem;
   font-weight: bold;
   transition: transform 0.3s ease;
-box-shadow: 0 0 20px grey;
+/* box-shadow: 0 0 20px grey; */
 }
 
 .boton-imagen:hover {
@@ -282,3 +283,15 @@ box-shadow: 0 0 20px grey;
   backdrop-filter: blur(2px);
   justify-content: center;
 }
+
+.boton-masProd{
+  width: 100%;
+  height: 70px;
+  border: none;
+  font-size: 35px;
+   color: rgb(250, 245, 245);
+ background: rgb(236, 134, 238) 100%;
+ box-shadow: 0 0 10px rgb(65, 64, 64);
+ border-radius: 15px;
+}
+

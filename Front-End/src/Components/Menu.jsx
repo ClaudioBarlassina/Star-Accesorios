@@ -27,7 +27,7 @@ const Menu = () => {
   const [isCartOpen, setisCartOpen] = useState(false)
 
   const cart = useSelector((state) => state.Productos.cart)
-
+ 
   //contador numerito
 
   const contadores = cart.reduce((total, item) => total + item.quantity, 0)
@@ -83,15 +83,7 @@ const Menu = () => {
             {/* todas las categorias --------------------------------------------------------- */}
             <ul>
               <li>
-                {/* <a
-                  href="#"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    handlerSeleccion("all", "all");
-                  }}
-                >
-                  Todas las categorías
-                </a> */}
+                
                 <button
                   className="boton-categoria"
                   onClick={() => handlerSeleccion('Todos Los Productos','Todo')}
@@ -165,7 +157,7 @@ const Menu = () => {
                         onClick={() => dispatch(removeItem(item.id))}
                       />
                     <img
-                      src={item.image}
+                      src={item.img}
                       alt=""
                       className="imagen-items-carrito"
                     />

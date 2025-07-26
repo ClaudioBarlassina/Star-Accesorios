@@ -22,7 +22,7 @@ const initialState = {
 
 // Thunk para cargar productos y stock desde Supabase
 export const fetchProductos = createAsyncThunk("Productos/fetchProductos", async () => {
-  const { data, error } = await supabase.from("Productos").select("id, Image, nombre, precio, stock, Categoria, SubCategoria");
+  const { data, error } = await supabase.from("Productos").select("id, img, nombre, precio, stock, Categoria, SubCategoria");
   if (error) throw error;
 
   const stockData = data.reduce((acc, producto) => {
