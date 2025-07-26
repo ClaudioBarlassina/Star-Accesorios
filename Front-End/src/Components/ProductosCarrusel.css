@@ -13,8 +13,12 @@
 
 .carrusel-item img {
   width: 100%;
-  height: auto;
-  max-height: 300px;
+  height: 600px;
+  /* max-height: 300px; */
   object-fit: cover;
   border-radius: 8px;
+}
+
+.carrusel-item h3{
+  margin: 20px;
 }

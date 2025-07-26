@@ -23,7 +23,7 @@ const ProductosCarrusel = () => {
       <h2>Productos Destacados</h2>
       <Swiper
         modules={[Navigation, Pagination, Autoplay]}
-        spaceBetween={20}
+        // spaceBetween={20}
         slidesPerView={1}
         navigation
         pagination={{ clickable: true }}
