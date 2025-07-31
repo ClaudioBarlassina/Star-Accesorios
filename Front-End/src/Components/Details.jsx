@@ -11,7 +11,6 @@ import { Thumbs } from 'swiper/modules'
 import 'swiper/css'
 import 'swiper/css/thumbs'
 
-
 // ----------------
 
 const Details = () => {
@@ -24,7 +23,6 @@ const Details = () => {
   const product = useSelector((state) =>
     state.Productos.Productos.find((item) => item.id === Number(productoId))
   )
- 
 
   const stock = useSelector((state) => state.Productos.stock[productoId])
 
@@ -50,62 +48,73 @@ const Details = () => {
 
   return (
     <div className="Details-conteiner">
-      <h4>{product.Categoria} / {product.SubCategoria}</h4>
-    {/*  */}
- <div style={{ width: '100%', maxWidth: '600px', margin: '0 auto' }}>
-      {/* Imagen principal */}
-      <Swiper
-        modules={[Thumbs]}
-        spaceBetween={10}
-        thumbs={{ swiper: thumbsSwiper }}
-      >
-        {product.img.map((image, i) => (
-          <SwiperSlide key={i}>
-            <img src={image} alt={`Imagen ${i}`} style={{ width: '100%', height:"400px", objectFit:"cover "}} />
-          </SwiperSlide>
-        ))}
-      </Swiper>
+      <h4>
+        {product.Categoria} / {product.SubCategoria}
+      </h4>
+      {/*  */}
+      <div >
+        {/* Imagen principal */}
+        <Swiper
+          modules={[Thumbs]}
+          spaceBetween={10}
+          thumbs={{ swiper: thumbsSwiper }}
+        >
+          {product.img.map((image, i) => (
+            <SwiperSlide key={i}>
+              <img src={image} alt={`Imagen ${i}`} style={{ width: '100%' }} />
+            </SwiperSlide>
+          ))}
+        </Swiper>
 
-      {/* Miniaturas */}
-      <Swiper
-        onSwiper={setThumbsSwiper}
-        spaceBetween={10}
-        slidesPerView={5}
-        freeMode={true}
-        watchSlidesProgress={true}
-        style={{ marginTop: '10px' }}
-      >
+       
+      </div>
 
-        
-        {product.img.map((img, i) => (
-          <SwiperSlide key={i}>
-            <img
-              src={img}
-              alt={`Miniatura ${i}`}
-              style={{
-                width: '100%',
-                height: '60px',
-                objectFit: 'cover',
-                borderRadius: '4px',
-              }}
-            />
-          </SwiperSlide>
-        ))}
-      </Swiper>
-    </div>
+      {/*  */}
 
-
-{/*  */}
-
-    
       <div className="Details-info">
         <p className="Details-Nombre">{product.nombre}</p>
-        <p className="Details-Categoria">{product.Categoria}</p>
-        <p className="Details-Precio">Precio: ${product.precio}</p>
+        <p className="Details-Categoria">Subnombre</p>
+        {/* <p className="Details-Categoria">{product.Categoria}</p> */}
         <div className="separador"></div>
-        <p>{product.descripcion}</p>
+        {/* Descripcion */}
+        <div className="Details-Descripcion">
+          <p>Descripcion: </p>
+          <span>
+            Colgate Corazon de Acero Quirurgico con strass incrustados
+          </span>
+        </div>
+        {/* modelo */}
+        <div className="Details-Modelo">
+          <div className="separador"></div>
+          <div className='Details-Modelo-Nombre'>
+
+           <p>Modelo </p>
+          </div>
+          <div className='Details-opciones-modelo'>
+           <div className='op'>
+
+
+          <h5>imagen1</h5>
+          <button></button>
+           </div>
+           <div className='op'>
+
+          <h5>imagen2</h5>
+          <button></button>
+           </div>
+           <div className='op'>
+
+          <h5>imagen3</h5>
+          <button></button>
+           </div>
+          </div>
+        </div>
+
+        <div className="separador"></div>
         <div className="select-cantidad">
-          <p>Cant:</p>
+          <div className='conjunto-cantidad'>
+
+          <p>Cantidad:</p>
           <div>
             <button
               onClick={() => setCantidad((prev) => Math.max(prev - 1, 1))}
@@ -121,6 +130,7 @@ const Details = () => {
               +
             </button>
           </div>
+          </div>
           <div>
             {stock === 0 ? (
               <span className="sin-stock">Sin stock</span>
@@ -129,18 +139,25 @@ const Details = () => {
             )}
           </div>
         </div>
-
         <div className="separador"></div>
+        <div>
+          
+        </div>
+
       </div>
+      <div className='precio-boton'>
+
 
       <button
         className="button-card-details {
-"
+          "
         onClick={handlerAddCart}
         disabled={product.stock === 0}
       >
         {product.stock === 0 ? 'Sin stock' : 'Agregar al carrito'}
       </button>
+          <p className="Details-Precio"> ${product.precio}</p>
+      </div>
     </div>
   )
 }
