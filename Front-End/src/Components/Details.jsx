@@ -52,7 +52,7 @@ const Details = () => {
         {product.Categoria} / {product.SubCategoria}
       </h4>
       {/*  */}
-      <div >
+      <div>
         {/* Imagen principal */}
         <Swiper
           modules={[Thumbs]}
@@ -66,7 +66,32 @@ const Details = () => {
           ))}
         </Swiper>
 
-       
+        {/* Miniaturas */}
+        {/* <Swiper
+        onSwiper={setThumbsSwiper}
+        spaceBetween={10}
+        slidesPerView={5}
+        freeMode={true}
+        watchSlidesProgress={true}
+        style={{ marginTop: '10px' }}
+      >
+
+        
+        {product.img.map((img, i) => (
+          <SwiperSlide key={i}>
+            <img
+              src={img}
+              alt={`Miniatura ${i}`}
+              style={{
+                width: '100%',
+                height: '60px',
+                objectFit: 'cover',
+                borderRadius: '4px',
+              }}
+            />
+          </SwiperSlide>
+        ))}
+      </Swiper> */}
       </div>
 
       {/*  */}
