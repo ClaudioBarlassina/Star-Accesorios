@@ -1,0 +1,8 @@
+MONGO_URI=mongodb://claubarlassina_db_user:ZvMYTJdHNd3w2ejR@ac-eutxwsf-shard-00-00.a7ywekv.mongodb.net:27017,ac-eutxwsf-shard-00-01.a7ywekv.mongodb.net:27017,ac-eutxwsf-shard-00-02.a7ywekv.mongodb.net:27017/?ssl=true&replicaSet=atlas-emfd73-shard-0&authSource=admin&appName=Cluster0
+DB_NAME=StarAccesorios
+COLLECTION=productos
+CLOUDINARY_URL=cloudinary://647469282339722:_N2vWZQWUYHXrUNm6LWzvdo7yY0@deo4yfqad
+EMAIL_USER=claubarlassina@gmail.com
+EMAIL_PASS=csak rcco xebm zhrb
+
+
