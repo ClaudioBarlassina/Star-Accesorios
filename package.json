@@ -1,8 +1,0 @@
-{
-  "name": "star-accesorios",
-  "private": true,
-  "scripts": {
-    "dev": "cd FrontEnd && npm run dev",
-    "build": "cd FrontEnd && npm run build"
-  }
-}
