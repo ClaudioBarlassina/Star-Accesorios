@@ -31,6 +31,8 @@ app.use("/api/products", productsRoutes);
 
 connectDB();
 
-app.listen(3002, () => {
-  console.log("Servidor en puerto 3002");
+const PORT = process.env.PORT || 3002
+
+app.listen(PORT, () => {
+  console.log(`Servidor en puerto ${PORT}`);
 });
