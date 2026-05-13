@@ -1,0 +1,8 @@
+<CategorySlider
+  categories={[
+    { name: "Anillos", image: "/img/anillos.jpg" },
+    { name: "Colgantes", image: "/img/colgantes.jpg" },
+    { name: "Tobilleras", image: "/img/tobilleras.jpg" },
+    { name: "Pulseras", image: "/img/pulseras.jpg" },
+  ]}
+/>

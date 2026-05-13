@@ -1,0 +1,12 @@
+
+Filtro por Categoria
+/api/products?category=audio
+
+filtro por precio
+/api/products?minPrice=50000&maxPrice=200000
+
+filtro por nombre 
+/api/products?search=mouse
+
+filtro por paginacion
+/api/products?page=2&limit=5

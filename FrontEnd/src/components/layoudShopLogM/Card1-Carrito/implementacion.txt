@@ -1,0 +1,9 @@
+<Card
+  image={imagen}
+  title={"gaspacho"}
+  price={"15000"}
+  quantity={1}
+  onIncrease={() => aumentar(item.id)}
+  onDecrease={() => disminuir(item.id)}
+  onRemove={() => eliminar(item.id)}
+/>

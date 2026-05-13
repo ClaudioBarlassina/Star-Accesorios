@@ -1,0 +1,22 @@
+import Card from "./CardSW"
+
+export default function ProductsGrid({ products }) {
+  return (
+    <div className="grid">
+      {products.map((p) => (
+
+       <Card
+  images={producto.images} aca va array de imagenes
+  title={producto.name}
+  price={`$${producto.price}`}
+  action={
+    <button className={styles.button}>
+      Agregar al carrito
+    </button>
+  }
+/>
+
+      ))}
+    </div>
+  )
+}

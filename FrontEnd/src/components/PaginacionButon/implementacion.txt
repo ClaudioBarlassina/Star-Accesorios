@@ -1,0 +1,5 @@
+ <Paginacion totalPaginas={8} pagina={pagina selecionada por el usuario} handler></Paginacion>
+
+
+
+ handler: devuelvel el buton seleccionado 

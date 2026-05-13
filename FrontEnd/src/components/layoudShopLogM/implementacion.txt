@@ -1,0 +1,36 @@
+import { useState } from "react"
+import LayoutShop from "./components/layout/LayoutShop"
+import AuthComponent from "./components/AuthComponent"
+import useAuthListener from "./hooks/useAuthListener"
+import useStore from "./store/useStore"
+
+function App() {
+  useAuthListener()
+
+  const user = useStore((s) => s.user)
+  const logout = useStore((s) => s.logout)
+
+  const carrito = useStore((s) => s.Carrito)
+  const incr = useStore((s) => s.addAumentar)
+  const decr = useStore((s) => s.addDisminuir)
+
+  const [cartOpen, setCartOpen] = useState(false)
+
+  return (
+    <LayoutShop
+      user={user}
+      logout={logout}
+      authComponent={<AuthComponent />} // 🔥 magia
+      prod={carrito}
+      incr={incr}
+      decr={decr}
+      onSearch={(v) => console.log(v)}
+      cartOpen={cartOpen}
+      setCartOpen={setCartOpen}
+    >
+      <h1>Productos</h1>
+    </LayoutShop>
+  )
+}
+
+export default App

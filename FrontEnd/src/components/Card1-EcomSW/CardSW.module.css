@@ -1,0 +1,103 @@
+.card {
+  width: 100%;
+  max-width: 180px;
+  background: var(--surface);
+  border-radius: var(--radius-lg);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+  transition: transform var(--transition), box-shadow var(--transition);
+  cursor: pointer;
+}
+
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-md);
+}
+
+/* carrusel */
+.imageWrapper {
+  width: 100%;
+  height: 180px;
+  overflow: hidden;
+  position: relative;
+}
+
+/* swiper */
+.imageWrapper :global(.swiper) {
+  width: 100%;
+  height: 100%;
+}
+
+.imageWrapper :global(.swiper-slide) {
+  display: flex;
+}
+
+.imageWrapper img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform var(--transition-slow);
+}
+
+.card:hover .imageWrapper img {
+  transform: scale(1.05);
+}
+
+/* contenido */
+.content {
+  padding: var(--space-md);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs);
+  flex: 1;
+}
+
+.title {
+  font-size: 13px;
+  font-weight: 500;
+  margin: 0;
+  font-family: var(--body);
+  color: var(--text);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.price {
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--gold-dark);
+  font-family: var(--subheading);
+  margin: 0;
+}
+
+/* footer (botón) */
+.footer {
+  padding: 0 var(--space-md) var(--space-md);
+  display: flex;
+  justify-content: center;
+}
+
+/* botón */
+.button {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid var(--gold);
+  border-radius: var(--radius-md);
+  background: transparent;
+  color: var(--gold-dark);
+  cursor: pointer;
+  transition: all var(--transition);
+  font-family: var(--ui);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+}
+
+.button:hover {
+  background: var(--gold);
+  color: white;
+  border-color: var(--gold);
+}

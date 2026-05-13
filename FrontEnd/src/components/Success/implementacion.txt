@@ -1,0 +1,13 @@
+import Success from './Componentes-Reutilizables/Success/OrderSumary/Success';
+
+const order = {
+  id: 123,
+  productos: [
+    { nombre: 'X', cantidad: 1, precio: 100 },
+    // … 
+  ],
+  total: 100
+};
+
+
+return <Success order={order} />; 

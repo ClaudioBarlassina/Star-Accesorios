@@ -1,0 +1,124 @@
+.card {
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+  padding: var(--space-md);
+  border-radius: var(--radius-md);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  transition: border-color var(--transition);
+}
+
+.card:hover {
+  border-color: var(--gold);
+}
+
+.imageWrapper {
+  width: 72px;
+  height: 72px;
+  min-width: 72px;
+  overflow: hidden;
+  border-radius: var(--radius-sm);
+}
+
+.imageWrapper img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs);
+  flex: 1;
+  min-width: 0;
+}
+
+.title {
+  font-size: 13px;
+  font-weight: 600;
+  margin: 0;
+  font-family: var(--body);
+  color: var(--text);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.price {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--gold-dark);
+  font-family: var(--subheading);
+}
+
+.footer {
+  display: flex;
+  align-items: center;
+}
+
+.bottomRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: var(--space-xs);
+}
+
+.quantity {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+}
+
+.quantity button {
+  width: 26px;
+  height: 26px;
+  border: none;
+  background: var(--bg);
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text);
+  transition: background var(--transition);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.quantity button:hover {
+  background: var(--gold-bg);
+  color: var(--gold);
+}
+
+.quantity button:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+.quantity span {
+  min-width: 24px;
+  text-align: center;
+  font-weight: 600;
+  font-size: 13px;
+  font-family: var(--ui);
+}
+
+.removeBtn {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  font-size: 16px;
+  padding: 6px;
+  border-radius: var(--radius-sm);
+  transition: all var(--transition);
+  opacity: 0.4;
+}
+
+.removeBtn:hover {
+  opacity: 1;
+  background: #fef2f2;
+}

@@ -1,0 +1,27 @@
+backend/
+│
+├── app.js
+├── package.json
+│
+├── config/
+│   ├── mongo.js
+│   └── cloudinary.js   👈 NUEVO
+│
+├── routes/
+│   └── products.routes.js
+│
+├── models/
+│   └── products.models.js
+│
+├── controllers/
+│   └── products.controller.js
+│
+├── services/
+│   ├── products.service.js
+│   └── cloudinary.service.js 👈 NUEVO
+│
+├── middlewares/          👈 NUEVO (carpeta)
+│   └── upload.js
+│
+└── utils/
+    └── errors.js

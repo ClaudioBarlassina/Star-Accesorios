@@ -1,0 +1,20 @@
+import Grid from "./components/Grid/Grid"
+
+export default function App() {
+  return (
+    <Grid minWidth={200} gap={20}>
+      {Array.from({ length: 10 }).map((_, i) => (
+        <div
+          key={i}
+          style={{
+            height: "180px",
+            background: "#eee",
+            borderRadius: "8px"
+          }}
+        >
+          Producto {i + 1}
+        </div>
+      ))}
+    </Grid>
+  )
+}

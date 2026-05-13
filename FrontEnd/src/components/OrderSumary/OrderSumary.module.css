@@ -1,0 +1,77 @@
+.conteiner_Orden {
+  max-width: 720px;
+  margin: 100px auto 40px;
+  padding: var(--space-xl);
+  background: var(--surface);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-md);
+  font-family: var(--body);
+}
+
+.conteiner_Orden h2 {
+  font-family: var(--heading);
+  text-align: center;
+  margin-bottom: var(--space-xl);
+  font-size: 24px;
+  color: var(--text);
+  letter-spacing: 0.5px;
+}
+
+.conteiner_Orden_item {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+}
+
+.tabla_orden_final {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  list-style: none;
+  padding: var(--space-lg) var(--space-md);
+  font-size: 18px;
+  font-weight: 700;
+  border-top: 2px solid var(--gold);
+  margin-top: var(--space-md);
+  font-family: var(--subheading);
+  color: var(--gold-dark);
+}
+
+.button_order {
+  margin-top: var(--space-xl);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+}
+
+.button_order button {
+  flex: 1;
+  padding: 14px;
+  border: none;
+  border-radius: var(--radius-md);
+  font-weight: 600;
+  cursor: pointer;
+  transition: all var(--transition);
+  font-family: var(--ui);
+  font-size: 14px;
+  letter-spacing: 0.5px;
+}
+
+.button_order button:first-child {
+  background: var(--dark);
+  color: #fff;
+}
+
+.button_order button:first-child:hover {
+  background: var(--gold);
+}
+
+.button_order button:last-child {
+  background: var(--bg);
+  color: var(--text);
+  border: 1px solid var(--border);
+}
+
+.button_order button:last-child:hover {
+  border-color: var(--text);
+}

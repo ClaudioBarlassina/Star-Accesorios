@@ -1,0 +1,36 @@
+import express from "express";
+import cors from "cors"
+import helmet from "helmet"
+import rateLimit from "express-rate-limit"
+import dotenv from "dotenv";
+import { connectDB } from "./config/mongo.js";
+import productsRoutes from "./routes/products.routes.js";
+import ordersRoutes from "./routes/orders.routes.js";
+import cloudinary from "./config/cloudinary.js";
+
+dotenv.config();
+
+const app = express();
+
+app.use(helmet())
+app.use(cors({
+  origin: process.env.FRONTEND_URL || "http://localhost:5173",
+  methods: ["GET", "POST", "PUT", "DELETE"],
+}))
+app.use(express.json({ limit: "10mb" }))
+
+const limiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 100,
+  message: { error: "Demasiadas solicitudes, intentá de nuevo más tarde" },
+})
+app.use("/api/", limiter)
+
+app.use("/api/pedidos", ordersRoutes);
+app.use("/api/products", productsRoutes);
+
+connectDB();
+
+app.listen(3002, () => {
+  console.log("Servidor en puerto 3002");
+});

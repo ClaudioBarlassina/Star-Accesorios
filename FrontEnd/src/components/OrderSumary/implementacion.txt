@@ -1,0 +1,40 @@
+import { useNavigate } from "react-router-dom"
+import useStore from "../../store/useStore"
+import OrderSummary from "../OrderSummary/OrderSummary"
+
+export default function Checkout() {
+
+  const navigate = useNavigate()
+
+  const items = useStore(state => state.Carrito)
+  const incrementar = useStore(state => state.incrementar)
+  const decrementar = useStore(state => state.decrementar)
+  const eliminar = useStore(state => state.eliminar)
+  const vaciarCarrito = useStore(state => state.vaciarCarrito)
+
+  const handleCheckout = () => {
+    if (items.length === 0) return
+
+    // 👉 acá podrías crear el pedido en backend
+    console.log("Pedido creado")
+
+    vaciarCarrito()
+
+    navigate("/gracias")
+  }
+
+  const handleContinue = () => {
+    navigate("/productos")
+  }
+
+  return (
+    <OrderSummary
+      items={items}
+      onIncrease={incrementar}
+      onDecrease={decrementar}
+      onRemove={eliminar}
+      onCheckout={handleCheckout}
+      onContinue={handleContinue}
+    />
+  )
+}

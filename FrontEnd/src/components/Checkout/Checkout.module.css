@@ -1,0 +1,187 @@
+.checkout {
+  max-width: 720px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-lg);
+  padding: var(--space-xl) var(--space-md);
+}
+
+.section {
+  background: var(--surface);
+  padding: var(--space-lg);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+}
+
+.sectionTitle {
+  font-family: var(--heading);
+  font-size: 18px;
+  color: var(--text);
+  margin: 0;
+}
+
+.h3 {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+}
+
+.itemRow {
+  display: grid;
+  grid-template-columns: 60px 1fr 80px 80px;
+  align-items: center;
+  gap: var(--space-md);
+  padding: var(--space-md);
+  border-bottom: 1px solid var(--border-light);
+  font-family: var(--body);
+  font-size: 14px;
+}
+
+.itemRow:last-child {
+  border-bottom: none;
+}
+
+.image img {
+  width: 50px;
+  height: 50px;
+  object-fit: cover;
+  border-radius: var(--radius-sm);
+}
+
+.name {
+  font-weight: 500;
+  color: var(--text);
+}
+
+.price,
+.quantity,
+.subtotal {
+  text-align: center;
+  color: var(--text-secondary);
+}
+
+.subtotal {
+  font-weight: 700;
+  color: var(--gold-dark);
+  font-family: var(--subheading);
+}
+
+.formGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.formGroup label {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  font-family: var(--ui);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.formGroup input,
+.formGroup select {
+  width: 100%;
+  padding: 10px 12px;
+  border: 2px solid var(--border);
+  border-radius: var(--radius-sm);
+  font-family: var(--ui);
+  font-size: 14px;
+  color: var(--text);
+  transition: border-color var(--transition);
+  outline: none;
+  box-sizing: border-box;
+}
+
+.formGroup input:focus,
+.formGroup select:focus {
+  border-color: var(--gold);
+  box-shadow: 0 0 0 3px var(--gold-bg);
+}
+
+.formRow {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-md);
+}
+
+.radioGroup {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+}
+
+.radioOption {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  padding: var(--space-sm) var(--space-md);
+  border: 2px solid var(--border);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: all var(--transition);
+  font-family: var(--body);
+  font-size: 14px;
+}
+
+.radioOption:hover {
+  border-color: var(--gold);
+}
+
+.radioOption input {
+  accent-color: var(--gold);
+}
+
+.radioOption.selected {
+  border-color: var(--gold);
+  background: var(--gold-bg);
+}
+
+.error {
+  color: var(--error);
+  font-size: 0.75rem;
+  margin-top: 2px;
+  font-family: var(--ui);
+}
+
+.submit {
+  width: 100%;
+  padding: 14px;
+  background: var(--dark);
+  color: white;
+  border: none;
+  border-radius: var(--radius-md);
+  font-family: var(--ui);
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  cursor: pointer;
+  transition: background var(--transition);
+  margin-top: var(--space-sm);
+}
+
+.submit:hover {
+  background: var(--gold);
+}
+
+.submit:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+@media (max-width: 600px) {
+  .formRow {
+    grid-template-columns: 1fr;
+  }
+
+  .itemRow {
+    grid-template-columns: 50px 1fr;
+    gap: var(--space-sm);
+  }
+}

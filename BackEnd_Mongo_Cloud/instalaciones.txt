@@ -1,0 +1,3 @@
+npm init -y
+npm install mongoose 
+npm install cloudinary multer streamifier

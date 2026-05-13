@@ -1,0 +1,5 @@
+import {
+  enviarPedidoEmails
+} from "./services/email/pedidoEmail.services.js"
+
+await enviarPedidoEmails(pedido)
