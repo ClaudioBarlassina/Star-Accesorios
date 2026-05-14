@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API_URL = "https://star-accesorios.onrender.com/api/products";
+const API_URL = import.meta.env.VITE_API_URL || "http://localhost:3002/api/products";
 
 // Traer todos los productos, pasando filtros como query params
 export const getProducts = (filters = {}) => {

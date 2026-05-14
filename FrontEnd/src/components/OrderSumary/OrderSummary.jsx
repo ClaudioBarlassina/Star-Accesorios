@@ -23,7 +23,7 @@ const OrderSummary = ({
       
         {items.map((item) => (
           <OrderItem
-            key={item.id}
+            key={item._id}
             item={item}
             onIncrease={onIncrease}
             onDecrease={onDecrease}
