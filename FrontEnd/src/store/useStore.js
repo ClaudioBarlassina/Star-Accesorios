@@ -6,7 +6,7 @@ import { crearPedido } from "../api/orders.api";
 
 const useStore = create(
   devtools(
-    // persist(
+    persist(
     (set, get) => ({
       Carrito: [],
       Pedidos: [],
@@ -14,14 +14,13 @@ const useStore = create(
       loadingPedido: false,
       errorPedido: null,
 
-      // 🔐 AUTH
       setUser: (user) => set({ user }),
 
       logout: async () => {
         await signOut(auth)
-        set({ user: null, Carrito: [] }) // opcional limpiar carrito
+        set({ user: null, Carrito: [] })
       },
-      // 🛒 Agregar al carrito
+
       addCarrito: (producto) =>
         set((state) => {
           const existe = state.Carrito.find((item) => item._id === producto._id)
@@ -41,7 +40,6 @@ const useStore = create(
           }
         }),
 
-      // ➕ Aumentar cantidad
       addAumentar: (id) =>
         set((state) => ({
           Carrito: state.Carrito.map((item) =>
@@ -49,7 +47,6 @@ const useStore = create(
           ),
         })),
 
-      // ➖ Disminuir cantidad
       addDisminuir: (id) =>
         set((state) => ({
           Carrito: state.Carrito.map((item) =>
@@ -57,39 +54,36 @@ const useStore = create(
           ).filter((item) => item.cantidad > 0),
         })),
 
-      // ❌ Eliminar producto
       addEliminar: (id) =>
         set((state) => ({
           Carrito: state.Carrito.filter((item) => item._id !== id),
         })),
 
-     addPedidos: async (pedido) => {
-  if (pedido.productos.length === 0) return;
+      addPedidos: async (pedido) => {
+        if (!pedido.productos || pedido.productos.length === 0) return;
 
-  set({ loadingPedido: true, errorPedido: null });
+        set({ loadingPedido: true, errorPedido: null });
 
-  try {
-    const { data } = await crearPedido(pedido);
+        try {
+          const { data } = await crearPedido(pedido);
 
-    set((state) => ({
-      Pedidos: [...state.Pedidos, data],
-      Carrito: [],
-      loadingPedido: false,
-    }));
+          set((state) => ({
+            Pedidos: [...state.Pedidos, data],
+            Carrito: [],
+            loadingPedido: false,
+          }));
 
-  } catch (error) {
-    const msg = error.response?.data?.error || error.message || "Error al enviar pedido";
-    set({
-      errorPedido: msg,
-      loadingPedido: false,
-    });
-  }
-},
+        } catch (error) {
+          const msg = error.response?.data?.error || error.message || "Error al enviar pedido";
+          set({
+            errorPedido: msg,
+            loadingPedido: false,
+          });
+        }
+      },
 
-      // 🧹 Limpiar carrito
       limpiaCarrito: () => set({ Carrito: [] }),
 
-      // 📊 Obtener total carrito
       getTotalCarrito: () => {
         return get().Carrito.reduce(
           (acc, item) => acc + item.precio * item.cantidad,
@@ -97,14 +91,14 @@ const useStore = create(
         )
       },
     }),
-    // {
-    //   name: "StorePersist",
-    //   partialize: (state) => ({
-    //     Carrito: state.Carrito,
-    //     Pedidos: state.Pedidos,
-    //   }),
-    // }
-    // ),
+    {
+      name: "StorePersist",
+      partialize: (state) => ({
+        Carrito: state.Carrito,
+        Pedidos: state.Pedidos,
+      }),
+    }
+    ),
   ),
 )
 
