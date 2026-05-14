@@ -10,20 +10,20 @@ import cloudinary from "./config/cloudinary.js";
 
 dotenv.config();
 
-const app = express();
 
 
 app.use(cors({
-
+  
 }))
-app.use(express.json({ limit: "10mb" }))
+const app = express();
+app.use(express.json())
 
-const limiter = rateLimit({
-  windowMs: 15 * 60 * 1000,
-  max: 100,
-  message: { error: "Demasiadas solicitudes, intentá de nuevo más tarde" },
-})
-app.use("/api/", limiter)
+// const limiter = rateLimit({
+//   windowMs: 15 * 60 * 1000,
+//   max: 100,
+//   message: { error: "Demasiadas solicitudes, intentá de nuevo más tarde" },
+// })
+// app.use("/api/", limiter)
 
 app.use("/api/pedidos", ordersRoutes);
 app.use("/api/products", productsRoutes);
