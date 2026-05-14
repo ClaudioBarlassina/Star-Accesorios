@@ -19,7 +19,7 @@ const Order = () => {
 
     const handleCheckout = () => {
       if (items.length === 0) return
-      navigate("/Checkout")
+      navigate("/checkout")
     }
     const handleContinue = () => {
       navigate("/")

@@ -3,8 +3,8 @@ import useStore from './store/useStore.js'
 import { ADMIN_EMAILS } from './config/admin.js'
 import Home from './pages/Home.jsx'
 import Products from './pages/Products.jsx'
-import Order from '../src/pages/Order.jsx'
-import Detalle from "../src/pages/Details.jsx"
+import Order from './pages/Order.jsx'
+import Detalle from "./pages/Details.jsx"
 import Success from './pages/SuccessPage.jsx'
 import Checkout from './pages/CheckoutPage.jsx'
 import AdminDashboard from './components/Admin/AdminDashboard.jsx'
