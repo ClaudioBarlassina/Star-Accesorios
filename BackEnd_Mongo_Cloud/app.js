@@ -18,12 +18,7 @@ app.use(cors({
 const app = express();
 app.use(express.json())
 
-// const limiter = rateLimit({
-//   windowMs: 15 * 60 * 1000,
-//   max: 100,
-//   message: { error: "Demasiadas solicitudes, intentá de nuevo más tarde" },
-// })
-// app.use("/api/", limiter)
+
 
 app.use("/api/pedidos", ordersRoutes);
 app.use("/api/products", productsRoutes);
