@@ -16,7 +16,9 @@ const addPedidos = useStore(state => state.addPedidos)
 useAuthListener()
 
 const handler = async (data) => {
+  console.log("Pedido agregado:", data)
   await addPedidos(data)
+ 
 }
 const handler1 = () => {
  navigate("/success")
@@ -32,7 +34,7 @@ return (
     setCartOpen={setCartOpen}
   >
     <div style={{ marginTop: '80px' }}>
-      <Checkout productos={carrito} onConfirm={handler} onSubmit={handler1}/>
+      <Checkout productos={carrito} onConfirm={handler} onSubmit={handler1} />
     </div>
   </LayoutShop>
   )

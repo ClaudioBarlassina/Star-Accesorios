@@ -12,17 +12,9 @@ dotenv.config();
 
 const app = express();
 
-// pp.use(helmet())
-// const allowedOrigins = [
-//   "http://localhost:5173",
-//   "https://star-accesorios.vercel.app",
-// ];
+
 app.use(cors({
-  // origin: (origin, cb) => {
-  //   if (!origin || allowedOrigins.includes(origin)) return cb(null, true);
-  //   cb(null, true);
-  // },
-  // methods: ["GET", "POST", "PUT", "DELETE"],
+
 }))
 app.use(express.json({ limit: "10mb" }))
 

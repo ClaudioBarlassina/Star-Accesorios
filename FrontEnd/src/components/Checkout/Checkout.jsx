@@ -65,17 +65,14 @@ export default function Checkout({ productos = [], onConfirm, onSubmit }) {
       total,
       fecha: new Date(),
     }
-
-    try {
-      if (onConfirm) {
-        await onConfirm(pedido)
-      }
-      if (!useStore.getState().errorPedido) {
-        onSubmit()
-      }
-    } catch (e) {
-      // Error visible via store's errorPedido
-    }
+    
+  
+      
+       onConfirm(pedido)
+       onSubmit()
+           
+     
+   
   }
 
   return (
@@ -191,8 +188,8 @@ export default function Checkout({ productos = [], onConfirm, onSubmit }) {
       </div>
 
       {error && <p className={styles.error}>{error}</p>}
-      <button onClick={handleSubmit} disabled={loading} className={styles.submit}>
-        {loading ? 'Procesando...' : 'Confirmar Pedido'}
+      <button onClick={handleSubmit}  className={styles.submit}>
+       Confirmar Pedido
       </button>
     </div>
   )
