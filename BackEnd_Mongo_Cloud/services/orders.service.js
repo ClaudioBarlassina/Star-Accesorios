@@ -3,20 +3,15 @@ import { enviarPedidoEmails } from "../ServicioEmail/email/pedidoEmail.services.
 
 export const crearPedidoService = async (data) => {
   const { productos } = data;
+  console.log("📦 Productos recibidos en service:", productos);
 
-  if (!productos || !Array.isArray(productos) || productos.length === 0) {
-    throw new Error("El pedido debe contener al menos un producto");
-  }
-
+  // calcular total en backend (bien ✔)
   const total = productos.reduce(
     (acc, item) => acc + item.precio * item.cantidad,
     0
   );
 
-  if (typeof total !== "number" || isNaN(total) || total <= 0) {
-    throw new Error("El total del pedido no es válido");
-  }
-
+  // limpiar productos (recomendado)
   const productosLimpios = productos.map((p) => ({
     _id: p._id,
     nombre: p.nombre,
@@ -24,21 +19,31 @@ export const crearPedidoService = async (data) => {
     cantidad: p.cantidad,
     categoria:p.categoria,
     subcategoria:p.subcategoria,
-    images: p.images?.[0]?.url || "",
+    images: p.images[0]?.url || "",
     descripcion: p.descripcion,
   }));
 
   const nuevoPedido = new Pedido({
-    ...data,
-    productos: productosLimpios,
-    total,
+    ...data,                 // 👈 trae cliente, entrega, pago, etc.
+    productos: productosLimpios, // 👈 evitás guardar basura
+    total,                  // 👈 recalculado
     estado: "pendiente",
     fecha: new Date(),
   });
 
-  const pedidoGuardado = await nuevoPedido.save();
+ // ✅ guardar
+  const pedidoGuardado =
+  await nuevoPedido.save();
 
-  await enviarPedidoEmails(pedidoGuardado);
+  console.log("✅ Pedido guardado");
+
+  // ✅ enviar emails
+  await enviarPedidoEmails(
+    pedidoGuardado
+    
+  );
+ console.log(pedidoGuardado)
+  console.log("📩 Emails enviados");
 
   return pedidoGuardado;
 };

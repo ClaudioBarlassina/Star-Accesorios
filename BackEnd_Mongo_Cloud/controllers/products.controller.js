@@ -21,16 +21,24 @@ export const getProduct = async (req, res) => {
 };
 
 export const addProduct = async (req, res) => {
+  console.log("BODY:", req.body);
    try {
    let images = [];
+  console.log("FILES", req.files)
 if (req.files && req.files.length > 0) {
+  console.log("📸 Imágenes recibidas:", req.files.length);
+
   const uploads = await Promise.all(
     req.files.map(file => uploadImage(file.buffer))
   );
+
   images = uploads.map(result => ({
     url: result.secure_url,
     cloudinary_id: result.public_id,
   }));
+
+  console.log("☁️ Subidas a Cloudinary:", images.length);
+
     }
 
    const newProduct = await service.createProduct({
@@ -40,6 +48,7 @@ if (req.files && req.files.length > 0) {
 
     res.status(201).json(newProduct);
   } catch (error) {
+    console.error("❌ Error creando producto:", error.message); // 👈 DEBUG
     res.status(500).json({ error: error.message });
   }
 };
@@ -48,28 +57,28 @@ export const updateProduct = async (req, res) => {
   try {
     const product = await service.getProductById(req.params.id);
 
-    let images = product.images || [];
+    let imageData = {};
 
     if (req.file) {
-      // borrar imagenes viejas de Cloudinary
-      if (images.length > 0) {
-        await Promise.all(images.map(img => deleteImage(img.cloudinary_id)));
+      // borrar imagen vieja
+      if (product.cloudinary_id) {
+        await deleteImage(product.cloudinary_id);
       }
 
       // subir nueva
       const result = await uploadImage(req.file.buffer);
 
-      images = [{
-        url: result.secure_url,
+      imageData = {
+        image: result.secure_url,
         cloudinary_id: result.public_id,
-      }];
+      };
     }
 
     const updatedProduct = await service.updateProduct(
       req.params.id,
       {
         ...req.body,
-        images,
+        ...imageData,
       }
     );
 
@@ -83,8 +92,8 @@ export const deleteProduct = async (req, res) => {
    try {
     const product = await service.getProductById(req.params.id);
 
-    if (product.images && product.images.length > 0) {
-      await Promise.all(product.images.map(img => deleteImage(img.cloudinary_id)));
+    if (product.cloudinary_id) {
+      await deleteImage(product.cloudinary_id);
     }
 
     await service.deleteProduct(req.params.id);

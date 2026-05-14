@@ -1,8 +1,9 @@
 import Product from "../models/product.model.js";
-
+import { uploadImage, deleteImage } from "../services/cloudinary.service.js";
 
 export const getAllProducts = async (query) => {
   const filter = {};
+  console.log(query)
 
   if (query.category) {
     filter.categoria = query.category;
@@ -12,10 +13,15 @@ export const getAllProducts = async (query) => {
     filter.subcategoria = query.subcategory;
   }
 
-  if (query.search) {
-    filter.nombre = { $regex: query.search.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"), $options: "i" };
+  if (query.brand) {
+    filter.brand = query.brand;
   }
 
+  if (query.search) {
+    filter.nombre = { $regex: query.search, $options: "i" };
+  }
+
+  // 🔥 FIX IMPORTANTE
   if (query.minPrice || query.maxPrice) {
     filter.precio = {}; // 👈 antes era price ❌
 
