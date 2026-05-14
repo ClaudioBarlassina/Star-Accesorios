@@ -66,7 +66,8 @@ export default function Checkout({ productos = [], onConfirm, onSubmit }) {
       fecha: new Date(),
     }
 
-    await onConfirm(pedido)
+    onConfirm(pedido)
+    console.log("Pedido confirmado en Checkout:", pedido)
     onSubmit()
   }
 

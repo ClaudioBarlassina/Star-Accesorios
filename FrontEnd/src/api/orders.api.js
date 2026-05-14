@@ -1,7 +1,6 @@
 import axios from "axios";
 
-const API_URL = import.meta.env.VITE_API_URL || "http://localhost:3002/api/pedidos";
-
+const API_URL = "https://star-accesorios.onrender.com/api/pedidos";
 
 
 // crear pedido

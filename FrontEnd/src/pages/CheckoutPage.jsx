@@ -17,6 +17,7 @@ useAuthListener()
 
 const handler = async (data) => {
   await addPedidos(data)
+  console.log("Pedido enviado:", data)
 }
 const handler1 = () => {
  navigate("/success")

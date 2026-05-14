@@ -6,7 +6,7 @@ import { crearPedido } from "../api/orders.api";
 
 const useStore = create(
   devtools(
-    persist(
+    // persist(
     (set, get) => ({
       Carrito: [],
       Pedidos: [],
@@ -97,14 +97,14 @@ const useStore = create(
         )
       },
     }),
-    {
-      name: "StorePersist",
-      partialize: (state) => ({
-        Carrito: state.Carrito,
-        Pedidos: state.Pedidos,
-      }),
-    }
-    ),
+    // {
+    //   name: "StorePersist",
+    //   partialize: (state) => ({
+    //     Carrito: state.Carrito,
+    //     Pedidos: state.Pedidos,
+    //   }),
+    // }
+    // ),
   ),
 )
 
