@@ -3,6 +3,8 @@ import { clienteTemplate } from "../email/template/cliente.template.js";
 import { adminTemplate } from "../email/template/admin.template.js";
 
 export const enviarPedidoEmails = async (pedido) => {
+
+
   await sendEmail({
     to: pedido.cliente.email,
     subject: "Confirmación de compra - Star Accesorios",
