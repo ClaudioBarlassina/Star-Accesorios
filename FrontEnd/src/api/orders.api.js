@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API_URL = "https://star-accesorios.onrender.com/api/orders";
+const API_URL = "https://star-accesorios.onrender.com/api/pedidos";
 
 // crear pedido
 export const crearPedido = (pedido) => {
