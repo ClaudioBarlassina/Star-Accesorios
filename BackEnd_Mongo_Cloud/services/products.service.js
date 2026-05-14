@@ -1,5 +1,5 @@
 import Product from "../models/product.model.js";
-import { uploadImage, deleteImage } from "../services/cloudinary.service.js";
+
 
 export const getAllProducts = async (query) => {
   const filter = {};
@@ -13,7 +13,7 @@ export const getAllProducts = async (query) => {
   }
 
   if (query.search) {
-    filter.nombre = { $regex: query.search, $options: "i" };
+    filter.nombre = { $regex: query.search.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"), $options: "i" };
   }
 
   if (query.minPrice || query.maxPrice) {

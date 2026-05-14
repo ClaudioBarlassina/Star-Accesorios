@@ -16,7 +16,7 @@ const OrderItem = ({
      
       <li>
         <img
-          src={item.images[0].url}
+          src={item.images?.[0]?.url || ''}
           width={80}
           height={80}
            style={{ objectFit: 'cover' }}

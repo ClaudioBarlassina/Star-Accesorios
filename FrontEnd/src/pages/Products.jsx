@@ -112,10 +112,10 @@ const Products = () => {
         </div>
 
         <GridCuadricula minWidth={170} gap={15}>
-          {products.map((item, index) => (
+          {products.map((item) => (
             <CardSW
               id={item._id}
-              key={index}
+              key={item._id}
               title={item.nombre}
               price={item.precio}
               images={item.images}

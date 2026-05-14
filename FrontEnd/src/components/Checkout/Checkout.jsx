@@ -65,14 +65,9 @@ export default function Checkout({ productos = [], onConfirm, onSubmit }) {
       total,
       fecha: new Date(),
     }
-    
-  
-      
-       onConfirm(pedido)
-       onSubmit()
-           
-     
-   
+
+    await onConfirm(pedido)
+    onSubmit()
   }
 
   return (
@@ -85,7 +80,7 @@ export default function Checkout({ productos = [], onConfirm, onSubmit }) {
           return (
             <div key={item._id} className={styles.itemRow}>
               <div className={styles.image}>
-                <img src={item.images[0].url} alt={item.nombre} />
+                <img src={item.images?.[0]?.url || ''} alt={item.nombre} />
               </div>
               <div className={styles.name}>{item.nombre}</div>
               <div className={styles.price}>${item.precio}</div>

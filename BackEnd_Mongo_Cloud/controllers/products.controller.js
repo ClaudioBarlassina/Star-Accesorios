@@ -48,28 +48,28 @@ export const updateProduct = async (req, res) => {
   try {
     const product = await service.getProductById(req.params.id);
 
-    let imageData = {};
+    let images = product.images || [];
 
     if (req.file) {
-      // borrar imagen vieja
-      if (product.cloudinary_id) {
-        await deleteImage(product.cloudinary_id);
+      // borrar imagenes viejas de Cloudinary
+      if (images.length > 0) {
+        await Promise.all(images.map(img => deleteImage(img.cloudinary_id)));
       }
 
       // subir nueva
       const result = await uploadImage(req.file.buffer);
 
-      imageData = {
-        image: result.secure_url,
+      images = [{
+        url: result.secure_url,
         cloudinary_id: result.public_id,
-      };
+      }];
     }
 
     const updatedProduct = await service.updateProduct(
       req.params.id,
       {
         ...req.body,
-        ...imageData,
+        images,
       }
     );
 
@@ -83,8 +83,8 @@ export const deleteProduct = async (req, res) => {
    try {
     const product = await service.getProductById(req.params.id);
 
-    if (product.cloudinary_id) {
-      await deleteImage(product.cloudinary_id);
+    if (product.images && product.images.length > 0) {
+      await Promise.all(product.images.map(img => deleteImage(img.cloudinary_id)));
     }
 
     await service.deleteProduct(req.params.id);

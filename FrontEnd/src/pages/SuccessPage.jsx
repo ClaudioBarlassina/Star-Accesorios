@@ -21,7 +21,7 @@ const SuccessPage = () => {
       cartOpen={cartOpen}
       setCartOpen={setCartOpen}
     >
-      <Success order={Pedidos} />
+      <Success order={Pedidos?.[Pedidos.length - 1] ? [Pedidos[Pedidos.length - 1]] : Pedidos} />
     </LayoutShop>
   )
 }

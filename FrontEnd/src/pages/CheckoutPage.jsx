@@ -16,9 +16,7 @@ const addPedidos = useStore(state => state.addPedidos)
 useAuthListener()
 
 const handler = async (data) => {
-  console.log("Pedido agregado:", data)
   await addPedidos(data)
- 
 }
 const handler1 = () => {
  navigate("/success")

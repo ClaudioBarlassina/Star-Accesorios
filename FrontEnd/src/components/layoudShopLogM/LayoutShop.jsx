@@ -91,7 +91,7 @@ export default function LayoutShop({
           <input
             type="text"
             placeholder="Buscar productos..."
-            onChange={(e) => onSearch(e.target.value)}
+            onChange={(e) => onSearch?.(e.target.value)}
           />
         </div>
       )}
@@ -99,10 +99,6 @@ export default function LayoutShop({
       {/* CONTENIDO */}
       <main
         className={styles.content}
-        style={{
-          filter: user ? "none" : "blur(6px)",
-          pointerEvents: user ? "auto" : "none",
-        }}
       >
         {children}
       </main>
@@ -138,7 +134,7 @@ export default function LayoutShop({
           {prod.map((item) => (
             <CardCarrito
               key={item._id}
-              image={item.images[0].url}
+              image={item.images?.[0]?.url || ''}
               title={item.nombre}
               price={item.precio}
               quantity={item.cantidad}

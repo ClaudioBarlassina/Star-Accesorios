@@ -4,10 +4,18 @@ import { enviarPedidoEmails } from "../ServicioEmail/email/pedidoEmail.services.
 export const crearPedidoService = async (data) => {
   const { productos } = data;
 
+  if (!productos || !Array.isArray(productos) || productos.length === 0) {
+    throw new Error("El pedido debe contener al menos un producto");
+  }
+
   const total = productos.reduce(
     (acc, item) => acc + item.precio * item.cantidad,
     0
   );
+
+  if (typeof total !== "number" || isNaN(total) || total <= 0) {
+    throw new Error("El total del pedido no es válido");
+  }
 
   const productosLimpios = productos.map((p) => ({
     _id: p._id,
@@ -16,7 +24,7 @@ export const crearPedidoService = async (data) => {
     cantidad: p.cantidad,
     categoria:p.categoria,
     subcategoria:p.subcategoria,
-    images: p.images[0]?.url || "",
+    images: p.images?.[0]?.url || "",
     descripcion: p.descripcion,
   }));
 

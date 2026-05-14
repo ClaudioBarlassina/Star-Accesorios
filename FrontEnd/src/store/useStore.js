@@ -6,12 +6,13 @@ import { crearPedido } from "../api/orders.api";
 
 const useStore = create(
   devtools(
-    // persist(
+    persist(
     (set, get) => ({
       Carrito: [],
       Pedidos: [],
       user: null,
-      
+      loadingPedido: false,
+      errorPedido: null,
 
       // 🔐 AUTH
       setUser: (user) => set({ user }),
@@ -77,12 +78,11 @@ const useStore = create(
     }));
 
   } catch (error) {
-    const msg = error.response?.data || error.message || "Error al enviar pedido";
+    const msg = error.response?.data?.error || error.message || "Error al enviar pedido";
     set({
       errorPedido: msg,
       loadingPedido: false,
     });
-    throw error;
   }
 },
 
@@ -97,14 +97,14 @@ const useStore = create(
         )
       },
     }),
-    // {
-    //   name: "StorePersist",
-    //   partialize: (state) => ({
-    //     Carrito: state.Carrito,
-    //     Pedidos: state.Pedidos,
-    //   }),
-    // }
-    // )
+    {
+      name: "StorePersist",
+      partialize: (state) => ({
+        Carrito: state.Carrito,
+        Pedidos: state.Pedidos,
+      }),
+    }
+    ),
   ),
 )
 
