@@ -63,7 +63,22 @@ export default function AuthComponent() {
 
         <div className={styles.divider}>o</div>
 
-        <button className={styles.googleButton} onClick={loginGoogle}>
+        <button className={styles.googleButton} onClick={async () => {
+          try {
+            await loginGoogle()
+            setError("")
+          } catch (err) {
+            if (err.code === "auth/popup-blocked" || err.code === "auth/popup-closed-by-user") {
+              setError("El popup fue bloqueado o cerrado. Permití popups para este sitio.")
+            } else if (err.code === "auth/unauthorized-domain") {
+              setError("Este dominio no está autorizado. Agregalo en Firebase Console > Authentication > Settings > Authorized domains.")
+            } else if (err.code === "auth/operation-not-allowed") {
+              setError("El inicio de sesión con Google no está habilitado. Activá Google en Firebase Console > Authentication > Sign-in method.")
+            } else {
+              setError(err.code ? `Error: ${err.code}` : "Error al iniciar sesión con Google")
+            }
+          }
+        }}>
           Ingresar con Google
         </button>
 

@@ -20,4 +20,9 @@ const app = initializeApp(firebaseConfig);
 export const auth = getAuth(app);
 
 // opcional (no afecta login)
-const analytics = getAnalytics(app);
+let analytics;
+try {
+  analytics = getAnalytics(app);
+} catch (e) {
+  console.warn("Firebase Analytics no disponible:", e);
+}
