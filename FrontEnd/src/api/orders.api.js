@@ -4,8 +4,7 @@ const API_URL = "https://star-accesorios.onrender.com/api/pedidos";
 
 // crear pedido
 export const crearPedido = (pedido) => {
-
-  return axios.post(API_URL, pedido);
+  return axios.post(API_URL, pedido, );
 };
 
 // traer pedidos (opcional)

@@ -1,7 +1,10 @@
 import { useState, useMemo } from 'react'
 import styles from './Checkout.module.css'
+import useStore from '../../store/useStore'
 
 export default function Checkout({ productos = [], onConfirm, onSubmit }) {
+  const loading = useStore(state => state.loadingPedido)
+  const error = useStore(state => state.errorPedido)
   const [delivery, setDelivery] = useState('')
   const [errors, setErrors] = useState({})
   const [payment, setPayment] = useState('')
@@ -63,10 +66,16 @@ export default function Checkout({ productos = [], onConfirm, onSubmit }) {
       fecha: new Date(),
     }
 
-    if (onConfirm) {
-      await onConfirm(pedido)
+    try {
+      if (onConfirm) {
+        await onConfirm(pedido)
+      }
+      if (!useStore.getState().errorPedido) {
+        onSubmit()
+      }
+    } catch (e) {
+      // Error visible via store's errorPedido
     }
-    onSubmit()
   }
 
   return (
@@ -181,8 +190,9 @@ export default function Checkout({ productos = [], onConfirm, onSubmit }) {
         {errors.payment && <p className={styles.error}>{errors.payment}</p>}
       </div>
 
-      <button onClick={handleSubmit} className={styles.submit}>
-        Confirmar Pedido
+      {error && <p className={styles.error}>{error}</p>}
+      <button onClick={handleSubmit} disabled={loading} className={styles.submit}>
+        {loading ? 'Procesando...' : 'Confirmar Pedido'}
       </button>
     </div>
   )

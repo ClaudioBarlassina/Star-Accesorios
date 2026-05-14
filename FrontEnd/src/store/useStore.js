@@ -77,10 +77,12 @@ const useStore = create(
     }));
 
   } catch (error) {
+    const msg = error.response?.data || error.message || "Error al enviar pedido";
     set({
-      errorPedido: "Error al enviar pedido",
+      errorPedido: msg,
       loadingPedido: false,
     });
+    throw error;
   }
 },
 
