@@ -10,7 +10,7 @@ import CategorySlider from '../components/CarouselCategoriasT/CategorySliderT'
 import Paginacion from "../components/PaginacionButon/Paginacion.jsx"
 
 import anillo from '../components/CarouselCategoriasT/img/anillos.avif'
-// import aros from '../components/CarouselCategoriasT/img/aros.webp'
+import aros from '../components/CarouselCategoriasT/img/Aros.webp'
 import pulseras from '../components/CarouselCategoriasT/img/pulseras.avif'
 import colgantes from '../components/CarouselCategoriasT/img/colgantes.jpg'
 import cadenas from '../components/CarouselCategoriasT/img/cadenas.webp'
@@ -94,7 +94,7 @@ const Home = () => {
         <CategorySlider
           categories={[
             { name: 'Anillos', image: anillo },
-            { name: 'Aros', image: "aros "},
+            { name: 'Aros', image: aros },
             { name: 'Pulseras', image: pulseras },
             { name: 'Colgantes', image: colgantes },
             { name: 'Cadenas', image: cadenas },
