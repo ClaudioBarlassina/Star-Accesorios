@@ -97,13 +97,13 @@ const useStore = create(
         )
       },
     }),
-    {
-      name: "StorePersist",
-      partialize: (state) => ({
-        Carrito: state.Carrito,
-        Pedidos: state.Pedidos,
-      }),
-    }
+    // {
+    //   name: "StorePersist",
+    //   partialize: (state) => ({
+    //     Carrito: state.Carrito,
+    //     Pedidos: state.Pedidos,
+    //   }),
+    // }
     )
   ),
 )
