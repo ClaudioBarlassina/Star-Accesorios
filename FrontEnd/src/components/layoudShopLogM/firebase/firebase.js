@@ -1,21 +1,24 @@
-// Import the functions you need from the SDKs you need
+// Import the functions you need
 import { initializeApp } from "firebase/app";
+import { getAuth } from "firebase/auth"; // 🔥 IMPORTANTE
 import { getAnalytics } from "firebase/analytics";
-// TODO: Add SDKs for Firebase products that you want to use
-// https://firebase.google.com/docs/web/setup#available-libraries
 
-// Your web app's Firebase configuration
-// For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
-  apiKey: "AIzaSyAcmY2OQ_14a942EhaaaBIzAs6O6dSF0M4",
-  authDomain: "ferreteria-2026.firebaseapp.com",
-  projectId: "ferreteria-2026",
-  storageBucket: "ferreteria-2026.firebasestorage.app",
-  messagingSenderId: "585996704753",
-  appId: "1:585996704753:web:eec2f0bd7f6ca7ccdc8250",
-  measurementId: "G-PFKDKXMX7F"
+  apiKey: "AIzaSyA0ybIPM3FwzJMgZswi2jcsjfdaP1yaMi4",
+  authDomain: "star-accesorios-f0365.firebaseapp.com",
+  projectId: "star-accesorios-f0365",
+  storageBucket: "star-accesorios-f0365.firebasestorage.app",
+  messagingSenderId: "1084089964306",
+  appId: "1:1084089964306:web:0eb8e296599776952e85cb",
+  measurementId: "G-K81F3W4R8G"
 };
+
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
+
+// 🔥 ESTA ES LA CLAVE
+export const auth = getAuth(app);
+
+// opcional (no afecta login)
 const analytics = getAnalytics(app);
