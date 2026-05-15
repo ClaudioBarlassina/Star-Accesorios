@@ -1,5 +1,5 @@
-import { sendEmail } from "./email.service.js"
-import { clienteTemplate, adminTemplate } from "./emailTemplates.js"
+import { sendEmail } from "../email/email.services.js"
+import { clienteTemplate, adminTemplate } from "../email/template"
 
 export const enviarPedidoEmails = async (pedido) => {
 
