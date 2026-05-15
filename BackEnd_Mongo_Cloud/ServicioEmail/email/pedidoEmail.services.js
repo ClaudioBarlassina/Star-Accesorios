@@ -1,3 +1,6 @@
+import { sendEmail } from "./email.service.js"
+import { clienteTemplate, adminTemplate } from "./emailTemplates.js"
+
 export const enviarPedidoEmails = async (pedido) => {
 
   console.log("📦 Pedido recibido:")
