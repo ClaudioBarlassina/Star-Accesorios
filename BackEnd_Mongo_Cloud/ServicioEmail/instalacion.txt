@@ -1,1 +1,1 @@
-npm install nodemailer
+npm install resend
