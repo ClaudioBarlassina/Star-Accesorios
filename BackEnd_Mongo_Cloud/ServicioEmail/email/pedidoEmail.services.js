@@ -1,5 +1,6 @@
 import { sendEmail } from "../email/email.services.js"
-import { clienteTemplate, adminTemplate } from "../email/template"
+import { clienteTemplate} from "./templates/clienteTemplate.js"
+import { adminTemplate } from "./templates/adminTemplate.js"
 
 export const enviarPedidoEmails = async (pedido) => {
 
