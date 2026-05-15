@@ -1,7 +1,6 @@
-services/
-└── email/
-    ├── email.services.js
-    ├── pedidoEmail.services.js
-    └── templates/
-        ├── cliente.template.js
-        └── admin.template.js
+email/
+├── email.services.js
+├── pedidoEmail.services.js
+└── template/
+    ├── admin.template.js
+    └── cliente.template.js
