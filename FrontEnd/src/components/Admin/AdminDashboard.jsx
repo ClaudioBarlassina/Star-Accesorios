@@ -2,23 +2,19 @@ import { useState, useEffect } from "react"
 import { getProducts, createProduct, updateProduct, deleteProduct } from "../../api/products.api"
 import { getPedidos } from "../../api/orders.api"
 import { useNavigate } from "react-router-dom"
+import styles from "./AdminDashboard.module.css"
 
 const s = {
-  container: { maxWidth: "1100px", margin: "100px auto 40px", padding: "32px", fontFamily: "var(--body)" },
-  header: { display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "32px" },
   title: { fontFamily: "var(--heading)", fontSize: "28px", color: "var(--text)", margin: 0 },
-  tabs: { display: "flex", gap: "8px", marginBottom: "24px" },
   tab: { padding: "10px 20px", border: "1px solid var(--border)", borderRadius: "var(--radius-sm)", background: "var(--surface)", cursor: "pointer", fontFamily: "var(--ui)", fontSize: "14px", fontWeight: 600, transition: "all 200ms ease" },
   tabActive: { background: "var(--gold)", color: "white", borderColor: "var(--gold)" },
   card: { background: "var(--surface)", borderRadius: "var(--radius-md)", border: "1px solid var(--border)", padding: "20px", marginBottom: "12px" },
-  row: { display: "flex", justifyContent: "space-between", alignItems: "center", gap: "16px" },
   badge: { background: "var(--gold-bg)", color: "var(--gold-dark)", padding: "4px 10px", borderRadius: "var(--radius-sm)", fontSize: "12px", fontWeight: 600, fontFamily: "var(--ui)" },
   btn: { padding: "8px 16px", border: "none", borderRadius: "var(--radius-sm)", fontFamily: "var(--ui)", fontSize: "13px", fontWeight: 600, cursor: "pointer", transition: "all 200ms ease" },
   input: { width: "100%", padding: "10px 12px", border: "1px solid var(--border)", borderRadius: "var(--radius-sm)", fontFamily: "var(--body)", fontSize: "14px", outline: "none", boxSizing: "border-box" },
   select: { width: "100%", padding: "10px 12px", border: "1px solid var(--border)", borderRadius: "var(--radius-sm)", fontFamily: "var(--body)", fontSize: "14px", outline: "none", background: "white", boxSizing: "border-box" },
   label: { fontFamily: "var(--ui)", fontSize: "13px", fontWeight: 600, color: "var(--text-secondary)", marginBottom: "4px" },
   overlay: { position: "fixed", inset: 0, background: "rgba(0,0,0,0.5)", display: "flex", alignItems: "center", justifyContent: "center", zIndex: 300 },
-  modal: { background: "white", borderRadius: "var(--radius-lg)", padding: "32px", width: "90%", maxWidth: "520px", maxHeight: "90vh", overflowY: "auto" },
 }
 
 const categorias = ['Acero Quirurgico', 'Acero Dorado', 'Fantasia', 'Perfumes', 'Accesorios']
@@ -65,7 +61,7 @@ function ProductForm({ product, onSave, onClose }) {
 
   return (
     <div style={s.overlay} onClick={onClose}>
-      <div style={s.modal} onClick={(e) => e.stopPropagation()}>
+      <div className={styles.adminModal} onClick={(e) => e.stopPropagation()}>
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "20px" }}>
           <h2 style={{ fontFamily: "var(--heading)", fontSize: "22px", margin: 0 }}>
             {product ? "Editar Producto" : "Nuevo Producto"}
@@ -85,7 +81,7 @@ function ProductForm({ product, onSave, onClose }) {
             <div style={s.label}>Descripción</div>
             <textarea style={{ ...s.input, minHeight: "80px", resize: "vertical" }} name="descripcion" value={form.descripcion} onChange={handleChange} />
           </div>
-          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "12px" }}>
+          <div className={styles.formGrid}>
             <div>
               <div style={s.label}>Categoría</div>
               <select style={s.select} name="categoria" value={form.categoria} onChange={handleChange} required>
@@ -119,7 +115,7 @@ function OrderCard({ order }) {
 
   return (
     <div style={s.card}>
-      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", cursor: "pointer" }} onClick={() => setExpanded(!expanded)}>
+      <div className={styles.orderHeader} onClick={() => setExpanded(!expanded)}>
         <div>
           <strong style={{ fontFamily: "var(--ui)", fontSize: "13px" }}>#{order._id.slice(-8)}</strong>
           <span style={{ marginLeft: "8px", fontSize: "13px", color: "var(--text-secondary)" }}>
@@ -156,7 +152,7 @@ function OrderCard({ order }) {
             ))}
           </div>
 
-          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "8px", fontSize: "13px", color: "var(--text-secondary)" }}>
+          <div className={styles.orderDetailsGrid}>
             <span>Entrega: <strong style={{ color: "var(--text)" }}>{order.entrega}</strong></span>
             <span>Pago: <strong style={{ color: "var(--text)" }}>{order.pago}</strong></span>
           </div>
@@ -205,10 +201,10 @@ export default function AdminDashboard() {
   }
 
   return (
-    <div style={s.container}>
-      <div style={s.header}>
+    <div className={styles.adminContainer}>
+      <div className={styles.adminHeader}>
         <h1 style={s.title}>Panel de Administración</h1>
-        <div style={{ display: "flex", gap: "12px", alignItems: "center" }}>
+        <div className={styles.headerButtons}>
           <button onClick={() => { setShowForm(true); setEditingProduct(null) }} style={{ ...s.btn, background: "var(--gold)", color: "white" }}>
             + Nuevo Producto
           </button>
@@ -218,7 +214,7 @@ export default function AdminDashboard() {
         </div>
       </div>
 
-      <div style={s.tabs}>
+      <div className={styles.adminTabs}>
         <button style={{ ...s.tab, ...(tab === "products" ? s.tabActive : {}) }} onClick={() => setTab("products")}>Productos</button>
         <button style={{ ...s.tab, ...(tab === "orders" ? s.tabActive : {}) }} onClick={() => setTab("orders")}>Pedidos</button>
       </div>
@@ -230,8 +226,8 @@ export default function AdminDashboard() {
           {products.length === 0 && <p style={{ color: "var(--text-secondary)" }}>No hay productos</p>}
           {products.map((p) => (
             <div key={p._id} style={s.card}>
-              <div style={s.row}>
-                <div style={{ display: "flex", alignItems: "center", gap: "12px", flex: 1 }}>
+              <div className={styles.productRow}>
+                <div className={styles.productInfo}>
                   {p.images?.[0] && (
                     <img src={p.images[0].url} alt={p.nombre} style={{ width: "48px", height: "48px", objectFit: "cover", borderRadius: "6px" }} />
                   )}
@@ -241,7 +237,7 @@ export default function AdminDashboard() {
                   </div>
                 </div>
                 <span style={s.badge}>{p.subcategoria}</span>
-                <div style={{ display: "flex", gap: "6px" }}>
+                <div className={styles.productActions}>
                   <button onClick={() => { setEditingProduct(p); setShowForm(true) }} style={{ ...s.btn, background: "var(--border-light)", color: "var(--text)" }}>Editar</button>
                   <button onClick={() => handleDelete(p._id)} style={{ ...s.btn, background: "#fee2e2", color: "#dc2626" }}>Eliminar</button>
                 </div>

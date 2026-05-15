@@ -1,0 +1,176 @@
+.adminContainer {
+  max-width: 1100px;
+  margin: 100px auto 40px;
+  padding: 32px;
+  font-family: var(--body);
+}
+
+@media (max-width: 768px) {
+  .adminContainer {
+    padding: 16px;
+    margin: 80px auto 32px;
+  }
+}
+
+@media (max-width: 425px) {
+  .adminContainer {
+    padding: 12px;
+    margin: 70px auto 24px;
+  }
+}
+
+.adminHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 32px;
+}
+
+@media (max-width: 768px) {
+  .adminHeader {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+  }
+}
+
+.headerButtons {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+@media (max-width: 600px) {
+  .headerButtons {
+    flex-direction: column;
+    width: 100%;
+  }
+  .headerButtons button {
+    width: 100%;
+    text-align: center;
+    justify-content: center;
+  }
+}
+
+.adminTabs {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 24px;
+}
+
+@media (max-width: 425px) {
+  .adminTabs {
+    flex-wrap: wrap;
+  }
+  .adminTabs button {
+    flex: 1;
+    min-width: 0;
+    text-align: center;
+    justify-content: center;
+  }
+}
+
+.productRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+}
+
+@media (max-width: 768px) {
+  .productRow {
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+}
+
+@media (max-width: 425px) {
+  .productRow {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
+
+.productInfo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex: 1;
+  min-width: 0;
+}
+
+@media (max-width: 425px) {
+  .productInfo {
+    width: 100%;
+  }
+}
+
+.productActions {
+  display: flex;
+  gap: 6px;
+}
+
+@media (max-width: 425px) {
+  .productActions {
+    width: 100%;
+    justify-content: flex-end;
+  }
+}
+
+.adminModal {
+  background: white;
+  border-radius: var(--radius-lg);
+  padding: 32px;
+  width: 90%;
+  max-width: 520px;
+  max-height: 90vh;
+  overflow-y: auto;
+}
+
+@media (max-width: 600px) {
+  .adminModal {
+    padding: 20px;
+    width: 95%;
+  }
+}
+
+.formGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+@media (max-width: 600px) {
+  .formGrid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.orderHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+}
+
+@media (max-width: 425px) {
+  .orderHeader {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+}
+
+.orderDetailsGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  font-size: 13px;
+  color: var(--text-secondary);
+}
+
+@media (max-width: 600px) {
+  .orderDetailsGrid {
+    grid-template-columns: 1fr;
+  }
+}
