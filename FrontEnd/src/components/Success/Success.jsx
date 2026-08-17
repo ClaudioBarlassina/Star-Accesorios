@@ -98,6 +98,26 @@ export default function Success({ order }) {
           Descargar recibo en PDF
         </button>
         <button
+          onClick={() => navigate('/mis-pedidos')}
+          style={{
+            width: '100%',
+            padding: '14px',
+            background: 'white',
+            color: 'var(--gold-dark)',
+            border: '2px solid var(--gold)',
+            borderRadius: 'var(--radius-md)',
+            fontFamily: 'var(--ui)',
+            fontSize: '14px',
+            fontWeight: 600,
+            cursor: 'pointer',
+            transition: 'all var(--transition)',
+          }}
+          onMouseEnter={(e) => { e.target.style.background = 'var(--gold)'; e.target.style.color = 'white' }}
+          onMouseLeave={(e) => { e.target.style.background = 'white'; e.target.style.color = 'var(--gold-dark)' }}
+        >
+          Seguir mi pedido
+        </button>
+        <button
           onClick={() => navigate('/')}
           style={{
             width: '100%',

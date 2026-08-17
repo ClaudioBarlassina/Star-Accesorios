@@ -65,6 +65,9 @@ export default function LayoutShop({
                 ) : (
                   <>
                     <p style={{ margin: 0, fontSize: '14px' }}>{user.displayName || user.email}</p>
+                    <button style={{ backgroundColor: 'white', color: '#c9a84c', padding: '8px', border: '1px solid #c9a84c', fontSize: '12px', marginTop: '4px', cursor: 'pointer' }} onClick={() => { setUserOpen(false); navigate('/mis-pedidos') }}>
+                      Mis Pedidos
+                    </button>
                     {isAdmin && (
                       <button style={{ backgroundColor: 'white', color: '#c9a84c', padding: '8px', border: '1px solid #c9a84c', fontSize: '12px', marginTop: '4px' }} onClick={() => { setUserOpen(false); navigate('/admin') }}>
                         Panel Admin

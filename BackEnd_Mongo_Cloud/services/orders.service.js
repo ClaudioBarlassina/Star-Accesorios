@@ -49,6 +49,7 @@ export const crearPedidoService = async (data) => {
   }
 
   const nuevoPedido = new Pedido({
+    userId: data.userId || null,
     ...data,                 // 👈 trae cliente, entrega, pago, etc.
     productos: productosLimpios, // 👈 evitás guardar basura
     total,                  // 👈 recalculado
@@ -100,4 +101,8 @@ export const updatePedidoEstadoService = async (id, estado) => {
   }
 
   return pedido;
+};
+
+export const getMisPedidosService = async (userId) => {
+  return await Pedido.find({ userId }).sort({ fecha: -1 });
 };

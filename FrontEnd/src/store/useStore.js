@@ -23,9 +23,14 @@ const useStore = create(
 
       addCarrito: (producto) =>
         set((state) => {
+          const stock = producto.stock
+          const tieneStock = stock !== undefined && stock !== null
+          if (tieneStock && stock <= 0) return state
+
           const existe = state.Carrito.find((item) => item._id === producto._id)
 
           if (existe) {
+            if (tieneStock && existe.cantidad >= stock) return state
             return {
               Carrito: state.Carrito.map((item) =>
                 item._id === producto._id

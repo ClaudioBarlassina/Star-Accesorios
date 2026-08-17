@@ -3,12 +3,13 @@ import {
   getPedidosService,
   getPedidoByIdService,
   updatePedidoEstadoService,
+  getMisPedidosService,
 } from "../services/orders.service.js";
 
 export const crearPedido = async (req, res) => {
   try {
     console.log("📥 Pedido recibido en controller:", req.body);
-    const pedido = await crearPedidoService(req.body);
+    const pedido = await crearPedidoService({ ...req.body, userId: req.userId || null });
     res.status(201).json(pedido);
   } catch (error) {
     console.error("❌ Error al crear pedido:", error.message);
@@ -56,5 +57,15 @@ export const updatePedidoEstado = async (req, res) => {
   } catch (error) {
     console.error("❌ Error actualizando estado:", error.message);
     res.status(404).json({ error: error.message });
+  }
+};
+
+export const getMisPedidos = async (req, res) => {
+  try {
+    const pedidos = await getMisPedidosService(req.userId);
+    res.json(pedidos);
+  } catch (error) {
+    console.error("❌ Error al obtener mis pedidos:", error.message);
+    res.status(500).json({ error: "Error al cargar tus pedidos." });
   }
 };

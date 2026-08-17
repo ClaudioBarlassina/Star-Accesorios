@@ -326,7 +326,7 @@ function Resumen({ orders, products, loading }) {
   )
 }
 
-function ProductsTab({ onEdit, onDelete, toast }) {
+function ProductsTab({ onEdit, onDelete, toast, refreshKey }) {
   const [products, setProducts] = useState([])
   const [total, setTotal] = useState(0)
   const [pages, setPages] = useState(1)
@@ -345,7 +345,7 @@ function ProductsTab({ onEdit, onDelete, toast }) {
       })
       .catch(() => toast("error", "No se pudieron cargar los productos"))
       .finally(() => setLoading(false))
-  }, [search, page, toast])
+  }, [search, page, toast, refreshKey])
 
   useEffect(() => {
     // eslint-disable-next-line react-hooks/set-state-in-effect
@@ -359,10 +359,11 @@ function ProductsTab({ onEdit, onDelete, toast }) {
   }
 
   const stockBadge = (p) => {
-    if (p.stock === undefined || p.stock === null) return { label: "1 u.", cls: styles.stockOk }
+    if (p.stock === undefined || p.stock === null) return { label: "1 uni", cls: styles.stockOk }
     if (!p.stock || p.stock <= 0) return { label: "Agotado", cls: styles.stockOut }
-    if (p.stock <= 5) return { label: `Stock bajo (${p.stock})`, cls: styles.stockLow }
-    return { label: `${p.stock} u.`, cls: styles.stockOk }
+    if (p.stock === 1) return { label: "Última unidad", cls: styles.stockLow }
+    if (p.stock <= 5) return { label: `${p.stock} uni`, cls: styles.stockLow }
+    return { label: `${p.stock} uni`, cls: styles.stockOk }
   }
 
   return (
@@ -493,6 +494,7 @@ export default function AdminDashboard() {
   const [editingProduct, setEditingProduct] = useState(null)
   const [toastMsg, setToastMsg] = useState(null)
   const [confirm, setConfirm] = useState(null)
+  const [refreshKey, setRefreshKey] = useState(0)
   const prevOrdersRef = useRef([])
   const firstLoadDoneRef = useRef(false)
 
@@ -597,6 +599,7 @@ export default function AdminDashboard() {
       toast("error", "Error al guardar producto")
     } else {
       toast("success", "Producto guardado")
+      setRefreshKey((k) => k + 1)
       if (tab === "resumen") loadResumenProducts()
     }
   }
@@ -629,6 +632,7 @@ export default function AdminDashboard() {
       {tab === "products" && (
         <ProductsTab
           toast={toast}
+          refreshKey={refreshKey}
           onEdit={(p) => { setEditingProduct(p); setShowForm(true) }}
           onDelete={handleDelete}
         />

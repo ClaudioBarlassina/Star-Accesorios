@@ -16,6 +16,10 @@ export const getPedidoById = (id) => {
   return api.get(`/${id}`);
 };
 
+export const getMisPedidos = () => {
+  return api.get("/mis-pedidos");
+};
+
 export const updatePedidoEstado = (id, estado) => {
   return api.patch(`/${id}`, { estado });
 };

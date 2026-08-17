@@ -26,8 +26,32 @@ export default function Checkout({ productos = [], onConfirm, onSubmit }) {
     })
   }
 
+  const sinStock = useMemo(() => {
+    return productos.filter((item) => {
+      const stock = item.stock
+      return stock !== undefined && stock !== null && stock <= 0
+    })
+  }, [productos])
+
+  const exceedStock = useMemo(() => {
+    return productos.filter((item) => {
+      const stock = item.stock
+      return stock !== undefined && stock !== null && stock > 0 && item.cantidad > stock
+    })
+  }, [productos])
+
+  const hasStockIssue = sinStock.length > 0 || exceedStock.length > 0
+
   const validate = () => {
     const newErrors = {}
+
+    if (sinStock.length > 0) {
+      newErrors.sinStock = `${sinStock.map((p) => p.nombre).join(", ")} ${sinStock.length > 1 ? "están agotados" : "está agotado"}`
+    }
+
+    if (exceedStock.length > 0) {
+      newErrors.exceedStock = `${exceedStock.map((p) => `${p.nombre} (pediste ${p.cantidad}, hay ${p.stock})`).join("; ")}`
+    }
 
     if (!form.nombre.trim()) newErrors.nombre = 'Nombre obligatorio'
     if (!form.apellido.trim()) newErrors.apellido = 'Apellido obligatorio'
@@ -72,6 +96,13 @@ export default function Checkout({ productos = [], onConfirm, onSubmit }) {
 
   return (
     <div className={styles.checkout}>
+      {hasStockIssue && (
+        <div style={{ background: '#f8d7da', color: '#721c24', padding: '14px', borderRadius: 'var(--radius-md)', fontFamily: 'var(--ui)', fontSize: '13px', fontWeight: 600, marginBottom: '16px' }}>
+          {sinStock.length > 0 && <p style={{ margin: 0 }}>🚫 {sinStock.map((p) => p.nombre).join(", ")} {sinStock.length > 1 ? "están agotados" : "está agotado"} — eliminá {sinStock.length > 1 ? "estos productos" : "este producto"} del carrito para continuar.</p>}
+          {exceedStock.length > 0 && <p style={{ margin: sinStock.length > 0 ? '8px 0 0' : 0 }}>⚠️ {exceedStock.map((p) => `${p.nombre} (pediste ${p.cantidad}, hay ${p.stock})`).join("; ")}</p>}
+        </div>
+      )}
+
       <div className={styles.section}>
         <h2 className={styles.sectionTitle}>Resumen del pedido</h2>
 
@@ -182,9 +213,11 @@ export default function Checkout({ productos = [], onConfirm, onSubmit }) {
         {errors.payment && <p className={styles.error}>{errors.payment}</p>}
       </div>
 
+      {errors.sinStock && <p className={styles.error} style={{ fontSize: '14px' }}>🚫 {errors.sinStock}</p>}
+      {errors.exceedStock && <p className={styles.error} style={{ fontSize: '14px' }}>⚠️ Stock insuficiente: {errors.exceedStock}</p>}
       {error && <p className={styles.error}>{error}</p>}
-      <button onClick={handleSubmit}  className={styles.submit}>
-       Confirmar Pedido
+      <button onClick={handleSubmit} className={styles.submit} disabled={hasStockIssue} style={hasStockIssue ? { opacity: 0.5, cursor: 'not-allowed' } : undefined}>
+       {hasStockIssue ? "No se puede proceder — revisá el stock" : "Confirmar Pedido"}
       </button>
     </div>
   )

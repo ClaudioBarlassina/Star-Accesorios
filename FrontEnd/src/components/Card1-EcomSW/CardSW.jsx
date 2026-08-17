@@ -7,8 +7,9 @@ import { Navigation, Pagination, Autoplay } from "swiper/modules"
 function StockBadge({ stock }) {
   if (stock === undefined || stock === null) return null
   if (stock <= 0) return <span className={`${styles.stockBadge} ${styles.stockOut}`}>Agotado</span>
-  if (stock <= 5) return <span className={`${styles.stockBadge} ${styles.stockLow}`}>Últimas {stock} unidades</span>
-  return <span className={`${styles.stockBadge} ${styles.stockOk}`}>{stock} unidades</span>
+  if (stock === 1) return <span className={`${styles.stockBadge} ${styles.stockLow}`}>Última unidad</span>
+  if (stock <= 5) return <span className={`${styles.stockBadge} ${styles.stockLow}`}>{stock} uni</span>
+  return <span className={`${styles.stockBadge} ${styles.stockOk}`}>{stock} uni</span>
 }
 
 export default function Card({
@@ -60,7 +61,11 @@ export default function Card({
 
       {action && (
         <div className={styles.footer}>
-          {action}
+          {stock !== undefined && stock !== null && stock <= 0 ? (
+            <button disabled className={styles.button} style={{ opacity: 0.5, cursor: 'not-allowed', borderColor: '#dc2626', color: '#dc2626' }}>
+              Agotado
+            </button>
+          ) : action}
         </div>
       )}
     </article>

@@ -7,6 +7,7 @@ import Order from './pages/Order.jsx'
 import Detalle from "./pages/Details.jsx"
 import Success from './pages/SuccessPage.jsx'
 import Checkout from './pages/CheckoutPage.jsx'
+import MisPedidosPage from './pages/MisPedidosPage.jsx'
 import AdminDashboard from './components/Admin/AdminDashboard.jsx'
 import ErrorBoundary from './components/ErrorBoundary/ErrorBoundary.jsx'
 
@@ -28,6 +29,7 @@ function App() {
         <Route path="/product/:id" element={<Detalle />} />
         <Route path="/checkout" element={<Checkout />} />
         <Route path="/success" element={<Success />} />
+        <Route path="/mis-pedidos" element={<MisPedidosPage />} />
         <Route path="/admin" element={<AdminRoute><AdminDashboard /></AdminRoute>} />
       </Routes>
     </ErrorBoundary>

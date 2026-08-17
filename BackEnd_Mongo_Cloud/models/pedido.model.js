@@ -1,6 +1,7 @@
 import mongoose from "mongoose";
 
 const PedidoSchema = new mongoose.Schema({
+  userId: String,
   cliente: {
     nombre: String,
     apellido: String,

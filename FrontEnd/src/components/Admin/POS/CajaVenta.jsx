@@ -13,10 +13,11 @@ const s = {
 }
 
 function BadgeStock({ p }) {
-  if (p.stock === undefined || p.stock === null) return <span className={styles.stockOk}>1 u.</span>
+  if (p.stock === undefined || p.stock === null) return <span className={styles.stockOk}>1 uni</span>
   if (!p.stock || p.stock <= 0) return <span className={styles.stockOut}>Agotado</span>
-  if (p.stock <= 5) return <span className={styles.stockLow}>Stock bajo ({p.stock})</span>
-  return <span className={styles.stockOk}>{p.stock} u.</span>
+  if (p.stock === 1) return <span className={styles.stockLow}>Última unidad</span>
+  if (p.stock <= 5) return <span className={styles.stockLow}>{p.stock} uni</span>
+  return <span className={styles.stockOk}>{p.stock} uni</span>
 }
 
 function ProductGrid({ products, cart, onAdd }) {

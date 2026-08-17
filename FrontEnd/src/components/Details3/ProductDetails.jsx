@@ -56,7 +56,7 @@ export default function ProductDetails({ product }) {
 
         {product.stock !== undefined && product.stock !== null && (
           <span className={`${styles.stockBadge} ${product.stock <= 0 ? styles.stockOut : product.stock <= 5 ? styles.stockLow : styles.stockOk}`}>
-            {product.stock <= 0 ? "Agotado" : product.stock <= 5 ? `Últimas ${product.stock} unidades` : `${product.stock} unidades`}
+            {product.stock <= 0 ? "Agotado" : product.stock === 1 ? "Última unidad" : `${product.stock} uni`}
           </span>
         )}
 
