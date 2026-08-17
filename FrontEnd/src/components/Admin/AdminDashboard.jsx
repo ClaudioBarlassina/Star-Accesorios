@@ -3,6 +3,7 @@ import { getProducts, createProduct, updateProduct, deleteProduct } from "../../
 import { getPedidos, updatePedidoEstado } from "../../api/orders.api"
 import { useNavigate } from "react-router-dom"
 import { CATEGORIAS, getSubcategoriasDe } from "../../config/categories"
+import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer } from "recharts"
 import CajaVenta from "./POS/CajaVenta"
 import BulkProductForm from "./BulkProductForm"
 import styles from "./AdminDashboard.module.css"
@@ -307,23 +308,121 @@ function OrderCard({ order, onEstadoChange }) {
 }
 
 function Resumen({ orders, products, loading }) {
-  const ventas = orders
-    .filter((o) => o.estado !== "cancelado")
-    .reduce((acc, o) => acc + (o.total || 0), 0)
+  const [mesFiltro, setMesFiltro] = useState("")
+  const [catFiltro, setCatFiltro] = useState("")
+  const [prodFiltro, setProdFiltro] = useState("")
 
-  const pendientes = orders.filter((o) => o.estado === "pendiente").length
+  const mesesDisponibles = useMemo(() => {
+    const mapa = {}
+    orders.forEach((o) => {
+      const f = new Date(o.fecha)
+      const key = `${f.getFullYear()}-${String(f.getMonth() + 1).padStart(2, "0")}`
+      const label = f.toLocaleDateString("es-AR", { year: "numeric", month: "long" })
+      if (!mapa[key]) mapa[key] = label
+    })
+    return Object.entries(mapa).sort((a, b) => b[0].localeCompare(a[0])).map(([value, label]) => ({ value, label }))
+  }, [orders])
+
+  const productosDisponibles = useMemo(() => {
+    const set = new Set()
+    orders.forEach((o) => o.productos?.forEach((p) => { if (p.nombre) set.add(p.nombre) }))
+    return [...set].sort()
+  }, [orders])
+
+  const pedidosFiltrados = useMemo(() => {
+    return orders.filter((o) => {
+      if (o.estado === "cancelado") return false
+      if (mesFiltro) {
+        const f = new Date(o.fecha)
+        const key = `${f.getFullYear()}-${String(f.getMonth() + 1).padStart(2, "0")}`
+        if (key !== mesFiltro) return false
+      }
+      if (catFiltro) {
+        const tiene = o.productos?.some((p) => p.categoria === catFiltro)
+        if (!tiene) return false
+      }
+      if (prodFiltro) {
+        const q = prodFiltro.toLowerCase()
+        const tiene = o.productos?.some((p) => (p.nombre || "").toLowerCase().includes(q))
+        if (!tiene) return false
+      }
+      return true
+    })
+  }, [orders, mesFiltro, catFiltro, prodFiltro])
+
+  const ventas = pedidosFiltrados.reduce((acc, o) => acc + (o.total || 0), 0)
+  const pendientes = pedidosFiltrados.filter((o) => o.estado === "pendiente").length
   const stockBajo = products.filter((p) => Number.isFinite(p.stock) && p.stock > 0 && p.stock <= 5).length
   const agotados = products.filter((p) => Number.isFinite(p.stock) && p.stock <= 0).length
+
+  const chartData = useMemo(() => {
+    if (pedidosFiltrados.length === 0) return []
+    const mapa = {}
+    pedidosFiltrados.forEach((o) => {
+      const f = new Date(o.fecha)
+      const key = `${f.getFullYear()}-${String(f.getMonth() + 1).padStart(2, "0")}`
+      const label = f.toLocaleDateString("es-AR", { month: "short", year: "2-digit" })
+      if (!mapa[key]) mapa[key] = { mes: label, total: 0 }
+      mapa[key].total += o.total || 0
+    })
+    return Object.values(mapa).sort((a, b) => {
+      const ka = Object.keys(mapa).find((k) => mapa[k] === a)
+      const kb = Object.keys(mapa).find((k) => mapa[k] === b)
+      return ka.localeCompare(kb)
+    })
+  }, [pedidosFiltrados])
+
+  const hayFiltro = mesFiltro || catFiltro || prodFiltro
 
   if (loading) return <div style={{ textAlign: "center", padding: "40px", color: "var(--text-secondary)" }}>Cargando...</div>
 
   return (
-    <div className={styles.statsGrid}>
-      <StatCard label="Ventas totales" value={`$${ventas.toLocaleString()}`} sub={`${orders.filter((o) => o.estado !== "cancelado").length} pedidos`} color="var(--gold-dark)" />
-      <StatCard label="Pedidos pendientes" value={pendientes} sub="Esperando gestión" color="#d97706" />
-      <StatCard label="Productos" value={products.length} sub={`${stockBajo} con stock bajo`} color="#2563eb" />
-      <StatCard label="Sin stock" value={agotados} sub="Productos sin unidades disponibles" color="#dc2626" />
-    </div>
+    <>
+      <div className={styles.resumenFilters}>
+        <select className={styles.resumenSelect} value={mesFiltro} onChange={(e) => setMesFiltro(e.target.value)}>
+          <option value="">Todos los meses</option>
+          {mesesDisponibles.map((m) => <option key={m.value} value={m.value}>{m.label}</option>)}
+        </select>
+        <select className={styles.resumenSelect} value={catFiltro} onChange={(e) => setCatFiltro(e.target.value)}>
+          <option value="">Todas las categorías</option>
+          {CATEGORIAS.map((c) => <option key={c} value={c}>{c}</option>)}
+        </select>
+        <select className={styles.resumenSelect} value={prodFiltro} onChange={(e) => setProdFiltro(e.target.value)}>
+          <option value="">Todos los productos</option>
+          {productosDisponibles.map((p) => <option key={p} value={p}>{p}</option>)}
+        </select>
+        {hayFiltro && (
+          <button className={styles.resumenClear} onClick={() => { setMesFiltro(""); setCatFiltro(""); setProdFiltro("") }}>
+            Limpiar filtros
+          </button>
+        )}
+      </div>
+
+      <div className={styles.statsGrid}>
+        <StatCard label="Ventas totales" value={`$${ventas.toLocaleString()}`} sub={`${pedidosFiltrados.length} pedidos`} color="var(--gold-dark)" />
+        <StatCard label="Pedidos pendientes" value={pendientes} sub="Esperando gestión" color="#d97706" />
+        <StatCard label="Productos" value={products.length} sub={`${stockBajo} con stock bajo`} color="#2563eb" />
+        <StatCard label="Sin stock" value={agotados} sub="Productos sin unidades disponibles" color="#dc2626" />
+      </div>
+
+      {chartData.length > 0 && (
+        <div className={styles.resumenChart}>
+          <h3 style={{ fontFamily: "var(--heading)", fontSize: "16px", margin: "0 0 14px" }}>Ventas por mes</h3>
+          <ResponsiveContainer width="100%" height={240}>
+            <BarChart data={chartData} margin={{ top: 8, right: 8, bottom: 0, left: -16 }}>
+              <XAxis dataKey="mes" tick={{ fontSize: 11, fill: "var(--text-secondary)" }} />
+              <YAxis tick={{ fontSize: 11, fill: "var(--text-secondary)" }} />
+              <Tooltip formatter={(v) => `$${v.toLocaleString()}`} labelStyle={{ fontSize: 12 }} />
+              <Bar dataKey="total" fill="var(--gold)" radius={[4, 4, 0, 0]} />
+            </BarChart>
+          </ResponsiveContainer>
+        </div>
+      )}
+
+      {pedidosFiltrados.length === 0 && hayFiltro && (
+        <div className={styles.resumenEmpty}>No hay ventas con los filtros seleccionados</div>
+      )}
+    </>
   )
 }
 
