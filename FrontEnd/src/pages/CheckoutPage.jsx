@@ -16,11 +16,17 @@ const addPedidos = useStore(state => state.addPedidos)
 useAuthListener()
 
 const handler = async (data) => {
-  await addPedidos(data)
+  const ok = await addPedidos(data)
   console.log("Pedido enviado:", data)
+  return ok
 }
 const handler1 = () => {
- navigate("/success")
+  const pedidos = useStore.getState().Pedidos
+  const ultimo = pedidos[pedidos.length - 1]
+  if (ultimo?._id) {
+    sessionStorage.setItem("recibo_autodownload", ultimo._id)
+  }
+  navigate("/success")
 }
 
 return (

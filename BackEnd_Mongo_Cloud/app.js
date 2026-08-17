@@ -18,6 +18,6 @@ app.use("/api/products", productsRoutes);
 // 🔥 conectar Mongo
 connectDB();
 
-app.listen(3002, () => {
-  console.log("Servidor en puerto 3002");
+app.listen(process.env.PORT || 3002, () => {
+  console.log("Servidor en puerto " + (process.env.PORT || 3002));
 });

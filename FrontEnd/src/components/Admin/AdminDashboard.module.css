@@ -174,3 +174,486 @@
     grid-template-columns: 1fr;
   }
 }
+
+/* -------- Resumen / métricas -------- */
+
+.statsGrid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  margin-bottom: 8px;
+}
+
+@media (max-width: 768px) {
+  .statsGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 425px) {
+  .statsGrid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.statCard {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 20px;
+}
+
+.statValue {
+  font-family: var(--subheading);
+  font-size: 30px;
+  font-weight: 700;
+  line-height: 1.1;
+}
+
+.statLabel {
+  font-family: var(--ui);
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text);
+  margin-top: 8px;
+}
+
+.statSub {
+  font-family: var(--body);
+  font-size: 12px;
+  color: var(--text-secondary);
+  margin-top: 4px;
+}
+
+/* -------- Búsqueda y paginación -------- */
+
+.searchBar {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  margin-bottom: 12px;
+  flex-wrap: wrap;
+}
+
+.pagination {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.pagination button:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+/* -------- Stock -------- */
+
+.stockOk,
+.stockLow,
+.stockOut {
+  font-family: var(--ui);
+  font-size: 12px;
+  font-weight: 600;
+  padding: 4px 10px;
+  border-radius: var(--radius-sm);
+  white-space: nowrap;
+}
+
+.stockOk {
+  background: #d4edda;
+  color: #155724;
+}
+
+.stockLow {
+  background: #fff3cd;
+  color: #856404;
+}
+
+.stockOut {
+  background: #f8d7da;
+  color: #721c24;
+}
+
+/* -------- Imágenes del form -------- */
+
+.imgGrid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.imgThumb {
+  position: relative;
+  width: 72px;
+  height: 72px;
+  border-radius: 8px;
+  overflow: hidden;
+  border: 1px solid var(--border);
+}
+
+.imgThumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.imgRemove {
+  position: absolute;
+  top: 2px;
+  right: 2px;
+  width: 20px;
+  height: 20px;
+  border: none;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.65);
+  color: white;
+  font-size: 11px;
+  line-height: 1;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* -------- Confirmar -------- */
+
+.confirmBox {
+  background: white;
+  border-radius: var(--radius-md);
+  padding: 24px;
+  width: 90%;
+  max-width: 380px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+}
+
+.confirmActions {
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
+  margin-top: 20px;
+}
+
+/* -------- Toast -------- */
+
+.toast {
+  position: fixed;
+  top: 24px;
+  right: 24px;
+  z-index: 500;
+  padding: 14px 20px;
+  border-radius: var(--radius-md);
+  font-family: var(--ui);
+  font-size: 14px;
+  font-weight: 600;
+  color: white;
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.2);
+  cursor: pointer;
+  animation: toastIn 250ms ease;
+}
+
+.toastSuccess {
+  background: #16a34a;
+}
+
+.toastError {
+  background: #dc2626;
+}
+
+@media (max-width: 425px) {
+  .toast {
+    right: 12px;
+    left: 12px;
+  }
+}
+
+@keyframes toastIn {
+  from {
+    opacity: 0;
+    transform: translateY(-12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* -------- Skeleton -------- */
+
+.skeleton {
+  height: 88px;
+  background: linear-gradient(90deg, var(--surface) 25%, var(--border-light) 50%, var(--surface) 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.3s infinite;
+}
+
+@keyframes shimmer {
+  from {
+    background-position: 200% 0;
+  }
+  to {
+    background-position: -200% 0;
+  }
+}
+
+.orderHeaderRight {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* -------- Caja / Venta presencial -------- */
+
+.posLayout {
+  display: grid;
+  grid-template-columns: 1fr 380px;
+  gap: 20px;
+  align-items: start;
+}
+
+@media (max-width: 900px) {
+  .posLayout {
+    grid-template-columns: 1fr;
+  }
+}
+
+.posCatalog {
+  min-width: 0;
+}
+
+.posProductGridWrapper {
+  max-height: 600px;
+  overflow-y: auto;
+  padding-right: 4px;
+}
+
+.posGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
+  gap: 12px;
+}
+
+.posProduct {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  text-align: left;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 12px;
+  cursor: pointer;
+  font-family: var(--body);
+  transition: all 200ms ease;
+}
+
+.posProduct:hover:not(:disabled) {
+  border-color: var(--gold);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+}
+
+.posProduct:disabled {
+  cursor: not-allowed;
+}
+
+.posProductDisabled {
+  opacity: 0.5;
+}
+
+.posProductImg {
+  width: 100%;
+  height: 110px;
+  object-fit: cover;
+  border-radius: 8px;
+  background: var(--border-light);
+}
+
+.posProductInfo {
+  min-width: 0;
+}
+
+.posProductName {
+  display: block;
+  font-size: 13px;
+  line-height: 1.35;
+  margin-bottom: 6px;
+  color: var(--text);
+}
+
+.posProductRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 6px;
+}
+
+.posProductPrice {
+  font-family: var(--ui);
+  font-weight: 700;
+  font-size: 14px;
+  color: var(--gold-dark);
+  white-space: nowrap;
+}
+
+.posSinMas {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  background: var(--gold);
+  color: white;
+  font-family: var(--ui);
+  font-size: 10px;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: var(--radius-sm);
+}
+
+.posCartPanel {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 20px;
+  position: sticky;
+  top: 90px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  max-height: calc(100vh - 140px);
+  min-height: 400px;
+}
+
+@media (max-width: 900px) {
+  .posCartPanel {
+    position: static;
+    max-height: none;
+  }
+}
+
+.posCartList {
+  flex: 1;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.posCartItem {
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 10px 12px;
+  background: white;
+}
+
+.posCartItemInfo {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.posCartItemName {
+  font-size: 13px;
+  color: var(--text);
+  min-width: 0;
+}
+
+.posCartItemPrice {
+  font-family: var(--ui);
+  font-weight: 700;
+  font-size: 13px;
+  color: var(--gold-dark);
+  white-space: nowrap;
+}
+
+.posCartActions {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.posQtyBtn {
+  width: 30px;
+  height: 30px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--surface);
+  font-size: 15px;
+  line-height: 1;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.posQtyBtn:hover {
+  border-color: var(--gold);
+  color: var(--gold-dark);
+}
+
+.posRemove {
+  margin-left: auto;
+  width: 30px;
+  height: 30px;
+  border: none;
+  border-radius: var(--radius-sm);
+  background: #fee2e2;
+  color: #dc2626;
+  font-size: 12px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.posCartFooter {
+  border-top: 1px solid var(--border);
+  padding-top: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.posPayRow {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+
+.posPayOption {
+  padding: 10px 14px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: white;
+  font-family: var(--ui);
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 200ms ease;
+}
+
+.posCobrarBtn {
+  width: 100%;
+  padding: 14px;
+  border: none;
+  border-radius: var(--radius-md);
+  background: var(--gold);
+  color: white;
+  font-family: var(--ui);
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 200ms ease;
+}
+
+.posCobrarBtn:hover:not(:disabled) {
+  filter: brightness(1.05);
+}
+
+.posCobrarBtn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}

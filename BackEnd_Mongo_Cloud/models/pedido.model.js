@@ -24,6 +24,7 @@ const PedidoSchema = new mongoose.Schema({
   pago: String,
   total: Number,
   estado: String,
+  origen: String,
   fecha: Date,
 });
 export default mongoose.model("Pedido", PedidoSchema);

@@ -3,7 +3,6 @@ import styles from './Checkout.module.css'
 import useStore from '../../store/useStore'
 
 export default function Checkout({ productos = [], onConfirm, onSubmit }) {
-  const loading = useStore(state => state.loadingPedido)
   const error = useStore(state => state.errorPedido)
   const [delivery, setDelivery] = useState('')
   const [errors, setErrors] = useState({})
@@ -66,9 +65,9 @@ export default function Checkout({ productos = [], onConfirm, onSubmit }) {
       fecha: new Date(),
     }
 
-    await onConfirm(pedido)
+    const ok = await onConfirm(pedido)
     console.log("Pedido confirmado en Checkout:", pedido)
-    onSubmit()
+    if (ok) onSubmit()
   }
 
   return (

@@ -1,11 +1,59 @@
+import { useEffect, useRef } from 'react'
 import styles from './Success.module.css'
 import { useNavigate } from 'react-router-dom'
+import { generarTicketPDF } from '../Admin/POS/posTicket'
 
 export default function Success({ order }) {
   const navigate = useNavigate()
   const data = order?.[order.length - 1]
+  const autoDl = useRef(false)
 
-  if (!data) return null
+  useEffect(() => {
+    if (!data?._id || autoDl.current) return
+    if (sessionStorage.getItem('recibo_autodownload') === data._id) {
+      autoDl.current = true
+      sessionStorage.removeItem('recibo_autodownload')
+      try {
+        generarTicketPDF(data)
+      } catch (error) {
+        console.error('Error generando el recibo PDF:', error)
+      }
+    }
+  }, [data])
+
+  if (!data) {
+    return (
+      <div className={styles.container}>
+        <div className={styles.icon}>⚠️</div>
+        <h1 className={styles.title}>No pudimos confirmar tu pedido</h1>
+        <p className={styles.subtitle}>
+          Hubo un problema al procesar la compra. Revisá tu carrito y volvé a intentarlo.
+        </p>
+        <div className={styles.actions}>
+          <button
+            onClick={() => navigate('/')}
+            style={{
+              width: '100%',
+              padding: '14px',
+              background: 'var(--dark)',
+              color: 'white',
+              border: 'none',
+              borderRadius: 'var(--radius-md)',
+              fontFamily: 'var(--ui)',
+              fontSize: '14px',
+              fontWeight: 600,
+              cursor: 'pointer',
+              transition: 'background var(--transition)',
+            }}
+            onMouseEnter={(e) => e.target.style.background = 'var(--gold)'}
+            onMouseLeave={(e) => e.target.style.background = 'var(--dark)'}
+          >
+            Volver al inicio
+          </button>
+        </div>
+      </div>
+    )
+  }
 
   return (
     <div className={styles.container}>
@@ -31,6 +79,24 @@ export default function Success({ order }) {
       <p className={styles.total}>Total: ${data.total}</p>
 
       <div className={styles.actions}>
+        <button
+          onClick={() => generarTicketPDF(data)}
+          style={{
+            width: '100%',
+            padding: '14px',
+            background: 'var(--gold)',
+            color: 'white',
+            border: 'none',
+            borderRadius: 'var(--radius-md)',
+            fontFamily: 'var(--ui)',
+            fontSize: '14px',
+            fontWeight: 600,
+            cursor: 'pointer',
+            transition: 'background var(--transition)',
+          }}
+        >
+          Descargar recibo en PDF
+        </button>
         <button
           onClick={() => navigate('/')}
           style={{

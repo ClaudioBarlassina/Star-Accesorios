@@ -8,6 +8,7 @@ import Paginacion from "../components/PaginacionButon/Paginacion.jsx"
 import GridCuadricula from '../components/Grid-Cuadricula/Grid'
 import CardSW from '../components/Card1-EcomSW/CardSW'
 import Filtros from '../components/FiltroAutomatico/FiltroAut'
+import { FILTROS_CATEGORIA } from '../config/categories'
 import { useNavigate } from 'react-router-dom'
 
 const Products = () => {
@@ -77,33 +78,7 @@ const Products = () => {
           <Paginacion totalPaginas={pag.pages} pagina={pag.page} handler={setes}></Paginacion>
 
           <Filtros
-            filters={[
-              {
-                name: 'category',
-                label: 'Categoría',
-                options: [
-                  'Acero Quirurgico',
-                  'Acero Dorado',
-                  'Fantasia',
-                  'Perfumes',
-                  'Accesorios',
-                ],
-              },
-              {
-                name: 'subcategory',
-                label: 'Subcategoría',
-                options: [
-                  'Aros',
-                  'Anillos',
-                  'Pulseras',
-                  'Colgantes',
-                  'Cadenas',
-                  'Tobilleras',
-                  'Perfumes',
-                  'Cabello',
-                ],
-              },
-            ]}
+            filters={FILTROS_CATEGORIA}
             onChange={(newValores) => {
               setvalores(newValores)
               setBtnCateg(null)

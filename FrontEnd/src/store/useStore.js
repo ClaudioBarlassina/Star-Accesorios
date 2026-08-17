@@ -60,7 +60,7 @@ const useStore = create(
         })),
 
       addPedidos: async (pedido) => {
-        if (!pedido.productos || pedido.productos.length === 0) return;
+        if (!pedido.productos || pedido.productos.length === 0) return false;
 
         set({ loadingPedido: true, errorPedido: null });
 
@@ -73,12 +73,15 @@ const useStore = create(
             loadingPedido: false,
           }));
 
+          return true;
+
         } catch (error) {
           const msg = error.response?.data?.error || error.message || "Error al enviar pedido";
           set({
             errorPedido: msg,
             loadingPedido: false,
           });
+          return false;
         }
       },
 

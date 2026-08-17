@@ -1,10 +1,21 @@
 import { Resend } from "resend"
 
-const resend = new Resend(process.env.RESEND_API_KEY)
+const resend = process.env.RESEND_API_KEY
+  ? new Resend(process.env.RESEND_API_KEY)
+  : null
+
+if (!resend) {
+  console.warn("⚠️ RESEND_API_KEY no configurada — los emails no se enviarán")
+}
 
 export const sendEmail = async ({ to, subject, html }) => {
 
   try {
+
+    if (!resend) {
+      console.log("📭 Email omitido (sin RESEND_API_KEY):", to)
+      return
+    }
 
     console.log("📨 Enviando email a:", to)
 

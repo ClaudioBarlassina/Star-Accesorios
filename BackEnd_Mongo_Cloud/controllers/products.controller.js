@@ -57,33 +57,50 @@ export const updateProduct = async (req, res) => {
   try {
     const product = await service.getProductById(req.params.id);
 
-    let imageData = {};
+    // ids de Cloudinary que se conservan (pueden llegar como string o array)
+    const rawKeep = req.body.keepImageIds;
+    const keepIds = rawKeep
+      ? (Array.isArray(rawKeep) ? rawKeep : [rawKeep]).filter(Boolean)
+      : [];
 
-    if (req.file) {
-      // borrar imagen vieja
-      if (product.cloudinary_id) {
-        await deleteImage(product.cloudinary_id);
-      }
+    // borrar de Cloudinary las imágenes que se quitaron
+    const toRemove = (product.images || []).filter(
+      (img) => !keepIds.includes(img.cloudinary_id)
+    );
 
-      // subir nueva
-      const result = await uploadImage(req.file.buffer);
+    await Promise.all(
+      toRemove.map((img) => deleteImage(img.cloudinary_id))
+    );
 
-      imageData = {
-        image: result.secure_url,
+    // subir las imágenes nuevas
+    let newImages = [];
+    if (req.files && req.files.length > 0) {
+      const uploads = await Promise.all(
+        req.files.map((file) => uploadImage(file.buffer))
+      );
+
+      newImages = uploads.map((result) => ({
+        url: result.secure_url,
         cloudinary_id: result.public_id,
-      };
+      }));
     }
+
+    // conservadas + nuevas
+    const images = [
+      ...(product.images || []).filter((img) => keepIds.includes(img.cloudinary_id)),
+      ...newImages,
+    ];
+
+    const { keepImageIds, ...rest } = req.body;
 
     const updatedProduct = await service.updateProduct(
       req.params.id,
-      {
-        ...req.body,
-        ...imageData,
-      }
+      { ...rest, images }
     );
 
     res.json(updatedProduct);
   } catch (error) {
+    console.error("❌ Error actualizando producto:", error.message);
     res.status(404).json({ error: error.message });
   }
 };
@@ -92,8 +109,11 @@ export const deleteProduct = async (req, res) => {
    try {
     const product = await service.getProductById(req.params.id);
 
-    if (product.cloudinary_id) {
-      await deleteImage(product.cloudinary_id);
+    // borrar todas las imágenes de Cloudinary
+    if (product.images && product.images.length > 0) {
+      await Promise.all(
+        product.images.map((img) => deleteImage(img.cloudinary_id))
+      );
     }
 
     await service.deleteProduct(req.params.id);

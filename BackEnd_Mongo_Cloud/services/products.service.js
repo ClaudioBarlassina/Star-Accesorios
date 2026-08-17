@@ -66,7 +66,7 @@ export const getProductById = async (id) => {
 
 // 🔥 CORREGIDO
 export const createProduct = async (data) => {
-  return await Product.create(data);
+  return await Product.create({ ...data, stock: data.stock ?? 1 });
 };
 
 
