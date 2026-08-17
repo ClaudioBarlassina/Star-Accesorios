@@ -3,6 +3,7 @@
   grid-template-columns: 1fr 1fr;
   gap: var(--space-2xl);
   padding: var(--space-2xl);
+  padding-top: 120px;
   max-width: 1200px;
   margin: 0 auto;
 }
@@ -199,6 +200,15 @@
   background: var(--gold);
 }
 
+.buyButton:disabled {
+  background: #999;
+  cursor: not-allowed;
+}
+
+.buyButton:disabled:hover {
+  background: #999;
+}
+
 .buyButtonVolver {
   padding: 14px 28px;
   background: transparent;
@@ -247,6 +257,7 @@
     grid-template-columns: 1fr;
     gap: var(--space-lg);
     padding: var(--space-lg);
+    padding-top: 100px;
   }
 
   .details {
@@ -261,6 +272,7 @@
 @media (max-width: 600px) {
   .container {
     padding: var(--space-md);
+    padding-top: 90px;
   }
 
   .mainImage {

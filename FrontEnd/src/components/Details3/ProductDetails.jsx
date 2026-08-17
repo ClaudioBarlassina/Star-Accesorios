@@ -19,6 +19,9 @@ export default function ProductDetails({ product }) {
     return <div className={styles.loadingState}>Cargando producto...</div>;
   }
 
+  const sinStock = product.stock !== undefined && product.stock !== null && product.stock <= 0
+  const maxQty = product.stock ?? Infinity
+
   const handleAddToCart = () => {
     for (let i = 0; i < qty; i++) {
       addCarrito(product);
@@ -67,13 +70,13 @@ export default function ProductDetails({ product }) {
           <div className={styles.quantityControls}>
             <button onClick={() => setQty(Math.max(1, qty - 1))}>-</button>
             <span>{qty}</span>
-            <button onClick={() => setQty(qty + 1)}>+</button>
+            <button onClick={() => setQty(qty + 1)} disabled={qty >= maxQty}>+</button>
           </div>
         </div>
 
         <div className={styles.actions}>
-          <button className={styles.buyButton} onClick={handleAddToCart}>
-            Agregar al carrito
+          <button className={styles.buyButton} onClick={handleAddToCart} disabled={sinStock}>
+            {sinStock ? "Sin stock" : "Agregar al carrito"}
           </button>
           <button
             className={styles.buyButtonVolver}
