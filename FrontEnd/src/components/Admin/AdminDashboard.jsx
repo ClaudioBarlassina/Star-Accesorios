@@ -4,6 +4,7 @@ import { getPedidos, updatePedidoEstado } from "../../api/orders.api"
 import { useNavigate } from "react-router-dom"
 import { CATEGORIAS, getSubcategoriasDe } from "../../config/categories"
 import CajaVenta from "./POS/CajaVenta"
+import BulkProductForm from "./BulkProductForm"
 import styles from "./AdminDashboard.module.css"
 
 const s = {
@@ -491,6 +492,7 @@ export default function AdminDashboard() {
   const [loadingOrders, setLoadingOrders] = useState(true)
   const [loadingResumen, setLoadingResumen] = useState(true)
   const [showForm, setShowForm] = useState(false)
+  const [showBulk, setShowBulk] = useState(false)
   const [editingProduct, setEditingProduct] = useState(null)
   const [toastMsg, setToastMsg] = useState(null)
   const [confirm, setConfirm] = useState(null)
@@ -614,6 +616,9 @@ export default function AdminDashboard() {
           <button onClick={() => { setShowForm(true); setEditingProduct(null) }} style={{ ...s.btn, background: "var(--gold)", color: "white" }}>
             + Nuevo Producto
           </button>
+          <button onClick={() => setShowBulk(true)} style={{ ...s.btn, background: "white", color: "var(--gold-dark)", border: "2px solid var(--gold)" }}>
+            Carga múltiple
+          </button>
           <button onClick={() => navigate("/")} style={{ ...s.btn, background: "transparent", color: "var(--text-secondary)", border: "1px solid var(--border)" }}>
             ← Tienda
           </button>
@@ -647,8 +652,15 @@ export default function AdminDashboard() {
       {showForm && (
         <ProductForm
           product={editingProduct}
-          onSave={handleSaveProduct}
+          onSave={() => { setShowForm(false); setRefreshKey((k) => k + 1) }}
           onClose={() => { setShowForm(false); setEditingProduct(null) }}
+        />
+      )}
+
+      {showBulk && (
+        <BulkProductForm
+          onSave={() => setRefreshKey((k) => k + 1)}
+          onClose={() => setShowBulk(false)}
         />
       )}
 

@@ -23,3 +23,7 @@ export const updateProduct = (id, formData) => {
 export const deleteProduct = (id) => {
   return api.delete(`/${id}`);
 };
+
+export const bulkCreateProducts = (formData) => {
+  return api.post("/bulk", formData, { timeout: 120000 });
+};

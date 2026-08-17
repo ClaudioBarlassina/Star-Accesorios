@@ -133,3 +133,60 @@ export const deleteProduct = async (req, res) => {
     res.status(500).json({ error: "Error al eliminar el producto." });
   }
 };
+
+export const bulkCreateProducts = async (req, res) => {
+  try {
+    const productos = JSON.parse(req.body.productos || "[]");
+    const imagesMap = JSON.parse(req.body.imagesMap || "{}");
+    const files = req.files || [];
+
+    if (!productos.length) {
+      return res.status(400).json({ error: "No se enviaron productos" });
+    }
+
+    // subir imágenes a Cloudinary en batches de 5
+    let uploads = [];
+    if (files.length > 0) {
+      for (let i = 0; i < files.length; i += 5) {
+        const batch = files.slice(i, i + 5);
+        const results = await Promise.all(
+          batch.map((file) => uploadImage(file.buffer))
+        );
+        uploads.push(...results);
+      }
+    }
+
+    // asignar imágenes a cada producto según el map
+    const productosConImagenes = productos.map((prod, i) => {
+      const indices = imagesMap[i] || [];
+      const images = indices
+        .filter((idx) => uploads[idx])
+        .map((idx) => ({
+          url: uploads[idx].secure_url,
+          cloudinary_id: uploads[idx].public_id,
+        }));
+      return { ...prod, images, stock: prod.stock ?? 1 };
+    });
+
+    let created = [];
+    let failed = 0;
+    try {
+      created = await service.bulkCreateProducts(productosConImagenes);
+    } catch (err) {
+      // insertMany con ordered:false guarda los exitosos
+      created = err.insertedDocs || [];
+      failed = (err.writeErrors || []).length;
+      console.error(`⚠️ Bulk: ${created.length} creados, ${failed} fallidos`);
+    }
+
+    res.status(201).json({
+      message: `${created.length} producto(s) creado(s)${failed > 0 ? `, ${failed} fallido(s)` : ""}`,
+      created: created.length,
+      failed,
+      products: created,
+    });
+  } catch (error) {
+    console.error("❌ Error en bulk create:", error.message);
+    res.status(500).json({ error: "Error al crear productos en lote." });
+  }
+};

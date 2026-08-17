@@ -94,3 +94,7 @@ export const deleteProduct = async (id) => {
 
   return product;
 };
+
+export const bulkCreateProducts = async (productos) => {
+  return await Product.insertMany(productos, { ordered: false });
+};
