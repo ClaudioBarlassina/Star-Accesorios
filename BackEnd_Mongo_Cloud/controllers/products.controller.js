@@ -106,20 +106,30 @@ export const updateProduct = async (req, res) => {
 };
 
 export const deleteProduct = async (req, res) => {
-   try {
-    const product = await service.getProductById(req.params.id);
+  try {
+    let product;
+    try {
+      product = await service.getProductById(req.params.id);
+    } catch {
+      return res.status(404).json({ error: "Producto no encontrado" });
+    }
 
     // borrar todas las imágenes de Cloudinary
     if (product.images && product.images.length > 0) {
-      await Promise.all(
-        product.images.map((img) => deleteImage(img.cloudinary_id))
-      );
+      try {
+        await Promise.all(
+          product.images.map((img) => deleteImage(img.cloudinary_id))
+        );
+      } catch (cloudErr) {
+        console.error("⚠️ Error borrando imágenes de Cloudinary (se continúa con la eliminación):", cloudErr.message);
+      }
     }
 
     await service.deleteProduct(req.params.id);
 
     res.json({ message: "Producto eliminado" });
   } catch (error) {
-    res.status(404).json({ error: error.message });
+    console.error("❌ Error eliminando producto:", error.message);
+    res.status(500).json({ error: "Error al eliminar el producto." });
   }
 };

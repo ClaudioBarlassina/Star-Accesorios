@@ -20,13 +20,26 @@ export const crearPedido = async (req, res) => {
 };
 
 export const getPedidos = async (req, res) => {
-  const pedidos = await getPedidosService();
-  res.json(pedidos);
+  try {
+    const pedidos = await getPedidosService();
+    res.json(pedidos);
+  } catch (error) {
+    console.error("❌ Error al obtener pedidos:", error.message);
+    res.status(500).json({ error: "Error al cargar los pedidos. Verificá la conexión a la base de datos." });
+  }
 };
 
 export const getPedidoById = async (req, res) => {
-  const pedido = await getPedidoByIdService(req.params.id);
-  res.json(pedido);
+  try {
+    const pedido = await getPedidoByIdService(req.params.id);
+    if (!pedido) {
+      return res.status(404).json({ error: "Pedido no encontrado" });
+    }
+    res.json(pedido);
+  } catch (error) {
+    console.error("❌ Error al obtener pedido:", error.message);
+    res.status(500).json({ error: "Error al cargar el pedido." });
+  }
 };
 
 export const updatePedidoEstado = async (req, res) => {
