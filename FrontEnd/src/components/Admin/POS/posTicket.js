@@ -12,7 +12,7 @@ const formatMoney = (n) =>
   }).format(Number(n) || 0)
 
 const formatPago = (pago) => {
-  const mapa = { efectivo: "Efectivo", transferencia: "Transferencia", tarjeta: "Tarjeta", mercadopago: "Mercado Pago" }
+  const mapa = { efectivo: "Efectivo", transferencia: "Transferencia" }
   return mapa[pago] || pago || "—"
 }
 

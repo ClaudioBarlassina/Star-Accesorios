@@ -193,7 +193,6 @@ export default function Checkout({ productos = [], onConfirm, onSubmit }) {
           {[
             { value: 'efectivo', label: 'Efectivo' },
             { value: 'transferencia', label: 'Transferencia bancaria' },
-            { value: 'mercadopago', label: 'Mercado Pago' },
           ].map((opt) => (
             <label
               key={opt.value}
