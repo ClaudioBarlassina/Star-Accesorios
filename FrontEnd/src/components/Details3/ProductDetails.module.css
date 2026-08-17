@@ -93,6 +93,31 @@
   margin: 0;
 }
 
+.stockBadge {
+  font-family: var(--ui);
+  font-size: 13px;
+  font-weight: 600;
+  padding: 5px 12px;
+  border-radius: var(--radius-sm);
+  white-space: nowrap;
+  display: inline-block;
+}
+
+.stockOk {
+  background: #d4edda;
+  color: #155724;
+}
+
+.stockLow {
+  background: #fff3cd;
+  color: #856404;
+}
+
+.stockOut {
+  background: #f8d7da;
+  color: #721c24;
+}
+
 .description {
   font-family: var(--body);
   font-size: 15px;

@@ -44,13 +44,7 @@ export const crearPedidoService = async (data) => {
   for (const item of productosLimpios) {
     await Product.updateOne(
       { _id: item._id, stock: { $exists: true, $ne: null } },
-      [{
-        $set: {
-          stock: {
-            $max: [0, { $subtract: [{ $ifNull: ["$stock", 0] }, item.cantidad] }],
-          },
-        },
-      }]
+      { $inc: { stock: -item.cantidad } }
     );
   }
 

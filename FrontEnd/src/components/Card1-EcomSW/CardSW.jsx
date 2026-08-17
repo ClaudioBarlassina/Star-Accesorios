@@ -4,12 +4,19 @@ import styles from "./CardSW.module.css"
 import { Swiper, SwiperSlide } from "swiper/react"
 import { Navigation, Pagination, Autoplay } from "swiper/modules"
 
+function StockBadge({ stock }) {
+  if (stock === undefined || stock === null) return null
+  if (stock <= 0) return <span className={`${styles.stockBadge} ${styles.stockOut}`}>Agotado</span>
+  if (stock <= 5) return <span className={`${styles.stockBadge} ${styles.stockLow}`}>Últimas {stock} unidades</span>
+  return <span className={`${styles.stockBadge} ${styles.stockOk}`}>{stock} unidades</span>
+}
+
 export default function Card({
- 
   onClick,
   images = [],
   title,
   price,
+  stock,
   children,
   action,
   className = ""
@@ -47,6 +54,7 @@ export default function Card({
       <div className={styles.content}>
         {title && <h3 className={styles.title}>{title}</h3>}
         {price && <span className={styles.price}>${price}</span>}
+        <StockBadge stock={stock} />
         {children}
       </div>
 

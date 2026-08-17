@@ -101,3 +101,29 @@
   color: white;
   border-color: var(--gold);
 }
+
+/* stock badge */
+.stockBadge {
+  font-family: var(--ui);
+  font-size: 11px;
+  font-weight: 600;
+  padding: 3px 8px;
+  border-radius: var(--radius-sm);
+  white-space: nowrap;
+  align-self: flex-start;
+}
+
+.stockLow {
+  background: #fff3cd;
+  color: #856404;
+}
+
+.stockOk {
+  background: #d4edda;
+  color: #155724;
+}
+
+.stockOut {
+  background: #f8d7da;
+  color: #721c24;
+}

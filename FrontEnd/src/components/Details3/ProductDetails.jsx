@@ -53,6 +53,13 @@ export default function ProductDetails({ product }) {
         )}
         <h1 className={styles.name}>{product.nombre}</h1>
         <p className={styles.price}>${product.precio}</p>
+
+        {product.stock !== undefined && product.stock !== null && (
+          <span className={`${styles.stockBadge} ${product.stock <= 0 ? styles.stockOut : product.stock <= 5 ? styles.stockLow : styles.stockOk}`}>
+            {product.stock <= 0 ? "Agotado" : product.stock <= 5 ? `Últimas ${product.stock} unidades` : `${product.stock} unidades`}
+          </span>
+        )}
+
         <p className={styles.description}>{product.descripcion}</p>
 
         <div className={styles.quantity}>

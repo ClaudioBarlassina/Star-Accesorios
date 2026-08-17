@@ -93,6 +93,7 @@ const Products = () => {
               key={item._id}
               title={item.nombre}
               price={item.precio}
+              stock={item.stock}
               images={item.images}
               onClick={() => navigate(`/product/${item._id}`)}
               action={
