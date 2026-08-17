@@ -78,6 +78,7 @@ export default function CajaVenta({ toast }) {
   const [pago, setPago] = useState("")
   const [montoRecibido, setMontoRecibido] = useState("")
   const [cobrando, setCobrando] = useState(false)
+  const [showSidebar, setShowSidebar] = useState(false)
 
   const load = useCallback(() => {
     setLoading(true)
@@ -112,6 +113,7 @@ export default function CajaVenta({ toast }) {
       }
       return [...prev, { product: p, cantidad: 1 }]
     })
+    setShowSidebar(false)
   }
 
   const inc = (id) => setCart((prev) => prev.map((i) => {
@@ -170,14 +172,14 @@ export default function CajaVenta({ toast }) {
     }
   }
 
-  return (
-    <div className={styles.posLayout}>
-      <div className={styles.posCatalog}>
+  const catalogContent = (
+    <>
+      <div className={styles.posCatalogSearch}>
         <div style={{ display: "flex", gap: "10px", alignItems: "center", marginBottom: "14px", flexWrap: "wrap" }}>
           <input
             className={s.search}
-            style={{ flex: 1, minWidth: "200px" }}
-            placeholder="Buscar producto por nombre..."
+            style={{ flex: 1, minWidth: 0 }}
+            placeholder="Buscar producto..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
           />
@@ -185,12 +187,46 @@ export default function CajaVenta({ toast }) {
             {loading ? "Cargando..." : `${filtered.length} productos`}
           </span>
         </div>
+      </div>
+      <div className={styles.posProductGridWrapper}>
+        <ProductGrid products={filtered} cart={cart} onAdd={addProduct} />
+      </div>
+    </>
+  )
 
-        <div className={styles.posProductGridWrapper}>
-          <ProductGrid products={filtered} cart={cart} onAdd={addProduct} />
-        </div>
+  return (
+    <div className={styles.posLayout}>
+      {/* Desktop catalog */}
+      <div className={styles.posCatalog}>
+        {catalogContent}
       </div>
 
+      {/* Mobile sidebar */}
+      <div
+        className={`${styles.posCatalogSidebar} ${showSidebar ? styles.posCatalogSidebarOpen : ""}`}
+      >
+        <div className={styles.posCatalogSidebarHeader}>
+          <strong style={{ fontFamily: "var(--heading)", fontSize: "16px" }}>Productos</strong>
+          <button className={styles.posCatalogSidebarClose} onClick={() => setShowSidebar(false)}>✕</button>
+        </div>
+        {catalogContent}
+      </div>
+
+      {/* Overlay */}
+      <div
+        className={`${styles.posSidebarOverlay} ${showSidebar ? styles.posSidebarOverlayOpen : ""}`}
+        onClick={() => setShowSidebar(false)}
+      />
+
+      {/* Toggle button (mobile) */}
+      <button
+        className={styles.posSidebarToggle}
+        onClick={() => setShowSidebar(true)}
+      >
+        ☰ Productos{cart.length > 0 ? ` (${cart.length})` : ""}
+      </button>
+
+      {/* Cart panel */}
       <div className={styles.posCartPanel}>
         <h3 style={{ fontFamily: "var(--heading)", fontSize: "18px", margin: "0 0 12px" }}>Venta actual</h3>
 
@@ -208,7 +244,7 @@ export default function CajaVenta({ toast }) {
         <div className={styles.posCartList}>
           {cart.length === 0 && (
             <p style={{ color: "var(--text-secondary)", fontSize: "14px" }}>
-              Tocá un producto para agregarlo a la venta.
+              Tocá "Productos" para agregar items.
             </p>
           )}
           {cart.map((i) => (

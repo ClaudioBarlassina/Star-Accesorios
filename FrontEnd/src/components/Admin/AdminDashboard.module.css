@@ -58,15 +58,17 @@
   margin-bottom: 24px;
 }
 
-@media (max-width: 425px) {
+@media (max-width: 600px) {
   .adminTabs {
     flex-wrap: wrap;
   }
   .adminTabs button {
     flex: 1;
     min-width: 0;
-    text-align: center;
+    display: flex;
+    align-items: center;
     justify-content: center;
+    text-align: center;
   }
 }
 
@@ -408,7 +410,7 @@
 
 .posLayout {
   display: grid;
-  grid-template-columns: 1fr 380px;
+  grid-template-columns: minmax(0, 1fr) 380px;
   gap: 20px;
   align-items: start;
 }
@@ -419,20 +421,59 @@
   }
 }
 
+/* --- Sidebar de productos --- */
+
 .posCatalog {
   min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+@media (max-width: 900px) {
+  .posCatalog {
+    display: none;
+  }
+}
+
+@media (min-width: 901px) {
+  .posCatalog {
+    height: calc(100vh - 120px);
+    position: sticky;
+    top: 90px;
+  }
+}
+
+.posCatalogSearch {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  background: var(--surface);
+  padding-bottom: 12px;
 }
 
 .posProductGridWrapper {
-  max-height: 600px;
+  flex: 1;
   overflow-y: auto;
   padding-right: 4px;
 }
 
+@media (max-width: 900px) {
+  .posProductGridWrapper {
+    padding-right: 0;
+  }
+}
+
 .posGrid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
   gap: 12px;
+}
+
+@media (max-width: 600px) {
+  .posGrid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
+  }
 }
 
 .posProduct {
@@ -470,6 +511,30 @@
   object-fit: cover;
   border-radius: 8px;
   background: var(--border-light);
+}
+
+@media (max-width: 600px) {
+  .posProduct {
+    padding: 8px;
+    gap: 4px;
+  }
+  .posProductImg {
+    height: 72px;
+  }
+  .posProductName {
+    font-size: 11px;
+    line-height: 1.2;
+    margin-bottom: 2px;
+  }
+  .posProductPrice {
+    font-size: 12px;
+  }
+  .posSinMas {
+    font-size: 8px;
+    padding: 1px 5px;
+    top: 4px;
+    right: 4px;
+  }
 }
 
 .posProductInfo {
@@ -523,13 +588,32 @@
   flex-direction: column;
   gap: 14px;
   max-height: calc(100vh - 140px);
-  min-height: 400px;
+  min-height: 300px;
 }
 
 @media (max-width: 900px) {
   .posCartPanel {
-    position: static;
-    max-height: none;
+    top: 16px;
+    max-height: calc(100vh - 32px);
+    padding: 14px;
+    gap: 10px;
+  }
+  .posCartPanel h3 {
+    font-size: 15px;
+    margin: 0 0 8px;
+  }
+  .posCartItem {
+    padding: 8px 10px;
+  }
+  .posCartItemName {
+    font-size: 12px;
+  }
+  .posCartItemPrice {
+    font-size: 12px;
+  }
+  .posCartFooter {
+    padding-top: 10px;
+    gap: 8px;
   }
 }
 
@@ -587,6 +671,31 @@
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+@media (max-width: 600px) {
+  .posQtyBtn {
+    width: 26px;
+    height: 26px;
+    font-size: 13px;
+  }
+  .posRemove {
+    width: 26px;
+    height: 26px;
+    font-size: 11px;
+  }
+  .posPayRow {
+    grid-template-columns: 1fr 1fr;
+    gap: 6px;
+  }
+  .posPayOption {
+    padding: 8px 10px;
+    font-size: 12px;
+  }
+  .posCobrarBtn {
+    padding: 12px;
+    font-size: 14px;
+  }
 }
 
 .posQtyBtn:hover {
@@ -656,4 +765,107 @@
 .posCobrarBtn:disabled {
   opacity: 0.6;
   cursor: not-allowed;
+}
+
+/* --- Sidebar toggle (solo mobile) --- */
+
+.posSidebarToggle {
+  display: none;
+}
+
+@media (max-width: 900px) {
+  .posSidebarToggle {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    position: fixed;
+    bottom: 24px;
+    left: 16px;
+    z-index: 200;
+    padding: 12px 18px;
+    border: none;
+    border-radius: var(--radius-md);
+    background: var(--gold);
+    color: white;
+    font-family: var(--ui);
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.25);
+    transition: all 200ms ease;
+  }
+  .posSidebarToggle:hover {
+    filter: brightness(1.05);
+    transform: translateY(-1px);
+  }
+}
+
+/* --- Overlay + sidebar en mobile --- */
+
+.posSidebarOverlay {
+  display: none;
+}
+
+@media (max-width: 900px) {
+  .posSidebarOverlay {
+    display: block;
+    position: fixed;
+    inset: 0;
+    z-index: 250;
+    background: rgba(0,0,0,0.45);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 250ms ease;
+  }
+  .posSidebarOverlayOpen {
+    opacity: 1;
+    pointer-events: auto;
+  }
+}
+
+.posCatalogSidebar {
+  display: none;
+}
+
+@media (max-width: 900px) {
+  .posCatalogSidebar {
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    z-index: 260;
+    width: min(85vw, 360px);
+    background: var(--surface);
+    border-right: 1px solid var(--border);
+    padding: 16px;
+    transform: translateX(-100%);
+    transition: transform 250ms ease;
+    overflow: hidden;
+  }
+  .posCatalogSidebarOpen {
+    transform: translateX(0);
+  }
+}
+
+.posCatalogSidebarHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+  flex-shrink: 0;
+}
+
+.posCatalogSidebarClose {
+  width: 32px;
+  height: 32px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: white;
+  font-size: 16px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
