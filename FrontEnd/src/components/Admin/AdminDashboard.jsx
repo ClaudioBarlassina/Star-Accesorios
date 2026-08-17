@@ -311,7 +311,7 @@ function Resumen({ orders, products, loading }) {
     .reduce((acc, o) => acc + (o.total || 0), 0)
 
   const pendientes = orders.filter((o) => o.estado === "pendiente").length
-  const stockBajo = products.filter((p) => Number.isFinite(p.stock) && p.stock <= 5).length
+  const stockBajo = products.filter((p) => Number.isFinite(p.stock) && p.stock > 0 && p.stock <= 5).length
   const agotados = products.filter((p) => Number.isFinite(p.stock) && p.stock <= 0).length
 
   if (loading) return <div style={{ textAlign: "center", padding: "40px", color: "var(--text-secondary)" }}>Cargando...</div>
@@ -320,8 +320,8 @@ function Resumen({ orders, products, loading }) {
     <div className={styles.statsGrid}>
       <StatCard label="Ventas totales" value={`$${ventas.toLocaleString()}`} sub={`${orders.filter((o) => o.estado !== "cancelado").length} pedidos`} color="var(--gold-dark)" />
       <StatCard label="Pedidos pendientes" value={pendientes} sub="Esperando gestión" color="#d97706" />
-      <StatCard label="Productos" value={products.length} sub={`${agotados} agotados`} color="#2563eb" />
-      <StatCard label="Stock bajo" value={stockBajo} sub="Productos con 5 o menos unidades" color="#dc2626" />
+      <StatCard label="Productos" value={products.length} sub={`${stockBajo} con stock bajo`} color="#2563eb" />
+      <StatCard label="Sin stock" value={agotados} sub="Productos sin unidades disponibles" color="#dc2626" />
     </div>
   )
 }
