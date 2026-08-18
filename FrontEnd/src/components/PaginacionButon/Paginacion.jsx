@@ -7,7 +7,7 @@ export default function Paginacion({ totalPaginas, pagina, handler }) {
   const numeros = [...Array(totalPaginas)].map((_, index) => index + 1)
 
   return (
-    <article>
+    <article className={styles.pagination}>
       {numeros.map((item) => (
         <button
           key={item}
