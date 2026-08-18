@@ -10,6 +10,7 @@ export const SUBCATEGORIAS = [
   'Aros',
   'Anillos',
   'Pulseras',
+  'Brazalete',
   'Colgantes',
   'Cadenas',
   'Tobilleras',
@@ -18,8 +19,8 @@ export const SUBCATEGORIAS = [
 ];
 
 export const SUBCATEGORIAS_POR_CATEGORIA = {
-  'Acero Quirurgico': ['Aros', 'Anillos', 'Pulseras', 'Colgantes', 'Cadenas', 'Tobilleras', 'Cabello'],
-  'Acero Dorado': ['Aros', 'Anillos', 'Pulseras', 'Colgantes', 'Cadenas', 'Tobilleras', 'Cabello'],
+  'Acero Quirurgico': ['Aros', 'Anillos', 'Pulseras', 'Brazalete', 'Colgantes', 'Cadenas', 'Tobilleras', 'Cabello'],
+  'Acero Dorado': ['Aros', 'Anillos', 'Pulseras', 'Brazalete', 'Colgantes', 'Cadenas', 'Tobilleras', 'Cabello'],
   'Fantasia': ['Aros', 'Anillos', 'Pulseras', 'Colgantes', 'Cadenas', 'Tobilleras', 'Cabello'],
   'Perfumes': ['Perfumes'],
   'Accesorios': ['Cabello', 'Aros', 'Pulseras', 'Colgantes', 'Cadenas', 'Tobilleras'],
