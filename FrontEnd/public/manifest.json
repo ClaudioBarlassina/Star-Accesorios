@@ -4,7 +4,7 @@
   "description": "Estilo y calidad. Descubre accesorios únicos en Star Accesorios.",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#863bff",
+  "background_color": "#ffffff",
   "theme_color": "#863bff",
   "orientation": "portrait-primary",
   "icons": [
