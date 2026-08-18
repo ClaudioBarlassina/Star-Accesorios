@@ -12,6 +12,7 @@ import Paginacion from "../components/PaginacionButon/Paginacion.jsx"
 import anillo from '../components/CarouselCategoriasT/img/anillos.avif'
 import aros from '../components/CarouselCategoriasT/img/Aros.webp'
 import pulseras from '../components/CarouselCategoriasT/img/pulseras.avif'
+import brazalete from '../components/CarouselCategoriasT/img/Brazalete.png'
 import colgantes from '../components/CarouselCategoriasT/img/colgantes.jpg'
 import cadenas from '../components/CarouselCategoriasT/img/cadenas.webp'
 import tobillera from '../components/CarouselCategoriasT/img/tobilleras.webp'
@@ -97,6 +98,7 @@ const Home = () => {
             { name: 'Anillos', image: anillo },
             { name: 'Aros', image: aros },
             { name: 'Pulseras', image: pulseras },
+            { name: 'Brazalete', image: brazalete },
             { name: 'Colgantes', image: colgantes },
             { name: 'Cadenas', image: cadenas },
             { name: 'Tobilleras', image: tobillera  },
