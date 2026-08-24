@@ -16,7 +16,7 @@ import brazalete from '../components/CarouselCategoriasT/img/Brazalete.png'
 import colgantes from '../components/CarouselCategoriasT/img/colgantes.jpg'
 import cadenas from '../components/CarouselCategoriasT/img/cadenas.webp'
 import tobillera from '../components/CarouselCategoriasT/img/tobilleras.webp'
-import perfumes from '../components/CarouselCategoriasT/img/perfumes.avif'
+import cuidadoFacial from '../components/CarouselCategoriasT/img/cuidado facial.webp'
 import cabello from '../components/CarouselCategoriasT/img/cabellos.webp'
 
 import GridCuadricula from '../components/Grid-Cuadricula/Grid'
@@ -102,7 +102,7 @@ const Home = () => {
             { name: 'Colgantes', image: colgantes },
             { name: 'Cadenas', image: cadenas },
             { name: 'Tobilleras', image: tobillera  },
-            { name: 'Perfumes', image: perfumes },
+            { name: 'Cuidado Facial', image: cuidadoFacial },
             { name: 'Cabello', image: cabello },
           ]}
           onSelect={(cat) => {
