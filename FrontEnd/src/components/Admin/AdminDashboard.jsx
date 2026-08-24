@@ -1,6 +1,7 @@
 import { useState, useEffect, useMemo, useRef, useCallback } from "react"
 import { getProducts, createProduct, updateProduct, deleteProduct } from "../../api/products.api"
 import { getPedidos, updatePedidoEstado } from "../../api/orders.api"
+import { getCarousel, uploadCarouselImages, deleteCarouselImage } from "../../api/carousel.api"
 import { useNavigate } from "react-router-dom"
 import { CATEGORIAS, getSubcategoriasDe } from "../../config/categories"
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer } from "recharts"
@@ -228,6 +229,147 @@ function ProductForm({ product, onSave, onClose }) {
           </button>
         </form>
       </div>
+    </div>
+  )
+}
+
+function CarouselTab({ toast }) {
+  const [images, setImages] = useState([])
+  const [loading, setLoading] = useState(true)
+  const [newFiles, setNewFiles] = useState([])
+  const [uploading, setUploading] = useState(false)
+  const [confirm, setConfirm] = useState(null)
+  const previewUrlsRef = useRef([])
+
+  const load = useCallback(() => {
+    setLoading(true)
+    getCarousel()
+      .then((res) => setImages(res.data || []))
+      .catch(() => toast("error", "No se pudo cargar el carrusel"))
+      .finally(() => setLoading(false))
+  }, [toast])
+
+  useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    load()
+  }, [load])
+
+  useEffect(() => {
+    return () => {
+      previewUrlsRef.current.forEach((u) => URL.revokeObjectURL(u))
+      previewUrlsRef.current = []
+    }
+  }, [])
+
+  const addFiles = (e) => {
+    const files = Array.from(e.target.files || [])
+    const next = files.map((file) => {
+      const preview = URL.createObjectURL(file)
+      previewUrlsRef.current.push(preview)
+      return { file, preview }
+    })
+    setNewFiles((prev) => [...prev, ...next])
+    e.target.value = ""
+  }
+
+  const removeNew = (i) => {
+    setNewFiles((prev) => {
+      URL.revokeObjectURL(prev[i].preview)
+      previewUrlsRef.current = previewUrlsRef.current.filter((u) => u !== prev[i].preview)
+      return prev.filter((_, idx) => idx !== i)
+    })
+  }
+
+  const handleUpload = async () => {
+    if (newFiles.length === 0) return
+    setUploading(true)
+    try {
+      const fd = new FormData()
+      newFiles.forEach(({ file }) => fd.append("images", file))
+      await uploadCarouselImages(fd)
+      toast("success", "Imágenes subidas al carrusel")
+      newFiles.forEach(({ preview }) => {
+        URL.revokeObjectURL(preview)
+        previewUrlsRef.current = previewUrlsRef.current.filter((u) => u !== preview)
+      })
+      setNewFiles([])
+      load()
+    } catch {
+      toast("error", "Error al subir imágenes")
+    } finally {
+      setUploading(false)
+    }
+  }
+
+  const handleDelete = (img) => {
+    setConfirm({
+      text: "¿Eliminar esta imagen del carrusel? Esta acción no se puede deshacer.",
+      action: async () => {
+        try {
+          await deleteCarouselImage(img.cloudinary_id)
+          setImages((prev) => prev.filter((i) => i.cloudinary_id !== img.cloudinary_id))
+          toast("success", "Imagen eliminada")
+        } catch {
+          toast("error", "Error al eliminar la imagen")
+        } finally {
+          setConfirm(null)
+        }
+      },
+    })
+  }
+
+  return (
+    <div>
+      <div className={styles.carouselHeader}>
+        <p style={{ fontSize: "13px", color: "var(--text-secondary)", margin: 0 }}>
+          {loading ? "" : `${images.length} imagen(es) en el carrusel principal`}
+        </p>
+        <div className={styles.carouselActions}>
+          <input type="file" multiple accept="image/*" onChange={addFiles} style={{ fontFamily: "var(--body)", fontSize: "13px" }} />
+          <button
+            onClick={handleUpload}
+            disabled={uploading || newFiles.length === 0}
+            style={{ ...s.btn, background: "var(--gold)", color: "white", opacity: uploading || newFiles.length === 0 ? 0.5 : 1, cursor: uploading || newFiles.length === 0 ? "not-allowed" : "pointer" }}
+          >
+            {uploading ? `Subiendo (${newFiles.length})...` : `+ Subir imágenes${newFiles.length > 0 ? ` (${newFiles.length})` : ""}`}
+          </button>
+        </div>
+      </div>
+
+      {loading ? (
+        <div style={{ padding: "24px 0" }}>
+          {[0, 1, 2].map((i) => <div key={i} className={`${styles.card} ${styles.skeleton}`} />)}
+        </div>
+      ) : (
+        <>
+          {images.length === 0 && (
+            <div className={styles.resumenEmpty}>
+              No hay imágenes guardadas. La tienda muestra las imágenes locales por defecto hasta que subas las primeras.
+            </div>
+          )}
+          {(images.length > 0 || newFiles.length > 0) && (
+            <div className={styles.imgGrid}>
+              {images.map((img) => (
+                <div key={img.cloudinary_id} className={styles.imgThumb}>
+                  <img src={img.url} alt="Carrusel" />
+                  <button type="button" className={styles.imgRemove} onClick={() => handleDelete(img)}>✕</button>
+                </div>
+              ))}
+              {newFiles.map((f, i) => (
+                <div key={`new-${i}`} className={styles.imgThumb}>
+                  <img src={f.preview} alt="" style={{ opacity: 0.7 }} />
+                  <button type="button" className={styles.imgRemove} onClick={() => removeNew(i)}>✕</button>
+                  <span style={{ position: "absolute", bottom: "4px", left: "4px", background: "rgba(0,0,0,0.65)", color: "white", fontSize: "10px", padding: "2px 6px", borderRadius: "4px", fontFamily: "var(--ui)" }}>nueva</span>
+                </div>
+              ))}
+            </div>
+          )}
+        </>
+      )}
+
+      {confirm && (
+        <ConfirmDialog text={confirm.text} onConfirm={confirm.action} onCancel={() => setConfirm(null)} />
+      )}
     </div>
   )
 }
@@ -729,6 +871,7 @@ export default function AdminDashboard() {
         <button style={{ ...s.tab, ...(tab === "products" ? s.tabActive : {}) }} onClick={() => setTab("products")}>Productos</button>
         <button style={{ ...s.tab, ...(tab === "orders" ? s.tabActive : {}) }} onClick={() => setTab("orders")}>Pedidos</button>
         <button style={{ ...s.tab, ...(tab === "venta" ? s.tabActive : {}) }} onClick={() => setTab("venta")}>Venta</button>
+        <button style={{ ...s.tab, ...(tab === "carousel" ? s.tabActive : {}) }} onClick={() => setTab("carousel")}>Carrusel</button>
       </div>
 
       {tab === "resumen" && <Resumen orders={orders} products={products} loading={loadingResumen} />}
@@ -747,6 +890,8 @@ export default function AdminDashboard() {
       )}
 
       {tab === "venta" && <CajaVenta toast={toast} />}
+
+      {tab === "carousel" && <CarouselTab toast={toast} />}
 
       {showForm && (
         <ProductForm
