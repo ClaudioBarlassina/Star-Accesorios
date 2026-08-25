@@ -127,6 +127,51 @@
   margin: 0;
 }
 
+.variants {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+}
+
+.variants label {
+  font-family: var(--ui);
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.variantChips {
+  display: flex;
+  gap: var(--space-sm);
+  flex-wrap: wrap;
+}
+
+.chip {
+  padding: 8px 16px;
+  border: 2px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--surface);
+  font-family: var(--ui);
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text);
+  cursor: pointer;
+  transition: all var(--transition);
+}
+
+.chip:hover {
+  border-color: var(--gold);
+  color: var(--gold-dark);
+}
+
+.chipActive {
+  border-color: var(--gold);
+  background: var(--gold);
+  color: white;
+}
+
 .quantity {
   display: flex;
   gap: var(--space-sm);

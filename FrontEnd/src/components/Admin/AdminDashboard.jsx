@@ -94,6 +94,13 @@ function ProductForm({ product, onSave, onClose }) {
   })
   const [existingImages, setExistingImages] = useState(product?.images || [])
   const [newFiles, setNewFiles] = useState([])
+  // cada variante: { nombre, ref: "url:<imageUrl>" | "file:<index>" | "", }
+  const [variantes, setVariantes] = useState(
+    (product?.variantes || []).map((v) => ({
+      nombre: v.nombre,
+      ref: v.imageUrl ? `url:${v.imageUrl}` : "",
+    }))
+  )
   const [saving, setSaving] = useState(false)
   const previewUrlsRef = useRef([])
 
@@ -115,14 +122,36 @@ function ProductForm({ product, onSave, onClose }) {
     e.target.value = ""
   }
 
-  const removeExisting = (id) => setExistingImages((prev) => prev.filter((img) => img.cloudinary_id !== id))
-  const removeNew = (i) => {
-    setNewFiles((prev) => {
-      URL.revokeObjectURL(prev[i].preview)
-      previewUrlsRef.current = previewUrlsRef.current.filter((u) => u !== prev[i].preview)
-      return prev.filter((_, idx) => idx !== i)
-    })
+  const removeExisting = (id) => {
+    const img = existingImages.find((i) => i.cloudinary_id === id)
+    setExistingImages((prev) => prev.filter((i) => i.cloudinary_id !== id))
+    if (img) {
+      // si una variante usaba esa imagen, se desasocia
+      const ref = `url:${img.url}`
+      setVariantes((prev) => prev.map((v) => (v.ref === ref ? { ...v, ref: "" } : v)))
+    }
   }
+  const removeNew = (i) => {
+    const removed = newFiles[i]
+    if (removed) {
+      URL.revokeObjectURL(removed.preview)
+      previewUrlsRef.current = previewUrlsRef.current.filter((u) => u !== removed.preview)
+    }
+    // reindexar las referencias file: de las variantes
+    setVariantes((vs) => vs.map((v) => {
+      if (!v.ref.startsWith("file:")) return v
+      const idx = Number(v.ref.slice(5))
+      if (idx === i) return { ...v, ref: "" }
+      if (idx > i) return { ...v, ref: `file:${idx - 1}` }
+      return v
+    }))
+    setNewFiles((prev) => prev.filter((_, idx) => idx !== i))
+  }
+
+  const addVariante = () => setVariantes((prev) => [...prev, { nombre: "", ref: "" }])
+  const removeVariante = (i) => setVariantes((prev) => prev.filter((_, idx) => idx !== i))
+  const updateVariante = (i, field, value) =>
+    setVariantes((prev) => prev.map((v, idx) => (idx === i ? { ...v, [field]: value } : v)))
 
   useEffect(() => {
     return () => {
@@ -144,6 +173,20 @@ function ProductForm({ product, onSave, onClose }) {
       fd.append("stock", form.stock)
       existingImages.forEach((img) => fd.append("keepImageIds", img.cloudinary_id))
       newFiles.forEach(({ file }) => fd.append("images", file))
+
+      // variantes: ref "url:x" → imageUrl directo; "file:n" → índice entre las imágenes nuevas
+      const variantesPayload = variantes
+        .filter((v) => v.nombre.trim())
+        .map((v) => {
+          if (v.ref.startsWith("file:")) {
+            return { nombre: v.nombre.trim(), fileIndex: Number(v.ref.slice(5)) }
+          }
+          if (v.ref.startsWith("url:")) {
+            return { nombre: v.nombre.trim(), imageUrl: v.ref.slice(4) }
+          }
+          return { nombre: v.nombre.trim() }
+        })
+      fd.append("variantes", JSON.stringify(variantesPayload))
 
       if (product) {
         await updateProduct(product._id, fd)
@@ -223,6 +266,51 @@ function ProductForm({ product, onSave, onClose }) {
                 ))}
               </div>
             )}
+          </div>
+          <div>
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "4px" }}>
+              <div style={s.label}>Variantes (tamaño / modelo) — opcional</div>
+              <button type="button" onClick={addVariante} style={{ ...s.btn, background: "var(--border-light)", color: "var(--text)" }}>
+                + Agregar variante
+              </button>
+            </div>
+            {variantes.length === 0 && (
+              <p style={{ fontFamily: "var(--ui)", fontSize: "12px", color: "var(--text-secondary)", margin: 0 }}>
+                Ej: para un mismo aro en varios tamaños: "10 mm", "12 mm", "15 mm". El precio y stock son compartidos.
+              </p>
+            )}
+            {variantes.map((v, i) => (
+              <div key={i} style={{ display: "flex", gap: "8px", alignItems: "center", marginBottom: "8px" }}>
+                <input
+                  style={{ ...s.input, flex: 1 }}
+                  placeholder="Ej: 10 mm"
+                  value={v.nombre}
+                  onChange={(e) => updateVariante(i, "nombre", e.target.value)}
+                />
+                <select
+                  style={{ ...s.select, flex: 1 }}
+                  value={v.ref}
+                  onChange={(e) => updateVariante(i, "ref", e.target.value)}
+                >
+                  <option value="">Sin imagen propia</option>
+                  {existingImages.map((img, idx) => (
+                    <option key={img.cloudinary_id} value={`url:${img.url}`}>Foto {idx + 1}</option>
+                  ))}
+                  {newFiles.map((f, idx) => (
+                    <option key={idx} value={`file:${idx}`}>Nueva foto {idx + 1}</option>
+                  ))}
+                </select>
+                {(() => {
+                  const thumb = v.ref.startsWith("file:")
+                    ? newFiles[Number(v.ref.slice(5))]?.preview
+                    : v.ref.startsWith("url:") ? v.ref.slice(4) : null
+                  return thumb
+                    ? <img src={thumb} alt="" style={{ width: "32px", height: "32px", objectFit: "cover", borderRadius: "var(--radius-sm)", border: "1px solid var(--border)" }} />
+                    : null
+                })()}
+                <button type="button" onClick={() => removeVariante(i)} style={{ ...s.btn, background: "#fee2e2", color: "#dc2626" }}>✕</button>
+              </div>
+            ))}
           </div>
           <button type="submit" disabled={saving} style={{ ...s.btn, background: "var(--gold)", color: "white", padding: "12px", fontSize: "14px", marginTop: "8px" }}>
             {saving ? "Guardando..." : product ? "Actualizar Producto" : "Crear Producto"}
@@ -429,7 +517,7 @@ function OrderCard({ order, onEstadoChange }) {
             <strong style={{ fontFamily: "var(--ui)", fontSize: "13px", color: "var(--text-secondary)" }}>PRODUCTOS</strong>
             {order.productos?.map((p, i) => (
               <div key={i} style={{ display: "flex", justifyContent: "space-between", padding: "6px 0", borderBottom: i < order.productos.length - 1 ? "1px solid var(--border-light)" : "none" }}>
-                <span>{p.nombre} <span style={{ color: "var(--text-muted)" }}>x{p.cantidad}</span></span>
+                <span>{p.nombre}{p.variante && <span style={{ color: "var(--text-secondary)" }}> · {p.variante}</span>} <span style={{ color: "var(--text-muted)" }}>x{p.cantidad}</span></span>
                 <span style={{ fontWeight: 600 }}>${(p.precio * p.cantidad).toLocaleString()}</span>
               </div>
             ))}

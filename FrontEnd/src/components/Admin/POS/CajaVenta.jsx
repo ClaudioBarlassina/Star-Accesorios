@@ -20,12 +20,16 @@ function BadgeStock({ p }) {
   return <span className={styles.stockOk}>{p.stock} uni</span>
 }
 
-function ProductGrid({ products, cart, onAdd }) {
+const posKey = (item) => `${item.product._id}__${item.variante || ""}`
+
+function ProductGrid({ products, cart, onPick }) {
   return (
     <div className={styles.posGrid}>
       {products.length === 0 && <p style={{ color: "var(--text-secondary)", gridColumn: "1 / -1" }}>No hay productos</p>}
       {products.map((p) => {
-        const enCarrito = cart.find((i) => i.product._id === p._id)?.cantidad || 0
+        const enCarrito = cart
+          .filter((i) => i.product._id === p._id)
+          .reduce((acc, i) => acc + i.cantidad, 0)
         const sinStock = !Number(p.stock) || Number(p.stock) <= 0
         const sinMas = Number(p.stock) > 0 && enCarrito >= Number(p.stock)
         return (
@@ -34,11 +38,16 @@ function ProductGrid({ products, cart, onAdd }) {
             type="button"
             disabled={sinStock}
             className={`${styles.posProduct} ${sinStock ? styles.posProductDisabled : ""}`}
-            onClick={() => onAdd(p)}
+            onClick={() => onPick(p)}
           >
             {p.images?.[0] && <img src={p.images[0].url} alt={p.nombre} className={styles.posProductImg} />}
             <div className={styles.posProductInfo}>
               <strong className={styles.posProductName}>{p.nombre}</strong>
+              {p.variantes?.length > 0 && (
+                <span style={{ fontFamily: "var(--ui)", fontSize: "11px", color: "var(--text-secondary)" }}>
+                  {p.variantes.map((v) => v.nombre).join(" · ")}
+                </span>
+              )}
               <div className={styles.posProductRow}>
                 <span className={styles.posProductPrice}>${p.precio?.toLocaleString()}</span>
                 <BadgeStock p={p} />
@@ -56,14 +65,17 @@ function CartItem({ item, onInc, onDec, onRemove }) {
   return (
     <div className={styles.posCartItem}>
       <div className={styles.posCartItemInfo}>
-        <span className={styles.posCartItemName}>{item.product.nombre}</span>
+        <span className={styles.posCartItemName}>
+          {item.product.nombre}
+          {item.variante && ` · ${item.variante}`}
+        </span>
         <span className={styles.posCartItemPrice}>${(item.product.precio * item.cantidad).toLocaleString()}</span>
       </div>
       <div className={styles.posCartActions}>
-        <button className={styles.posQtyBtn} onClick={() => onDec(item.product._id)}>−</button>
+        <button className={styles.posQtyBtn} onClick={() => onDec(posKey(item))}>−</button>
         <input className={s.qty} value={item.cantidad} readOnly />
-        <button className={styles.posQtyBtn} onClick={() => onInc(item.product._id)}>+</button>
-        <button className={styles.posRemove} onClick={() => onRemove(item.product._id)}>✕</button>
+        <button className={styles.posQtyBtn} onClick={() => onInc(posKey(item))}>+</button>
+        <button className={styles.posRemove} onClick={() => onRemove(posKey(item))}>✕</button>
       </div>
     </div>
   )
@@ -79,6 +91,7 @@ export default function CajaVenta({ toast }) {
   const [montoRecibido, setMontoRecibido] = useState("")
   const [cobrando, setCobrando] = useState(false)
   const [showSidebar, setShowSidebar] = useState(false)
+  const [variantePicker, setVariantePicker] = useState(null)
 
   const load = useCallback(() => {
     setLoading(true)
@@ -104,29 +117,39 @@ export default function CajaVenta({ toast }) {
   const vuelto = Number.isFinite(monto) ? monto - total : null
   const vueltoValido = pago === "efectivo" && vuelto !== null && vuelto < 0
 
-  const addProduct = (p) => {
+  const addProduct = (p, variante) => {
     setCart((prev) => {
-      const existe = prev.find((i) => i.product._id === p._id)
+      const existe = prev.find((i) => posKey(i) === `${p._id}__${variante || ""}`)
       if (existe) {
         if (Number(p.stock) > 0 && existe.cantidad >= Number(p.stock)) return prev
-        return prev.map((i) => (i.product._id === p._id ? { ...i, cantidad: i.cantidad + 1 } : i))
+        return prev.map((i) => (posKey(i) === `${p._id}__${variante || ""}` ? { ...i, cantidad: i.cantidad + 1 } : i))
       }
-      return [...prev, { product: p, cantidad: 1 }]
+      return [...prev, { product: p, variante, cantidad: 1 }]
     })
+    setVariantePicker(null)
     setShowSidebar(false)
   }
 
-  const inc = (id) => setCart((prev) => prev.map((i) => {
-    if (i.product._id !== id) return i
+  // si el producto tiene variantes, primero se elige cuál
+  const pickProduct = (p) => {
+    if (p.variantes?.length > 0) {
+      setVariantePicker(p)
+    } else {
+      addProduct(p)
+    }
+  }
+
+  const inc = (key) => setCart((prev) => prev.map((i) => {
+    if (posKey(i) !== key) return i
     if (Number(i.product.stock) > 0 && i.cantidad >= Number(i.product.stock)) return i
     return { ...i, cantidad: i.cantidad + 1 }
   }))
 
-  const dec = (id) => setCart((prev) => prev
-    .map((i) => (i.product._id === id ? { ...i, cantidad: i.cantidad - 1 } : i))
+  const dec = (key) => setCart((prev) => prev
+    .map((i) => (posKey(i) === key ? { ...i, cantidad: i.cantidad - 1 } : i))
     .filter((i) => i.cantidad > 0))
 
-  const remove = (id) => setCart((prev) => prev.filter((i) => i.product._id !== id))
+  const remove = (key) => setCart((prev) => prev.filter((i) => posKey(i) !== key))
 
   const cobrar = async () => {
     if (cart.length === 0) return toast("error", "Agregá al menos un producto")
@@ -142,7 +165,7 @@ export default function CajaVenta({ toast }) {
         telefono: "",
         direccion: "Local",
       },
-      productos: cart.map((i) => ({ ...i.product, cantidad: i.cantidad })),
+      productos: cart.map((i) => ({ ...i.product, variante: i.variante, cantidad: i.cantidad })),
       entrega: "retiro",
       pago,
       total,
@@ -189,7 +212,7 @@ export default function CajaVenta({ toast }) {
         </div>
       </div>
       <div className={styles.posProductGridWrapper}>
-        <ProductGrid products={filtered} cart={cart} onAdd={addProduct} />
+        <ProductGrid products={filtered} cart={cart} onPick={pickProduct} />
       </div>
     </>
   )
@@ -248,7 +271,7 @@ export default function CajaVenta({ toast }) {
             </p>
           )}
           {cart.map((i) => (
-            <CartItem key={i.product._id} item={i} onInc={inc} onDec={dec} onRemove={remove} />
+            <CartItem key={posKey(i)} item={i} onInc={inc} onDec={dec} onRemove={remove} />
           ))}
         </div>
 
@@ -312,6 +335,42 @@ export default function CajaVenta({ toast }) {
           </button>
         </div>
       </div>
+
+      {/* Picker de variante */}
+      {variantePicker && (
+        <div style={s.overlay} onClick={() => setVariantePicker(null)}>
+          <div
+            style={{ background: "white", borderRadius: "var(--radius-md)", padding: "24px", maxWidth: "360px", width: "90%" }}
+            onClick={(e) => e.stopPropagation()}
+          >
+            <h3 style={{ fontFamily: "var(--heading)", fontSize: "18px", margin: "0 0 6px" }}>
+              {variantePicker.nombre}
+            </h3>
+            <p style={{ fontFamily: "var(--ui)", fontSize: "13px", color: "var(--text-secondary)", margin: "0 0 14px" }}>
+              Elegí la variante:
+            </p>
+            <div style={{ display: "flex", flexWrap: "wrap", gap: "8px", marginBottom: "16px" }}>
+              {variantePicker.variantes.map((v) => (
+                <button
+                  key={v.nombre}
+                  type="button"
+                  className={styles.posPayOption}
+                  onClick={() => addProduct(variantePicker, v.nombre)}
+                >
+                  {v.nombre}
+                </button>
+              ))}
+            </div>
+            <button
+              type="button"
+              onClick={() => setVariantePicker(null)}
+              style={{ ...s.btn, background: "var(--border-light)", color: "var(--text)" }}
+            >
+              Cancelar
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   )
 }

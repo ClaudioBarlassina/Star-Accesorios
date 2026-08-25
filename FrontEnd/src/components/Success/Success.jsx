@@ -70,7 +70,7 @@ export default function Success({ order }) {
       <ul className={styles.products}>
         {data.productos.map((p, i) => (
           <li key={i}>
-            <span>{p.nombre} × {p.cantidad}</span>
+            <span>{p.nombre}{p.variante ? ` (${p.variante})` : ""} × {p.cantidad}</span>
             <span>${p.precio * p.cantidad}</span>
           </li>
         ))}

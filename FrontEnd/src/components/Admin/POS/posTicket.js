@@ -24,7 +24,7 @@ function dibujar(doc, pedido, { montoRecibido, vuelto, titulo } = {}) {
   const clienteNombre = String(pedido.cliente?.nombre || "").trim()
 
   const items = (pedido.productos || []).map((p) => ({
-    nombre: String(p.nombre || "Producto"),
+    nombre: String(p.nombre || "Producto") + (p.variante ? ` (${p.variante})` : ""),
     cantidad: Number(p.cantidad) || 1,
     subtotal: (Number(p.precio) || 0) * (Number(p.cantidad) || 1),
   }))

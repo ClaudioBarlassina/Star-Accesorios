@@ -1,6 +1,7 @@
 import React from 'react'
 import OrderItem from '../OrderSumary/OrderItems/OrderItem'
 import style from '../OrderSumary/OrderSumary.module.css'
+import { getCarritoId } from '../../store/useStore'
 
 const OrderSummary = ({
   items,
@@ -23,7 +24,7 @@ const OrderSummary = ({
       
         {items.map((item) => (
           <OrderItem
-            key={item._id}
+            key={getCarritoId(item)}
             item={item}
             onIncrease={onIncrease}
             onDecrease={onDecrease}

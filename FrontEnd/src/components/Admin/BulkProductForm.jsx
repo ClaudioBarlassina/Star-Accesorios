@@ -10,6 +10,7 @@ const emptyRow = () => ({
   categoria: "",
   subcategoria: "",
   descripcion: "",
+  variantesText: "",
   files: [],
   previews: [],
 })
@@ -28,6 +29,7 @@ function parseCsv(text) {
     categoria: headers.indexOf("categoria"),
     subcategoria: headers.indexOf("subcategoria"),
     descripcion: headers.indexOf("descripcion"),
+    variantes: headers.indexOf("variantes"),
   }
 
   if (idx.nombre === -1 || idx.precio === -1) {
@@ -43,6 +45,7 @@ function parseCsv(text) {
       categoria: idx.categoria >= 0 ? cols[idx.categoria] || "" : "",
       subcategoria: idx.subcategoria >= 0 ? cols[idx.subcategoria] || "" : "",
       descripcion: idx.descripcion >= 0 ? cols[idx.descripcion] || "" : "",
+      variantesText: idx.variantes >= 0 ? cols[idx.variantes] || "" : "",
       files: [],
       previews: [],
     }
@@ -152,10 +155,15 @@ export default function BulkProductForm({ onSave, onClose }) {
     try {
       const fd = new FormData()
 
-      const productos = rows.map(({ files: _f, previews: _p, ...rest }) => ({
+      const productos = rows.map(({ files: _f, previews: _p, variantesText, ...rest }) => ({
         ...rest,
         precio: Number(rest.precio),
         stock: Number(rest.stock) || 1,
+        variantes: (variantesText || "")
+          .split("|")
+          .map((s) => s.trim())
+          .filter(Boolean)
+          .map((nombre) => ({ nombre })),
       }))
       fd.append("productos", JSON.stringify(productos))
 
@@ -240,13 +248,13 @@ export default function BulkProductForm({ onSave, onClose }) {
 
             <div style={{ marginTop: "20px", padding: "16px", background: "var(--surface)", borderRadius: "var(--radius-sm)" }}>
               <p style={{ fontFamily: "var(--ui)", fontSize: "13px", fontWeight: 600, margin: "0 0 8px" }}>Formato esperado del CSV:</p>
-              <pre style={{ fontFamily: "monospace", fontSize: "12px", margin: 0, overflow: "auto", color: "var(--text-secondary)" }}>{`nombre,precio,stock,categoria,subcategoria,descripcion
-Aro Luna Plata,1500,10,Acero Quirurgico,Aros,Aro con forma de luna
-Pulsera Cadena,2500,5,Acero Dorado,Pulseras,Pulsera eslabones
-Collar Perlas,3200,,Fantasia,Colgantes,Collar color perla`}</pre>
+              <pre style={{ fontFamily: "monospace", fontSize: "12px", margin: 0, overflow: "auto", color: "var(--text-secondary)" }}>{`nombre,precio,stock,categoria,subcategoria,descripcion,variantes
+Aro Luna Plata,1500,10,Acero Quirurgico,Aros,Aro con forma de luna,10 mm|12 mm|15 mm
+Pulsera Cadena,2500,5,Acero Dorado,Pulseras,Pulsera eslabones,
+Collar Perlas,3200,,Fantasia,Colgantes,Collar color perla,Chico|Grande`}</pre>
               <p style={{ fontFamily: "var(--ui)", fontSize: "12px", color: "var(--text-secondary)", margin: "8px 0 0" }}>
                 <strong>Obligatorias:</strong> nombre, precio &nbsp;|&nbsp;
-                <strong>Opcionales:</strong> stock (default 1), categoria, subcategoria, descripcion<br />
+                <strong>Opcionales:</strong> stock (default 1), categoria, subcategoria, descripcion, variantes (separadas por |)<br />
                 Separador: coma o punto y coma. Se soportan comillas.
               </p>
             </div>
@@ -264,6 +272,7 @@ Collar Perlas,3200,,Fantasia,Colgantes,Collar color perla`}</pre>
                     <th style={{ padding: "8px", fontWeight: 600, fontFamily: "var(--ui)", minWidth: "60px" }}>Stock</th>
                     <th style={{ padding: "8px", fontWeight: 600, fontFamily: "var(--ui)", minWidth: "120px" }}>Categoría</th>
                     <th style={{ padding: "8px", fontWeight: 600, fontFamily: "var(--ui)", minWidth: "120px" }}>Subcat.</th>
+                    <th style={{ padding: "8px", fontWeight: 600, fontFamily: "var(--ui)", minWidth: "120px" }}>Variantes</th>
                     <th style={{ padding: "8px", fontWeight: 600, fontFamily: "var(--ui)", minWidth: "130px" }}>Imágenes</th>
                     <th style={{ padding: "8px", minWidth: "36px" }}></th>
                   </tr>
@@ -291,6 +300,9 @@ Collar Perlas,3200,,Fantasia,Colgantes,Collar color perla`}</pre>
                           <option value="">-</option>
                           {getSubcategoriasDe(row.categoria).map((s) => <option key={s} value={s}>{s}</option>)}
                         </select>
+                      </td>
+                      <td style={{ padding: "6px" }}>
+                        <input style={inputStyle} value={row.variantesText} onChange={(e) => updateRow(i, "variantesText", e.target.value)} placeholder="10 mm|12 mm" title="Variantes separadas por |" />
                       </td>
                       <td style={{ padding: "6px" }}>
                         <div style={{ display: "flex", gap: "4px", alignItems: "center", flexWrap: "wrap" }}>

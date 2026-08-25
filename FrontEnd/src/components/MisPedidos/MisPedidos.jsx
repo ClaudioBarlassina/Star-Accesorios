@@ -105,7 +105,10 @@ export default function MisPedidos() {
               <div className={styles.products}>
                 {pedido.productos?.map((p, i) => (
                   <div key={i} className={styles.productRow}>
-                    <span>{p.nombre} × {p.cantidad}</span>
+                    <span>
+                      {p.nombre}
+                      {p.variante && <em className={styles.variante}> · {p.variante}</em>} × {p.cantidad}
+                    </span>
                     <span>${(p.precio * p.cantidad).toLocaleString()}</span>
                   </div>
                 ))}

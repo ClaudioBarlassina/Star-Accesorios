@@ -18,6 +18,7 @@ export const crearPedidoService = async (data) => {
   const productosLimpios = productos.map((p) => ({
     _id: p._id,
     nombre: p.nombre,
+    variante: p.variante || "",
     precio: p.precio,
     cantidad: p.cantidad,
     categoria:p.categoria,
@@ -26,14 +27,22 @@ export const crearPedidoService = async (data) => {
     descripcion: p.descripcion,
   }));
 
-  // validar stock antes de descontar (solo productos con stock definido)
+  // agrupar cantidades por producto (dos líneas del mismo producto con
+  // distinta variante comparten el mismo stock)
+  const cantidadesPorProducto = new Map();
   for (const item of productosLimpios) {
-    const producto = await Product.findById(item._id);
+    const previa = cantidadesPorProducto.get(String(item._id)) || 0;
+    cantidadesPorProducto.set(String(item._id), previa + Number(item.cantidad || 0));
+  }
+
+  // validar stock antes de descontar (solo productos con stock definido)
+  for (const [productoId, cantidadTotal] of cantidadesPorProducto) {
+    const producto = await Product.findById(productoId);
     const tieneStock = producto?.stock != null;
 
-    if (tieneStock && Number(producto.stock) < item.cantidad) {
+    if (tieneStock && Number(producto.stock) < cantidadTotal) {
       const error = new Error(
-        `Stock insuficiente para "${item.nombre}" (disponible: ${producto.stock}, pedido: ${item.cantidad})`
+        `Stock insuficiente para "${producto.nombre}" (disponible: ${producto.stock}, pedido: ${cantidadTotal})`
       );
       error.code = "STOCK_INSUFICIENTE";
       throw error;
@@ -41,10 +50,10 @@ export const crearPedidoService = async (data) => {
   }
 
   // descontar stock (sin bajar de 0, solo en productos que ya tienen stock)
-  for (const item of productosLimpios) {
+  for (const [productoId, cantidadTotal] of cantidadesPorProducto) {
     await Product.updateOne(
-      { _id: item._id, stock: { $exists: true, $ne: null } },
-      { $inc: { stock: -item.cantidad } }
+      { _id: productoId, stock: { $exists: true, $ne: null } },
+      { $inc: { stock: -cantidadTotal } }
     );
   }
 

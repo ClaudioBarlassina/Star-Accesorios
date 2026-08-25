@@ -3,6 +3,7 @@ import styles from "./CardCarrito.module.css"
 export default function Card({
   image,
   title,
+  subtitle,
   price,
   quantity = 1,
   onIncrease,
@@ -18,6 +19,9 @@ export default function Card({
 
       <div className={styles.content}>
         <h3 className={styles.title}>{title}</h3>
+        {subtitle && (
+          <span className={styles.subtitle}>{subtitle}</span>
+        )}
         <span className={styles.price}>${price}</span>
 
         <div className={styles.bottomRow}>

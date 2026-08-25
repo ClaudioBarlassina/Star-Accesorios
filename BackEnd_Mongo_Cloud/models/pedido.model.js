@@ -13,6 +13,7 @@ const PedidoSchema = new mongoose.Schema({
     {
       _id: String,
       nombre: String,
+      variante: String,
       precio: Number,
       cantidad: Number,
       categoria: String,

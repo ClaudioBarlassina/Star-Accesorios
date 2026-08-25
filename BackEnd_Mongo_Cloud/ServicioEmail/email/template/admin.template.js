@@ -290,7 +290,7 @@ export const adminTemplate = (pedido) => {
                   alt="${producto.nombre}"
                 />
                 <div class="product-details">
-                  <p><strong>Producto:</strong> ${producto.nombre}</p>
+                  <p><strong>Producto:</strong> ${producto.nombre}${producto.variante ? ` — ${producto.variante}` : ''}</p>
                   <p><strong>Categoría:</strong> ${producto.categoria}</p>
                   <p><strong>Precio:</strong> $${producto.precio}</p>
                   <p><strong>Descripción:</strong> ${producto.descripcion}</p>

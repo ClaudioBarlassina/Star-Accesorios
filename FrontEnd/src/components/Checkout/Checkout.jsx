@@ -1,6 +1,6 @@
 import { useState, useMemo } from 'react'
 import styles from './Checkout.module.css'
-import useStore from '../../store/useStore'
+import useStore, { getCarritoId } from '../../store/useStore'
 
 export default function Checkout({ productos = [], onConfirm, onSubmit }) {
   const error = useStore(state => state.errorPedido)
@@ -109,11 +109,14 @@ export default function Checkout({ productos = [], onConfirm, onSubmit }) {
         {productos.map((item) => {
           const subtotal = item.precio * item.cantidad
           return (
-            <div key={item._id} className={styles.itemRow}>
+            <div key={getCarritoId(item)} className={styles.itemRow}>
               <div className={styles.image}>
                 <img src={item.images?.[0]?.url || ''} alt={item.nombre} />
               </div>
-              <div className={styles.name}>{item.nombre}</div>
+              <div className={styles.name}>
+                {item.nombre}
+                {item.variante && <span className={styles.variante}> · {item.variante}</span>}
+              </div>
               <div className={styles.price}>${item.precio}</div>
               <div className={styles.quantity}>{item.cantidad}</div>
               <div className={styles.subtotal}>${subtotal}</div>

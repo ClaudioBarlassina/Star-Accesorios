@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import styles from './LayoudShop.module.css'
 import { ADMIN_EMAILS } from '../../config/admin.js'
 import CardCarrito from '../layoudShopLogM/Card1-Carrito/CardCarrito'
+import { getCarritoId } from '../../store/useStore'
 import logo from '../layoudShopLogM/logo2.png'
 import barra from './Botones/barra.svg'
 import search from './Botones/search-normal.svg'
@@ -136,14 +137,15 @@ export default function LayoutShop({
         <div className={styles.cartContent}>
           {prod.map((item) => (
             <CardCarrito
-              key={item._id}
+              key={getCarritoId(item)}
               image={item.images?.[0]?.url || ''}
               title={item.nombre}
+              subtitle={item.variante}
               price={item.precio}
               quantity={item.cantidad}
-              onIncrease={() => incr(item._id)}
-              onDecrease={() => decr(item._id)}
-              onRemove={() => remov(item._id)}
+              onIncrease={() => incr(getCarritoId(item))}
+              onDecrease={() => decr(getCarritoId(item))}
+              onRemove={() => remov(getCarritoId(item))}
             />
           ))}
         </div>

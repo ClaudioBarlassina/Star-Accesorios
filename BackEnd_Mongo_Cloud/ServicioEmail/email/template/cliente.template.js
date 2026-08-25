@@ -272,7 +272,7 @@ export const clienteTemplate = (pedido) => {
                 alt="${producto.nombre}"
               />
               <div class="product-info">
-                <h3>${producto.nombre}</h3>
+                <h3>${producto.nombre}${producto.variante ? ` — ${producto.variante}` : ''}</h3>
                 <p><strong>Categoría:</strong> ${producto.categoria}</p>
                 <p><strong>Subcategoría:</strong> ${producto.subcategoria}</p>
                 <p><strong>Precio:</strong> $${producto.precio}</p>

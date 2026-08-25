@@ -22,6 +22,17 @@ const productSchema = new mongoose.Schema(
         },
       },
     ],
+
+    variantes: [
+      {
+        nombre: {
+          type: String,
+          required: true,
+          trim: true,
+        },
+        imageUrl: String,
+      },
+    ],
   },
   { timestamps: true }
 );

@@ -168,6 +168,12 @@
   border-bottom: none;
 }
 
+.variante {
+  font-style: normal;
+  color: var(--text-secondary);
+  font-size: 12px;
+}
+
 /* footer */
 .cardFooter {
   display: flex;

@@ -5,14 +5,18 @@ import styles from "./ProductDetails.module.css";
 
 export default function ProductDetails({ product }) {
   const [mainImage, setMainImage] = useState(null);
+  const [varianteSel, setVarianteSel] = useState(null);
   const [qty, setQty] = useState(1);
   const addCarrito = useStore((s) => s.addCarrito);
   const navigate = useNavigate();
+
+  const variantes = product?.variantes || [];
 
   useEffect(() => {
     if (product?.images?.length > 0) {
       setMainImage(product.images[0].url);
     }
+    setVarianteSel(product?.variantes?.[0]?.nombre || null);
   }, [product]);
 
   if (!product) {
@@ -22,9 +26,14 @@ export default function ProductDetails({ product }) {
   const sinStock = product.stock !== undefined && product.stock !== null && product.stock <= 0
   const maxQty = product.stock ?? Infinity
 
+  const elegirVariante = (v) => {
+    setVarianteSel(v.nombre);
+    if (v.imageUrl) setMainImage(v.imageUrl);
+  };
+
   const handleAddToCart = () => {
     for (let i = 0; i < qty; i++) {
-      addCarrito(product);
+      addCarrito({ ...product, variante: varianteSel || undefined });
     }
     navigate("/order");
   };
@@ -61,6 +70,24 @@ export default function ProductDetails({ product }) {
           <span className={`${styles.stockBadge} ${product.stock <= 0 ? styles.stockOut : product.stock <= 5 ? styles.stockLow : styles.stockOk}`}>
             {product.stock <= 0 ? "Agotado" : product.stock === 1 ? "Última unidad" : `${product.stock} uni`}
           </span>
+        )}
+
+        {variantes.length > 0 && (
+          <div className={styles.variants}>
+            <label>Modelo / Tamaño</label>
+            <div className={styles.variantChips}>
+              {variantes.map((v) => (
+                <button
+                  key={v.nombre}
+                  type="button"
+                  onClick={() => elegirVariante(v)}
+                  className={`${styles.chip} ${varianteSel === v.nombre ? styles.chipActive : ""}`}
+                >
+                  {v.nombre}
+                </button>
+              ))}
+            </div>
+          </div>
         )}
 
         <p className={styles.description}>{product.descripcion}</p>

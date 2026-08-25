@@ -57,6 +57,13 @@
   color: var(--text);
 }
 
+.variante {
+  font-family: var(--ui);
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-secondary);
+}
+
 .price,
 .quantity,
 .subtotal {

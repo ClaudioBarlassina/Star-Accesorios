@@ -1,6 +1,38 @@
 import * as service from "../services/products.service.js";
 import { uploadImage, deleteImage } from "../services/cloudinary.service.js";
 
+// las variantes llegan como JSON en el body; cada una puede referenciar su
+// imagen por url ya existente o por fileIndex (posición entre los archivos
+// subidos en este request)
+const resolverVariantes = (raw, uploadedImages = []) => {
+  if (!raw) return [];
+
+  let list = raw;
+  if (typeof raw === "string") {
+    try {
+      list = JSON.parse(raw);
+    } catch {
+      return [];
+    }
+  }
+
+  if (!Array.isArray(list)) return [];
+
+  return list
+    .filter((v) => v && typeof v.nombre === "string" && v.nombre.trim())
+    .map((v) => {
+      const variante = { nombre: v.nombre.trim() };
+      if (typeof v.imageUrl === "string" && v.imageUrl) {
+        variante.imageUrl = v.imageUrl;
+      } else if (
+        Number.isInteger(v.fileIndex) &&
+        uploadedImages[v.fileIndex]?.url
+      ) {
+        variante.imageUrl = uploadedImages[v.fileIndex].url;
+      }
+      return variante;
+    });
+};
 
 export const getProducts = async (req, res) => {
   try {
@@ -44,6 +76,7 @@ if (req.files && req.files.length > 0) {
    const newProduct = await service.createProduct({
   ...req.body,
   images,
+  variantes: resolverVariantes(req.body.variantes, images),
 });
 
     res.status(201).json(newProduct);
@@ -93,9 +126,15 @@ export const updateProduct = async (req, res) => {
 
     const { keepImageIds, ...rest } = req.body;
 
+    const datosUpdate = { ...rest, images };
+    if (req.body.variantes !== undefined) {
+      // las variantes se reemplazan por completo en cada edición
+      datosUpdate.variantes = resolverVariantes(req.body.variantes, newImages);
+    }
+
     const updatedProduct = await service.updateProduct(
       req.params.id,
-      { ...rest, images }
+      datosUpdate
     );
 
     res.json(updatedProduct);
