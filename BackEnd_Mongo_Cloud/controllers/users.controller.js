@@ -1,6 +1,10 @@
 import { firebaseAuth } from "../config/firebase-admin.js";
 
 export const getUsers = async (req, res) => {
+  if (!firebaseAuth) {
+    return res.status(503).json({ error: "Firebase Admin no está configurado en este servidor." });
+  }
+
   try {
     const listResult = await firebaseAuth.listUsers();
     const users = listResult.users.map((u) => ({
