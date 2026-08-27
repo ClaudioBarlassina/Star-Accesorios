@@ -9,6 +9,14 @@ import { crearPedido } from "../api/orders.api";
 export const getCarritoId = (item) =>
   item?.carritoId || `${item?._id}__${item?.variante || ""}`;
 
+// stock efectivo de un producto: suma de sus variantes si las tiene, si no su stock
+export const stockEfectivo = (p) => {
+  if (Array.isArray(p?.variantes) && p.variantes.length > 0) {
+    return p.variantes.reduce((acc, v) => acc + (Number(v.stock) || 0), 0);
+  }
+  return p?.stock;
+};
+
 const useStore = create(
   devtools(
     persist(
@@ -28,17 +36,25 @@ const useStore = create(
 
       addCarrito: (producto) =>
         set((state) => {
-          const stock = producto.stock
-          const tieneStock = stock !== undefined && stock !== null
-          if (tieneStock && stock <= 0) return state
+          const tieneVariantes = Array.isArray(producto.variantes) && producto.variantes.length > 0
 
-          // el stock es compartido entre variantes: se suma todo lo del mismo producto
-          const totalEnCarrito = state.Carrito
-            .filter((item) => item._id === producto._id)
-            .reduce((acc, item) => acc + item.cantidad, 0)
-          if (tieneStock && totalEnCarrito >= stock) return state
+          // límite de stock: el de la variante seleccionada (si aplica) o el general
+          let limite = stockEfectivo(producto)
+          if (tieneVariantes && producto.variante) {
+            const vObj = producto.variantes.find((v) => v.nombre === producto.variante)
+            limite = vObj ? Number(vObj.stock) || 0 : (stockEfectivo(producto) ?? null)
+          }
+          const tieneStock = limite !== undefined && limite !== null
+          if (tieneStock && limite <= 0) return state
 
           const carritoId = getCarritoId(producto)
+
+          // el stock es por variante: se suma lo del mismo producto + misma variante
+          const totalEnCarrito = state.Carrito
+            .filter((item) => getCarritoId(item) === carritoId)
+            .reduce((acc, item) => acc + item.cantidad, 0)
+          if (tieneStock && totalEnCarrito >= limite) return state
+
           const existe = state.Carrito.find(
             (item) => getCarritoId(item) === carritoId,
           )
@@ -56,18 +72,20 @@ const useStore = create(
           return {
             Carrito: [
               ...state.Carrito,
-              { ...producto, carritoId, cantidad: 1 },
+              { ...producto, carritoId, limiteStock: limite, cantidad: 1 },
             ],
           }
         }),
 
       addAumentar: (carritoId) =>
         set((state) => ({
-          Carrito: state.Carrito.map((item) =>
-            getCarritoId(item) === carritoId
-              ? { ...item, cantidad: item.cantidad + 1 }
-              : item,
-          ),
+          Carrito: state.Carrito.map((item) => {
+            if (getCarritoId(item) !== carritoId) return item
+            const limite = item.limiteStock
+            const tieneStock = limite !== undefined && limite !== null
+            if (tieneStock && item.cantidad >= limite) return item
+            return { ...item, cantidad: item.cantidad + 1 }
+          }),
         })),
 
       addDisminuir: (carritoId) =>

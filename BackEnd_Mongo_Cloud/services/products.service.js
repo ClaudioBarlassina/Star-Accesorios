@@ -64,16 +64,26 @@ export const getProductById = async (id) => {
 };
 
 
+// si el producto tiene variantes, el stock general pasa a ser la suma de sus stocks
+const syncStock = (data) => {
+  const tieneVariantes = Array.isArray(data.variantes) && data.variantes.length > 0;
+  if (tieneVariantes) {
+    const suma = data.variantes.reduce((acc, v) => acc + (Number(v.stock) || 0), 0);
+    return { ...data, stock: suma };
+  }
+  return data;
+};
+
 // 🔥 CORREGIDO
 export const createProduct = async (data) => {
-  return await Product.create({ ...data, stock: data.stock ?? 1 });
+  return await Product.create(syncStock({ ...data, stock: data.stock ?? 1 }));
 };
 
 
 export const updateProduct = async (id, data) => {
   const product = await Product.findByIdAndUpdate(
     id,
-    data,
+    syncStock(data),
     { new: true, runValidators: true }
   );
 
@@ -96,5 +106,5 @@ export const deleteProduct = async (id) => {
 };
 
 export const bulkCreateProducts = async (productos) => {
-  return await Product.insertMany(productos, { ordered: false });
+  return await Product.insertMany(productos.map(syncStock), { ordered: false });
 };

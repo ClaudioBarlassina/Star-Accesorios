@@ -32,6 +32,14 @@ const ESTADO_COLORS = {
   cancelado: { bg: "#f8d7da", fg: "#721c24" },
 }
 
+// stock efectivo de un producto: suma de sus variantes si las tiene, si no su stock general
+const stockEfectivo = (p) => {
+  if (Array.isArray(p?.variantes) && p.variantes.length > 0) {
+    return p.variantes.reduce((acc, v) => acc + (Number(v.stock) || 0), 0)
+  }
+  return p?.stock
+}
+
 function Toast({ toast, onClose }) {
   if (!toast) return null
   return (
@@ -95,10 +103,11 @@ function ProductForm({ product, onSave, onClose }) {
   })
   const [existingImages, setExistingImages] = useState(product?.images || [])
   const [newFiles, setNewFiles] = useState([])
-  // cada variante: { nombre, ref: "url:<imageUrl>" | "file:<index>" | "", }
+  // cada variante: { nombre, stock, ref: "url:<imageUrl>" | "file:<index>" | "", }
   const [variantes, setVariantes] = useState(
     (product?.variantes || []).map((v) => ({
       nombre: v.nombre,
+      stock: v.stock ?? 0,
       ref: v.imageUrl ? `url:${v.imageUrl}` : "",
     }))
   )
@@ -149,7 +158,7 @@ function ProductForm({ product, onSave, onClose }) {
     setNewFiles((prev) => prev.filter((_, idx) => idx !== i))
   }
 
-  const addVariante = () => setVariantes((prev) => [...prev, { nombre: "", ref: "" }])
+  const addVariante = () => setVariantes((prev) => [...prev, { nombre: "", stock: "", ref: "" }])
   const removeVariante = (i) => setVariantes((prev) => prev.filter((_, idx) => idx !== i))
   const updateVariante = (i, field, value) =>
     setVariantes((prev) => prev.map((v, idx) => (idx === i ? { ...v, [field]: value } : v)))
@@ -179,13 +188,15 @@ function ProductForm({ product, onSave, onClose }) {
       const variantesPayload = variantes
         .filter((v) => v.nombre.trim())
         .map((v) => {
+          const stock = Number(v.stock)
+          const base = { nombre: v.nombre.trim(), stock: Number.isFinite(stock) ? stock : 0 }
           if (v.ref.startsWith("file:")) {
-            return { nombre: v.nombre.trim(), fileIndex: Number(v.ref.slice(5)) }
+            return { ...base, fileIndex: Number(v.ref.slice(5)) }
           }
           if (v.ref.startsWith("url:")) {
-            return { nombre: v.nombre.trim(), imageUrl: v.ref.slice(4) }
+            return { ...base, imageUrl: v.ref.slice(4) }
           }
-          return { nombre: v.nombre.trim() }
+          return base
         })
       fd.append("variantes", JSON.stringify(variantesPayload))
 
@@ -277,7 +288,7 @@ function ProductForm({ product, onSave, onClose }) {
             </div>
             {variantes.length === 0 && (
               <p style={{ fontFamily: "var(--ui)", fontSize: "12px", color: "var(--text-secondary)", margin: 0 }}>
-                Ej: para un mismo aro en varios tamaños: "10 mm", "12 mm", "15 mm". El precio y stock son compartidos.
+                Ej: para un mismo aro en varios tamaños: "10 mm", "12 mm", "15 mm". El precio es compartido y cada variante tiene su propio stock.
               </p>
             )}
             {variantes.map((v, i) => (
@@ -287,6 +298,16 @@ function ProductForm({ product, onSave, onClose }) {
                   placeholder="Ej: 10 mm"
                   value={v.nombre}
                   onChange={(e) => updateVariante(i, "nombre", e.target.value)}
+                />
+                <input
+                  style={{ ...s.input, flex: 0.4, minWidth: "70px" }}
+                  type="number"
+                  step="1"
+                  min="0"
+                  placeholder="Stock"
+                  title="Stock de esta variante"
+                  value={v.stock}
+                  onChange={(e) => updateVariante(i, "stock", e.target.value)}
                 />
                 <select
                   style={{ ...s.select, flex: 1 }}
@@ -583,8 +604,8 @@ function Resumen({ orders, products, loading }) {
 
   const ventas = pedidosFiltrados.reduce((acc, o) => acc + (o.total || 0), 0)
   const pendientes = pedidosFiltrados.filter((o) => o.estado === "pendiente").length
-  const stockBajo = products.filter((p) => Number.isFinite(p.stock) && p.stock > 0 && p.stock <= 5).length
-  const agotados = products.filter((p) => Number.isFinite(p.stock) && p.stock <= 0).length
+  const stockBajo = products.filter((p) => { const s = stockEfectivo(p); return Number.isFinite(s) && s > 0 && s <= 5 }).length
+  const agotados = products.filter((p) => { const s = stockEfectivo(p); return Number.isFinite(s) && s <= 0 }).length
 
   const chartData = useMemo(() => {
     if (pedidosFiltrados.length === 0) return []
@@ -690,11 +711,12 @@ function ProductsTab({ onEdit, onDelete, toast, refreshKey }) {
   }
 
   const stockBadge = (p) => {
-    if (p.stock === undefined || p.stock === null) return { label: "1 uni", cls: styles.stockOk }
-    if (!p.stock || p.stock <= 0) return { label: "Agotado", cls: styles.stockOut }
-    if (p.stock === 1) return { label: "Última unidad", cls: styles.stockLow }
-    if (p.stock <= 5) return { label: `${p.stock} uni`, cls: styles.stockLow }
-    return { label: `${p.stock} uni`, cls: styles.stockOk }
+    const s = stockEfectivo(p)
+    if (s === undefined || s === null) return { label: "1 uni", cls: styles.stockOk }
+    if (!s || s <= 0) return { label: "Agotado", cls: styles.stockOut }
+    if (s === 1) return { label: "Última unidad", cls: styles.stockLow }
+    if (s <= 5) return { label: `${s} uni`, cls: styles.stockLow }
+    return { label: `${s} uni`, cls: styles.stockOk }
   }
 
   return (

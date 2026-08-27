@@ -12,12 +12,30 @@ const s = {
   radioActive: { background: "var(--gold)", color: "white", borderColor: "var(--gold)" },
 }
 
+// stock general de un producto: suma de sus variantes si las tiene, si no su stock
+const stockGeneral = (p) => {
+  if (Array.isArray(p?.variantes) && p.variantes.length > 0) {
+    return p.variantes.reduce((acc, v) => acc + (Number(v.stock) || 0), 0)
+  }
+  return p?.stock
+}
+
+// stock de una variante puntual (null si no tiene variantes / no se encuentra)
+const stockDeVariante = (p, variante) => {
+  if (Array.isArray(p?.variantes) && variante) {
+    const v = p.variantes.find((x) => x.nombre === variante)
+    return v ? Number(v.stock) || 0 : null
+  }
+  return null
+}
+
 function BadgeStock({ p }) {
-  if (p.stock === undefined || p.stock === null) return <span className={styles.stockOk}>1 uni</span>
-  if (!p.stock || p.stock <= 0) return <span className={styles.stockOut}>Agotado</span>
-  if (p.stock === 1) return <span className={styles.stockLow}>Última unidad</span>
-  if (p.stock <= 5) return <span className={styles.stockLow}>{p.stock} uni</span>
-  return <span className={styles.stockOk}>{p.stock} uni</span>
+  const s = stockGeneral(p)
+  if (s === undefined || s === null) return <span className={styles.stockOk}>1 uni</span>
+  if (!s || s <= 0) return <span className={styles.stockOut}>Agotado</span>
+  if (s === 1) return <span className={styles.stockLow}>Última unidad</span>
+  if (s <= 5) return <span className={styles.stockLow}>{s} uni</span>
+  return <span className={styles.stockOk}>{s} uni</span>
 }
 
 const posKey = (item) => `${item.product._id}__${item.variante || ""}`
@@ -30,8 +48,9 @@ function ProductGrid({ products, cart, onPick }) {
         const enCarrito = cart
           .filter((i) => i.product._id === p._id)
           .reduce((acc, i) => acc + i.cantidad, 0)
-        const sinStock = !Number(p.stock) || Number(p.stock) <= 0
-        const sinMas = Number(p.stock) > 0 && enCarrito >= Number(p.stock)
+        const totStock = stockGeneral(p)
+        const sinStock = Number(totStock) <= 0
+        const sinMas = Number(totStock) > 0 && enCarrito >= Number(totStock)
         return (
           <button
             key={p._id}
@@ -120,11 +139,12 @@ export default function CajaVenta({ toast }) {
   const addProduct = (p, variante) => {
     setCart((prev) => {
       const existe = prev.find((i) => posKey(i) === `${p._id}__${variante || ""}`)
+      const limite = stockDeVariante(p, variante) ?? stockGeneral(p)
       if (existe) {
-        if (Number(p.stock) > 0 && existe.cantidad >= Number(p.stock)) return prev
+        if (Number(limite) > 0 && existe.cantidad >= Number(limite)) return prev
         return prev.map((i) => (posKey(i) === `${p._id}__${variante || ""}` ? { ...i, cantidad: i.cantidad + 1 } : i))
       }
-      return [...prev, { product: p, variante, cantidad: 1 }]
+      return [...prev, { product: p, variante, cantidad: 1, limite }]
     })
     setVariantePicker(null)
     setShowSidebar(false)
@@ -141,7 +161,8 @@ export default function CajaVenta({ toast }) {
 
   const inc = (key) => setCart((prev) => prev.map((i) => {
     if (posKey(i) !== key) return i
-    if (Number(i.product.stock) > 0 && i.cantidad >= Number(i.product.stock)) return i
+    const limite = i.limite
+    if (Number(limite) > 0 && i.cantidad >= Number(limite)) return i
     return { ...i, cantidad: i.cantidad + 1 }
   }))
 
@@ -350,16 +371,20 @@ export default function CajaVenta({ toast }) {
               Elegí la variante:
             </p>
             <div style={{ display: "flex", flexWrap: "wrap", gap: "8px", marginBottom: "16px" }}>
-              {variantePicker.variantes.map((v) => (
-                <button
-                  key={v.nombre}
-                  type="button"
-                  className={styles.posPayOption}
-                  onClick={() => addProduct(variantePicker, v.nombre)}
-                >
-                  {v.nombre}
-                </button>
-              ))}
+              {variantePicker.variantes.map((v) => {
+                const agotada = (Number(v.stock) || 0) <= 0
+                return (
+                  <button
+                    key={v.nombre}
+                    type="button"
+                    disabled={agotada}
+                    className={agotada ? `${styles.posPayOption} ${styles.posPayOptionDisabled}` : styles.posPayOption}
+                    onClick={() => addProduct(variantePicker, v.nombre)}
+                  >
+                    {v.nombre}{agotada ? "" : ` · ${Number(v.stock) || 0} uni`}
+                  </button>
+                )
+              })}
             </div>
             <button
               type="button"

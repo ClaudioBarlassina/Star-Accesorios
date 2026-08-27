@@ -857,6 +857,19 @@
   transition: all 200ms ease;
 }
 
+.posPayOptionDisabled {
+  background: var(--border-light);
+  color: var(--text-muted);
+  cursor: not-allowed;
+  text-decoration: line-through;
+  opacity: 0.8;
+}
+
+.posPayOptionDisabled:hover {
+  background: var(--border-light);
+  color: var(--text-muted);
+}
+
 .posCobrarBtn {
   width: 100%;
   padding: 14px;

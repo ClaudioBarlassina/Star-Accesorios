@@ -16,17 +16,28 @@ export default function ProductDetails({ product }) {
     if (product?.images?.length > 0) {
       setMainImage(product.images[0].url);
     }
-    setVarianteSel(product?.variantes?.[0]?.nombre || null);
+    const vs = product?.variantes || [];
+    const conStock = vs.find((v) => (Number(v.stock) || 0) > 0);
+    setVarianteSel(conStock?.nombre || vs[0]?.nombre || null);
   }, [product]);
 
   if (!product) {
     return <div className={styles.loadingState}>Cargando producto...</div>;
   }
 
-  const sinStock = product.stock !== undefined && product.stock !== null && product.stock <= 0
-  const maxQty = product.stock ?? Infinity
+  const varianteSelObj = variantes.find((v) => v.nombre === varianteSel);
+
+  // límite de stock: el de la variante seleccionada si el producto tiene
+  // variantes; si no, el stock general del producto
+  const limiteStock = variantes.length > 0
+    ? (varianteSelObj ? Number(varianteSelObj.stock) || 0 : 0)
+    : (product.stock ?? Infinity)
+
+  const sinStock = Number.isFinite(limiteStock) && limiteStock <= 0
+  const maxQty = limiteStock
 
   const elegirVariante = (v) => {
+    if ((Number(v.stock) || 0) <= 0) return;
     setVarianteSel(v.nombre);
     if (v.imageUrl) setMainImage(v.imageUrl);
   };
@@ -66,9 +77,9 @@ export default function ProductDetails({ product }) {
         <h1 className={styles.name}>{product.nombre}</h1>
         <p className={styles.price}>${product.precio}</p>
 
-        {product.stock !== undefined && product.stock !== null && (
-          <span className={`${styles.stockBadge} ${product.stock <= 0 ? styles.stockOut : product.stock <= 5 ? styles.stockLow : styles.stockOk}`}>
-            {product.stock <= 0 ? "Agotado" : product.stock === 1 ? "Última unidad" : `${product.stock} uni`}
+        {Number.isFinite(limiteStock) && (
+          <span className={`${styles.stockBadge} ${limiteStock <= 0 ? styles.stockOut : limiteStock <= 5 ? styles.stockLow : styles.stockOk}`}>
+            {limiteStock <= 0 ? "Agotado" : limiteStock === 1 ? "Última unidad" : `${limiteStock} uni`}
           </span>
         )}
 
@@ -76,16 +87,21 @@ export default function ProductDetails({ product }) {
           <div className={styles.variants}>
             <label>Modelo / Tamaño</label>
             <div className={styles.variantChips}>
-              {variantes.map((v) => (
-                <button
-                  key={v.nombre}
-                  type="button"
-                  onClick={() => elegirVariante(v)}
-                  className={`${styles.chip} ${varianteSel === v.nombre ? styles.chipActive : ""}`}
-                >
+              {variantes.map((v) => {
+                const agotada = (Number(v.stock) || 0) <= 0
+                return (
+                  <button
+                    key={v.nombre}
+                    type="button"
+                    onClick={() => elegirVariante(v)}
+                    disabled={agotada}
+                    title={agotada ? "Sin stock" : `${v.stock} disponibles`}
+                    className={`${styles.chip} ${varianteSel === v.nombre ? styles.chipActive : ""} ${agotada ? styles.chipDisabled : ""}`}
+                  >
                   {v.nombre}
                 </button>
-              ))}
+                )
+              })}
             </div>
           </div>
         )}

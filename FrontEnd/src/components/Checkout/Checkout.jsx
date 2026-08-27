@@ -26,16 +26,20 @@ export default function Checkout({ productos = [], onConfirm, onSubmit }) {
     })
   }
 
+  // límite de cada ítem: el de su variante (guardado por el store) o el stock general
+  const limiteDeItem = (item) =>
+    (item.limiteStock !== undefined ? item.limiteStock : item.stock)
+
   const sinStock = useMemo(() => {
     return productos.filter((item) => {
-      const stock = item.stock
+      const stock = limiteDeItem(item)
       return stock !== undefined && stock !== null && stock <= 0
     })
   }, [productos])
 
   const exceedStock = useMemo(() => {
     return productos.filter((item) => {
-      const stock = item.stock
+      const stock = limiteDeItem(item)
       return stock !== undefined && stock !== null && stock > 0 && item.cantidad > stock
     })
   }, [productos])
@@ -50,7 +54,7 @@ export default function Checkout({ productos = [], onConfirm, onSubmit }) {
     }
 
     if (exceedStock.length > 0) {
-      newErrors.exceedStock = `${exceedStock.map((p) => `${p.nombre} (pediste ${p.cantidad}, hay ${p.stock})`).join("; ")}`
+      newErrors.exceedStock = `${exceedStock.map((p) => `${p.nombre} (pediste ${p.cantidad}, hay ${limiteDeItem(p)})`).join("; ")}`
     }
 
     if (!form.nombre.trim()) newErrors.nombre = 'Nombre obligatorio'
@@ -99,7 +103,7 @@ export default function Checkout({ productos = [], onConfirm, onSubmit }) {
       {hasStockIssue && (
         <div style={{ background: '#f8d7da', color: '#721c24', padding: '14px', borderRadius: 'var(--radius-md)', fontFamily: 'var(--ui)', fontSize: '13px', fontWeight: 600, marginBottom: '16px' }}>
           {sinStock.length > 0 && <p style={{ margin: 0 }}>🚫 {sinStock.map((p) => p.nombre).join(", ")} {sinStock.length > 1 ? "están agotados" : "está agotado"} — eliminá {sinStock.length > 1 ? "estos productos" : "este producto"} del carrito para continuar.</p>}
-          {exceedStock.length > 0 && <p style={{ margin: sinStock.length > 0 ? '8px 0 0' : 0 }}>⚠️ {exceedStock.map((p) => `${p.nombre} (pediste ${p.cantidad}, hay ${p.stock})`).join("; ")}</p>}
+          {exceedStock.length > 0 && <p style={{ margin: sinStock.length > 0 ? '8px 0 0' : 0 }}>⚠️ {exceedStock.map((p) => `${p.nombre} (pediste ${p.cantidad}, hay ${limiteDeItem(p)})`).join("; ")}</p>}
         </div>
       )}
 

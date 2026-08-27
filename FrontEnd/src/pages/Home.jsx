@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react'
 import LayoutShop from '../components/layoudShopLogM/LayoutShop'
 import AuthComponent from '../components/layoudShopLogM/components/AuthModal/AuthComponent'
 import useAuthListener from '../components/layoudShopLogM/hooks/useAuthListener'
-import useStore from '../store/useStore'
+import useStore, { stockEfectivo } from '../store/useStore'
 import Carousel from '../components/CarouselBigSwiper/Carousel'
 import CategorySlider from '../components/CarouselCategoriasT/CategorySliderT'
 import Paginacion from "../components/PaginacionButon/Paginacion.jsx"
@@ -131,7 +131,7 @@ const Home = () => {
               key={item._id}
               title={item.nombre}
               price={item.precio}
-              stock={item.stock}
+              stock={stockEfectivo(item)}
               images={item.images}
               onClick={() => navigate(`/product/${item._id}`)}
               action={

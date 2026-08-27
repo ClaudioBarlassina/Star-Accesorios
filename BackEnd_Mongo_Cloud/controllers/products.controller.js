@@ -21,7 +21,10 @@ const resolverVariantes = (raw, uploadedImages = []) => {
   return list
     .filter((v) => v && typeof v.nombre === "string" && v.nombre.trim())
     .map((v) => {
-      const variante = { nombre: v.nombre.trim() };
+      const variante = {
+        nombre: v.nombre.trim(),
+        stock: Number.isFinite(Number(v.stock)) ? Number(v.stock) : 0,
+      };
       if (typeof v.imageUrl === "string" && v.imageUrl) {
         variante.imageUrl = v.imageUrl;
       } else if (

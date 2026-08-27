@@ -27,34 +27,73 @@ export const crearPedidoService = async (data) => {
     descripcion: p.descripcion,
   }));
 
-  // agrupar cantidades por producto (dos líneas del mismo producto con
-  // distinta variante comparten el mismo stock)
-  const cantidadesPorProducto = new Map();
+  // agrupar cantidades por producto + variante (una variante tiene su propio stock)
+  const cantidadesPorLinea = new Map();
   for (const item of productosLimpios) {
-    const previa = cantidadesPorProducto.get(String(item._id)) || 0;
-    cantidadesPorProducto.set(String(item._id), previa + Number(item.cantidad || 0));
+    const key = `${String(item._id)}__${item.variante || ""}`;
+    const previa = cantidadesPorLinea.get(key) || 0;
+    cantidadesPorLinea.set(key, previa + Number(item.cantidad || 0));
   }
 
-  // validar stock antes de descontar (solo productos con stock definido)
-  for (const [productoId, cantidadTotal] of cantidadesPorProducto) {
+  // validar stock antes de descontar (por variante o por producto según corresponda)
+  for (const [key, cantidadTotal] of cantidadesPorLinea) {
+    const [productoId, variante] = key.split("__");
     const producto = await Product.findById(productoId);
-    const tieneStock = producto?.stock != null;
 
-    if (tieneStock && Number(producto.stock) < cantidadTotal) {
+    const tieneVariantes = Array.isArray(producto?.variantes) && producto?.variantes.length > 0;
+    const varianteObj = tieneVariantes
+      ? (producto.variantes || []).find((v) => v.nombre === variante)
+      : null;
+
+    // stock disponible: la de la variante; si la línea no tiene variante pero el
+    // producto sí, se usa el total (salvaguarda del flujo de la tarjeta)
+    let disponible;
+    if (variante && varianteObj) {
+      disponible = Number(varianteObj.stock) || 0;
+    } else if (tieneVariantes) {
+      disponible = producto.stock != null ? Number(producto.stock) : null;
+    } else {
+      disponible = producto?.stock != null ? Number(producto.stock) : null;
+    }
+
+    const nombre = varianteObj
+      ? `${producto.nombre} (${variante})`
+      : producto?.nombre;
+
+    if (disponible != null && disponible < cantidadTotal) {
       const error = new Error(
-        `Stock insuficiente para "${producto.nombre}" (disponible: ${producto.stock}, pedido: ${cantidadTotal})`
+        `Stock insuficiente para "${nombre}" (disponible: ${disponible}, pedido: ${cantidadTotal})`
       );
       error.code = "STOCK_INSUFICIENTE";
       throw error;
     }
   }
 
-  // descontar stock (sin bajar de 0, solo en productos que ya tienen stock)
-  for (const [productoId, cantidadTotal] of cantidadesPorProducto) {
-    await Product.updateOne(
-      { _id: productoId, stock: { $exists: true, $ne: null } },
-      { $inc: { stock: -cantidadTotal } }
-    );
+  // descontar stock por variante (o general si la línea no la tiene)
+  for (const [key, cantidadTotal] of cantidadesPorLinea) {
+    const [productoId, variante] = key.split("__");
+    const producto = await Product.findById(productoId);
+    const tieneVariantes = Array.isArray(producto?.variantes) && producto?.variantes.length > 0;
+    const varianteObj = tieneVariantes
+      ? (producto.variantes || []).find((v) => v.nombre === variante)
+      : null;
+
+    if (variante && varianteObj) {
+      await Product.updateOne(
+        { _id: productoId, "variantes.nombre": variante },
+        { $inc: { "variantes.$.stock": -cantidadTotal } }
+      );
+      // mantener el stock general del producto sincronizado (suma de variantes)
+      await Product.updateOne(
+        { _id: productoId, variantes: { $exists: true } },
+        { $inc: { stock: -cantidadTotal } }
+      );
+    } else {
+      await Product.updateOne(
+        { _id: productoId, stock: { $exists: true, $ne: null } },
+        { $inc: { stock: -cantidadTotal } }
+      );
+    }
   }
 
   const nuevoPedido = new Pedido({
