@@ -2,6 +2,7 @@ import { useState, useEffect, useMemo, useRef, useCallback } from "react"
 import { getProducts, createProduct, updateProduct, deleteProduct } from "../../api/products.api"
 import { getPedidos, updatePedidoEstado } from "../../api/orders.api"
 import { getCarousel, uploadCarouselImages, deleteCarouselImage } from "../../api/carousel.api"
+import { getUsers } from "../../api/users.api"
 import { useNavigate } from "react-router-dom"
 import { CATEGORIAS, getSubcategoriasDe } from "../../config/categories"
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer } from "recharts"
@@ -813,6 +814,75 @@ function OrdersTab({ orders, loading, onEstadoChange }) {
   )
 }
 
+function UsersTab({ toast }) {
+  const [users, setUsers] = useState([])
+  const [loading, setLoading] = useState(true)
+  const [search, setSearch] = useState("")
+
+  useEffect(() => {
+    setLoading(true)
+    getUsers()
+      .then((res) => setUsers(res.data || []))
+      .catch(() => toast("error", "No se pudieron cargar los usuarios"))
+      .finally(() => setLoading(false))
+  }, [toast])
+
+  const filtered = useMemo(() => {
+    const q = search.trim().toLowerCase()
+    if (!q) return users
+    return users.filter((u) => (u.email || "").toLowerCase().includes(q) || (u.displayName || "").toLowerCase().includes(q))
+  }, [users, search])
+
+  const isActive = (lastSignInTime) => {
+    if (!lastSignInTime) return false
+    const diff = Date.now() - new Date(lastSignInTime).getTime()
+    return diff < 30 * 24 * 60 * 60 * 1000
+  }
+
+  return (
+    <div>
+      <div className={styles.searchBar}>
+        <input
+          style={{ ...s.input, maxWidth: "340px" }}
+          placeholder="Buscar por email o nombre..."
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+        />
+      </div>
+
+      {loading ? (
+        <div style={{ padding: "24px 0" }}>
+          {[0, 1, 2].map((i) => <div key={i} className={`${styles.card} ${styles.skeleton}`} />)}
+        </div>
+      ) : (
+        <>
+          <p style={{ fontSize: "13px", color: "var(--text-secondary)", margin: "8px 0 12px" }}>{filtered.length} usuario(s) registrado(s)</p>
+          {filtered.length === 0 && <p style={{ color: "var(--text-secondary)" }}>No se encontraron usuarios</p>}
+          {filtered.map((u) => (
+            <div key={u.uid} style={s.card}>
+              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: "8px" }}>
+                <div style={{ flex: 1, minWidth: "200px" }}>
+                  <div style={{ fontFamily: "var(--body)", fontWeight: 600, fontSize: "14px" }}>{u.email}</div>
+                  {u.displayName && <div style={{ fontSize: "13px", color: "var(--text-secondary)" }}>{u.displayName}</div>}
+                </div>
+                <div style={{ display: "flex", gap: "12px", alignItems: "center", flexWrap: "wrap" }}>
+                  <span style={{ ...s.badge, background: isActive(u.lastSignInTime) ? "#d4edda" : "#f8f9fa", color: isActive(u.lastSignInTime) ? "#155724" : "#6c757d" }}>
+                    {isActive(u.lastSignInTime) ? "Activo" : "Inactivo"}
+                  </span>
+                  <div style={{ fontSize: "12px", color: "var(--text-secondary)", textAlign: "right" }}>
+                    <div>Registro: {u.creationTime ? new Date(u.creationTime).toLocaleDateString("es-AR") : "—"}</div>
+                    <div>Último login: {u.lastSignInTime ? new Date(u.lastSignInTime).toLocaleString("es-AR") : "Nunca"}</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          ))}
+        </>
+      )}
+    </div>
+  )
+}
+
 export default function AdminDashboard() {
   const navigate = useNavigate()
   const [tab, setTab] = useState("resumen")
@@ -960,6 +1030,7 @@ export default function AdminDashboard() {
         <button style={{ ...s.tab, ...(tab === "orders" ? s.tabActive : {}) }} onClick={() => setTab("orders")}>Pedidos</button>
         <button style={{ ...s.tab, ...(tab === "venta" ? s.tabActive : {}) }} onClick={() => setTab("venta")}>Venta</button>
         <button style={{ ...s.tab, ...(tab === "carousel" ? s.tabActive : {}) }} onClick={() => setTab("carousel")}>Carrusel</button>
+        <button style={{ ...s.tab, ...(tab === "users" ? s.tabActive : {}) }} onClick={() => setTab("users")}>Usuarios</button>
       </div>
 
       {tab === "resumen" && <Resumen orders={orders} products={products} loading={loadingResumen} />}
@@ -980,6 +1051,8 @@ export default function AdminDashboard() {
       {tab === "venta" && <CajaVenta toast={toast} />}
 
       {tab === "carousel" && <CarouselTab toast={toast} />}
+
+      {tab === "users" && <UsersTab toast={toast} />}
 
       {showForm && (
         <ProductForm

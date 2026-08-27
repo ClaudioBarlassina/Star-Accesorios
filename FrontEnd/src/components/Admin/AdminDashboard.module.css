@@ -60,15 +60,18 @@
 
 @media (max-width: 600px) {
   .adminTabs {
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    gap: 6px;
+    padding-bottom: 4px;
+    -webkit-overflow-scrolling: touch;
   }
   .adminTabs button {
-    flex: 1;
-    min-width: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
+    flex: 0 0 auto;
+    min-width: auto;
+    padding: 8px 14px;
+    font-size: 12px;
+    white-space: nowrap;
   }
 }
 
