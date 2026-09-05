@@ -1,5 +1,5 @@
 import * as service from "../services/carousel.service.js";
-import { uploadImage, deleteImage } from "../services/cloudinary.service.js";
+import { uploadImage, deleteImage, buildWebUrl } from "../services/cloudinary.service.js";
 
 export const getCarousel = async (req, res) => {
   try {
@@ -22,7 +22,7 @@ export const addCarouselImages = async (req, res) => {
     );
 
     const imagenes = uploads.map((result) => ({
-      url: result.secure_url,
+      url: buildWebUrl(result.secure_url),
       cloudinary_id: result.public_id,
     }));
 

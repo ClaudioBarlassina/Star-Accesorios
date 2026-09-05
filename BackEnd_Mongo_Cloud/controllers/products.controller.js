@@ -1,5 +1,5 @@
 import * as service from "../services/products.service.js";
-import { uploadImage, deleteImage } from "../services/cloudinary.service.js";
+import { uploadImage, deleteImage, buildWebUrl } from "../services/cloudinary.service.js";
 
 // las variantes llegan como JSON en el body; cada una puede referenciar su
 // imagen por url ya existente o por fileIndex (posición entre los archivos
@@ -68,7 +68,7 @@ if (req.files && req.files.length > 0) {
   );
 
   images = uploads.map(result => ({
-    url: result.secure_url,
+    url: buildWebUrl(result.secure_url),
     cloudinary_id: result.public_id,
   }));
 
@@ -116,7 +116,7 @@ export const updateProduct = async (req, res) => {
       );
 
       newImages = uploads.map((result) => ({
-        url: result.secure_url,
+        url: buildWebUrl(result.secure_url),
         cloudinary_id: result.public_id,
       }));
     }
@@ -204,7 +204,7 @@ export const bulkCreateProducts = async (req, res) => {
       const images = indices
         .filter((idx) => uploads[idx])
         .map((idx) => ({
-          url: uploads[idx].secure_url,
+          url: buildWebUrl(uploads[idx].secure_url),
           cloudinary_id: uploads[idx].public_id,
         }));
       return { ...prod, images, stock: prod.stock ?? 1 };

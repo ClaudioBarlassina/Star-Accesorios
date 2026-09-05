@@ -1,6 +1,18 @@
 import cloudinary from "../config/cloudinary.js";
 import streamifier from "streamifier";
 
+export const buildWebUrl = (secureUrl) => {
+  if (!secureUrl || typeof secureUrl !== "string") return secureUrl;
+  if (!secureUrl.includes("/image/upload/")) return secureUrl;
+  if (
+    secureUrl.includes("/image/upload/f_auto") ||
+    secureUrl.includes("/image/upload/f_")
+  ) {
+    return secureUrl;
+  }
+  return secureUrl.replace("/image/upload/", "/image/upload/f_auto/");
+};
+
 export const uploadImage = (fileBuffer, folder = "products") => {
   return new Promise((resolve, reject) => {
     const stream = cloudinary.uploader.upload_stream(
