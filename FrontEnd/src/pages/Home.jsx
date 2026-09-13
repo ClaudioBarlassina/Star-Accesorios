@@ -51,6 +51,14 @@ const Home = () => {
     subcategory: '',
   })
 
+  const shuffle = (arr) => {
+    for (let i = arr.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1))
+      ;[arr[i], arr[j]] = [arr[j], arr[i]]
+    }
+    return arr
+  }
+
   useEffect(() => {
     getProducts({
       category: valores.category,
@@ -61,7 +69,9 @@ const Home = () => {
       .then((res) => {
         // tu backend devuelve JSON
         const prods = res.data.products || res.data
-        setProducts(prods)
+        const sinFiltro =
+          !valores.category && !valores.subcategory && !onSearch && !btnCateg
+        setProducts(sinFiltro ? shuffle([...prods]) : prods)
          setPag(res.data)
       })
       .catch((err) => console.error('Error al cargar productos:', err))
