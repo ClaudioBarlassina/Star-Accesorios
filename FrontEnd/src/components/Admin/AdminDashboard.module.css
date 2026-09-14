@@ -317,6 +317,105 @@
   color: white;
 }
 
+.resumenTableBlock {
+  margin-top: 20px;
+  border-top: 1px solid var(--border-light);
+  padding-top: 16px;
+}
+
+.resumenTableTitle {
+  font-family: var(--heading);
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-dark);
+  margin-bottom: 10px;
+}
+
+.resumenTableWrap {
+  overflow-x: auto;
+  max-width: 100%;
+}
+
+.resumenTable {
+  width: 100%;
+  min-width: 480px;
+  border-collapse: collapse;
+  font-family: var(--body);
+  font-size: 13px;
+  color: var(--text-dark);
+}
+
+.resumenTable th,
+.resumenTable td {
+  padding: 8px 10px;
+  border-bottom: 1px solid var(--border-light);
+  text-align: left;
+  vertical-align: middle;
+}
+
+.resumenTableHead th {
+  font-family: var(--ui);
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+  color: var(--text-secondary);
+  background: var(--surface-soft);
+}
+
+.resumenTableNum {
+  text-align: right;
+  white-space: nowrap;
+}
+
+.resumenProductCell {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.resumenThumb,
+.resumenThumbPlaceholder {
+  width: 36px;
+  height: 36px;
+  border-radius: var(--radius-sm);
+  flex-shrink: 0;
+  object-fit: cover;
+  background: var(--surface-soft);
+  border: 1px solid var(--border-light);
+}
+
+.resumenThumbPlaceholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--heading);
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--gold-dark);
+}
+
+.resumenProductName {
+  font-family: var(--body);
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-dark);
+}
+
+.resumenProductSub {
+  font-size: 11px;
+  color: var(--text-secondary);
+}
+
+.resumenTableTotal td {
+  font-family: var(--ui);
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--text-dark);
+  border-bottom: none;
+  background: var(--surface-soft);
+}
+
 .resumenEmpty {
   text-align: center;
   padding: 32px;

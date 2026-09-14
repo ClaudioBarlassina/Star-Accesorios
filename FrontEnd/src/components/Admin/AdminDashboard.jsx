@@ -612,6 +612,7 @@ function Resumen({ orders, products, loading }) {
   const [mesSeleccionado, setMesSeleccionado] = useState(null)
   const [mesSeleccionadoLabel, setMesSeleccionadoLabel] = useState("")
   const [categoriaSeleccionada, setCategoriaSeleccionada] = useState(null)
+  const [subcategoriaSeleccionada, setSubcategoriaSeleccionada] = useState(null)
 
   const mesesDisponibles = useMemo(() => {
     const mapa = {}
@@ -708,6 +709,28 @@ function Resumen({ orders, products, loading }) {
       .sort((a, b) => b.importe - a.importe)
   }, [pedidosFiltrados, mesSeleccionado, categoriaSeleccionada])
 
+  const productosTabla = useMemo(() => {
+    if (!mesSeleccionado || !categoriaSeleccionada || !subcategoriaSeleccionada) return []
+    const mapa = {}
+    pedidosFiltrados.forEach((o) => {
+      const f = new Date(o.fecha)
+      const key = `${f.getFullYear()}-${String(f.getMonth() + 1).padStart(2, "0")}`
+      if (key !== mesSeleccionado) return
+      o.productos?.forEach((p) => {
+        if ((p.categoria || "Sin categoría") !== categoriaSeleccionada) return
+        if ((p.subcategoria || "Sin subcategoría") !== subcategoriaSeleccionada) return
+        const k = `${p._id}__${p.variante || ""}`
+        if (!mapa[k]) mapa[k] = { nombre: p.nombre, variante: p.variante || "", img: p.images, precio: p.precio || 0, cantidad: 0, importe: 0, pedidos: new Set() }
+        mapa[k].cantidad += Number(p.cantidad) || 0
+        mapa[k].importe += (p.precio || 0) * (p.cantidad || 1)
+        mapa[k].pedidos.add(o._id)
+      })
+    })
+    return Object.values(mapa)
+      .map((r) => ({ ...r, pedidos: r.pedidos.size }))
+      .sort((a, b) => b.importe - a.importe)
+  }, [pedidosFiltrados, mesSeleccionado, categoriaSeleccionada, subcategoriaSeleccionada])
+
   const hayFiltro = mesFiltro || catFiltro || prodFiltro
 
   if (loading) return <div style={{ textAlign: "center", padding: "40px", color: "var(--text-secondary)" }}>Cargando...</div>
@@ -773,6 +796,7 @@ function Resumen({ orders, products, loading }) {
                 {hint && <p className={styles.resumenChartHint}>{hint}</p>}
               </div>
               <button className={styles.resumenChartBack} onClick={() => {
+                setSubcategoriaSeleccionada(null)
                 if (modoSubcategoria) {
                   setCategoriaSeleccionada(null)
                 } else {
@@ -818,7 +842,11 @@ function Resumen({ orders, products, loading }) {
                     cursor="pointer"
                     activeBar={{ fill: "#a8882e" }}
                     onClick={(data) => {
-                      if (modoSubcategoria) return
+                      if (modoSubcategoria) {
+                        const sub = data?.subcategoria || null
+                        setSubcategoriaSeleccionada(sub === subcategoriaSeleccionada ? null : sub)
+                        return
+                      }
                       if (modoCategoria) {
                         setCategoriaSeleccionada(data?.categoria || null)
                         return
@@ -840,12 +868,78 @@ function Resumen({ orders, products, loading }) {
                       ))}
                     {conCantidad &&
                       data.map((entry, i) => (
-                        <Cell key={entry.categoria || entry.subcategoria} fill={PALETA[i % PALETA.length]} />
+                        <Cell
+                          key={entry.categoria || entry.subcategoria}
+                          fill={
+                            modoSubcategoria && subcategoriaSeleccionada
+                              ? entry.subcategoria === subcategoriaSeleccionada
+                                ? "url(#gradGold)"
+                                : "#e9e7df"
+                              : PALETA[i % PALETA.length]
+                          }
+                        />
                       ))}
                     <LabelList content={<ChartBarLabel datos={data} conCantidad={conCantidad} />} />
                   </Bar>
                 </BarChart>
               </ResponsiveContainer>
+            )}
+            {modoSubcategoria && subcategoriaSeleccionada && (
+              <div className={styles.resumenTableBlock}>
+                <div className={styles.resumenTableTitle}>
+                  Productos vendidos · {subcategoriaSeleccionada} ({mesSeleccionadoLabel})
+                </div>
+                {productosTabla.length === 0 ? (
+                  <p style={{ color: "var(--text-secondary)", fontFamily: "var(--body)", fontSize: "13px", margin: "8px 0 0" }}>
+                    Sin ventas de productos en este mes
+                  </p>
+                ) : (
+                  <div className={styles.resumenTableWrap}>
+                    <table className={styles.resumenTable}>
+                      <thead className={styles.resumenTableHead}>
+                        <tr>
+                          <th>Producto</th>
+                          <th>Precio unit.</th>
+                          <th className={styles.resumenTableNum}>Cant.</th>
+                          <th className={styles.resumenTableNum}>Importe</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {productosTabla.map((r) => (
+                          <tr key={`${r.nombre}__${r.variante}`} className={styles.resumenTableRow}>
+                            <td>
+                              <div className={styles.resumenProductCell}>
+                                {typeof r.img === "string" && r.img.startsWith("http") ? (
+                                  <img src={r.img} alt={r.nombre} className={styles.resumenThumb} loading="lazy" />
+                                ) : (
+                                  <div className={styles.resumenThumbPlaceholder}>{(r.nombre || "?")[0]}</div>
+                                )}
+                                <div>
+                                  <div className={styles.resumenProductName}>{r.nombre}</div>
+                                  <div className={styles.resumenProductSub}>
+                                    {r.variante ? `${r.variante} · ` : ""}{r.pedidos} pedido{r.pedidos !== 1 ? "s" : ""}
+                                  </div>
+                                </div>
+                              </div>
+                            </td>
+                            <td>${Number(r.precio).toLocaleString()}</td>
+                            <td className={styles.resumenTableNum}>{r.cantidad}</td>
+                            <td className={styles.resumenTableNum} style={{ fontWeight: 600, color: "var(--gold-dark)" }}>${Math.round(r.importe).toLocaleString()}</td>
+                          </tr>
+                        ))}
+                      </tbody>
+                      <tfoot>
+                        <tr className={styles.resumenTableTotal}>
+                          <td>Total</td>
+                          <td></td>
+                          <td className={styles.resumenTableNum}>{productosTabla.reduce((a, r) => a + r.cantidad, 0)}</td>
+                          <td className={styles.resumenTableNum}>${Math.round(productosTabla.reduce((a, r) => a + r.importe, 0)).toLocaleString()}</td>
+                        </tr>
+                      </tfoot>
+                    </table>
+                  </div>
+                )}
+              </div>
             )}
           </div>
         )
