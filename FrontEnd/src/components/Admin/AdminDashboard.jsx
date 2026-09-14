@@ -73,10 +73,10 @@ function ChartTooltip({ active, payload, label, conCantidad }) {
   )
 }
 
-function ChartBarLabel({ x, y, width, index, datos, modoCategoria }) {
+function ChartBarLabel({ x, y, width, index, datos, conCantidad }) {
   const item = datos[index]
   if (!item) return null
-  const texto = modoCategoria
+  const texto = conCantidad
     ? `${fmtImporte(item.importe)} · ${item.cantidad} uni`
     : fmtImporte(item.total)
   return (
@@ -611,6 +611,7 @@ function Resumen({ orders, products, loading }) {
   const [prodFiltro, setProdFiltro] = useState("")
   const [mesSeleccionado, setMesSeleccionado] = useState(null)
   const [mesSeleccionadoLabel, setMesSeleccionadoLabel] = useState("")
+  const [categoriaSeleccionada, setCategoriaSeleccionada] = useState(null)
 
   const mesesDisponibles = useMemo(() => {
     const mapa = {}
@@ -687,6 +688,26 @@ function Resumen({ orders, products, loading }) {
       .sort((a, b) => b.importe - a.importe)
   }, [pedidosFiltrados, mesSeleccionado])
 
+  const subcategoriasData = useMemo(() => {
+    if (!mesSeleccionado || !categoriaSeleccionada) return []
+    const mapa = {}
+    pedidosFiltrados.forEach((o) => {
+      const f = new Date(o.fecha)
+      const key = `${f.getFullYear()}-${String(f.getMonth() + 1).padStart(2, "0")}`
+      if (key !== mesSeleccionado) return
+      o.productos?.forEach((p) => {
+        if ((p.categoria || "Sin categoría") !== categoriaSeleccionada) return
+        const sub = p.subcategoria || "Sin subcategoría"
+        if (!mapa[sub]) mapa[sub] = { importe: 0, cantidad: 0 }
+        mapa[sub].importe += (p.precio || 0) * (p.cantidad || 1)
+        mapa[sub].cantidad += Number(p.cantidad) || 0
+      })
+    })
+    return Object.entries(mapa)
+      .map(([subcategoria, v]) => ({ subcategoria, ...v }))
+      .sort((a, b) => b.importe - a.importe)
+  }, [pedidosFiltrados, mesSeleccionado, categoriaSeleccionada])
+
   const hayFiltro = mesFiltro || catFiltro || prodFiltro
 
   if (loading) return <div style={{ textAlign: "center", padding: "40px", color: "var(--text-secondary)" }}>Cargando...</div>
@@ -721,25 +742,45 @@ function Resumen({ orders, products, loading }) {
       </div>
 
       {(() => {
-        const modoCategoria = !!mesSeleccionado
-        const data = modoCategoria ? categoriasData : chartData
-        if (!modoCategoria && chartData.length === 0) return null
+        const modoSubcategoria = !!categoriaSeleccionada
+        const modoCategoria = !!mesSeleccionado && !modoSubcategoria
+        const conCantidad = modoCategoria || modoSubcategoria
+        const data = modoSubcategoria
+          ? subcategoriasData
+          : modoCategoria
+            ? categoriasData
+            : chartData
+        if (!modoCategoria && !modoSubcategoria && chartData.length === 0) return null
+
+        const titulo = modoSubcategoria
+          ? `Ventas por subcategoría — ${categoriaSeleccionada} · ${mesSeleccionadoLabel}`
+          : modoCategoria
+            ? `Ventas por categoría — ${mesSeleccionadoLabel}`
+            : "Ventas por mes"
+        const hint = modoSubcategoria
+          ? null
+          : modoCategoria
+            ? "Clic en una categoría para ver sus subcategorías"
+            : "Clic en un mes para ver el desglose por categoría"
+        const xKey = modoSubcategoria ? "subcategoria" : modoCategoria ? "categoria" : "mes"
+        const barKey = conCantidad ? "importe" : "total"
+
         return (
           <div className={styles.resumenChart}>
             <div className={styles.resumenChartHeader}>
               <div>
-                <h3 style={{ fontFamily: "var(--heading)", fontSize: "16px", margin: 0 }}>
-                  {modoCategoria ? `Ventas por categoría — ${mesSeleccionadoLabel}` : "Ventas por mes"}
-                </h3>
-                {!modoCategoria && (
-                  <p className={styles.resumenChartHint}>Clic en un mes para ver el desglose por categoría</p>
-                )}
+                <h3 style={{ fontFamily: "var(--heading)", fontSize: "16px", margin: 0 }}>{titulo}</h3>
+                {hint && <p className={styles.resumenChartHint}>{hint}</p>}
               </div>
-              {modoCategoria && (
-                <button className={styles.resumenChartBack} onClick={() => setMesSeleccionado(null)}>
-                  ← Ver por meses
-                </button>
-              )}
+              <button className={styles.resumenChartBack} onClick={() => {
+                if (modoSubcategoria) {
+                  setCategoriaSeleccionada(null)
+                } else {
+                  setMesSeleccionado(null)
+                }
+              }}>
+                {modoSubcategoria ? "← Ver categorías" : "← Ver por meses"}
+              </button>
             </div>
             {data.length === 0 ? (
               <p style={{ color: "var(--text-secondary)", fontFamily: "var(--body)", fontSize: "14px" }}>Sin ventas en este mes</p>
@@ -754,7 +795,7 @@ function Resumen({ orders, products, loading }) {
                   </defs>
                   <CartesianGrid vertical={false} stroke="#f3f4f6" strokeDasharray="4 4" />
                   <XAxis
-                    dataKey={modoCategoria ? "categoria" : "mes"}
+                    dataKey={xKey}
                     tick={{ fontSize: 11, fill: "#6b7280", fontFamily: "var(--ui)" }}
                     axisLine={false}
                     tickLine={false}
@@ -768,16 +809,20 @@ function Resumen({ orders, products, loading }) {
                     width={56}
                     tickFormatter={fmtCompactMoney}
                   />
-                  <Tooltip content={<ChartTooltip conCantidad={modoCategoria} />} cursor={{ fill: "rgba(201, 168, 76, 0.08)" }} />
+                  <Tooltip content={<ChartTooltip conCantidad={conCantidad} />} cursor={{ fill: "rgba(201, 168, 76, 0.08)" }} />
                   <Bar
-                    dataKey={modoCategoria ? "importe" : "total"}
+                    dataKey={barKey}
                     fill="url(#gradGold)"
                     radius={[6, 6, 0, 0]}
                     maxBarSize={56}
                     cursor="pointer"
                     activeBar={{ fill: "#a8882e" }}
                     onClick={(data) => {
-                      if (modoCategoria) return
+                      if (modoSubcategoria) return
+                      if (modoCategoria) {
+                        setCategoriaSeleccionada(data?.categoria || null)
+                        return
+                      }
                       const mesKey = data?.key || data?.mes
                       setMesSeleccionado(mesKey === mesSeleccionado ? null : mesKey)
                       if (mesKey) {
@@ -786,18 +831,18 @@ function Resumen({ orders, products, loading }) {
                       }
                     }}
                   >
-                    {!modoCategoria && mesSeleccionado &&
+                    {!conCantidad && mesSeleccionado &&
                       chartData.map((entry) => (
                         <Cell
                           key={entry.key}
                           fill={entry.key === mesSeleccionado ? "url(#gradGold)" : "#e9e7df"}
                         />
                       ))}
-                    {modoCategoria &&
+                    {conCantidad &&
                       data.map((entry, i) => (
-                        <Cell key={entry.categoria} fill={PALETA[i % PALETA.length]} />
+                        <Cell key={entry.categoria || entry.subcategoria} fill={PALETA[i % PALETA.length]} />
                       ))}
-                    <LabelList content={<ChartBarLabel datos={data} modoCategoria={modoCategoria} />} />
+                    <LabelList content={<ChartBarLabel datos={data} conCantidad={conCantidad} />} />
                   </Bar>
                 </BarChart>
               </ResponsiveContainer>
