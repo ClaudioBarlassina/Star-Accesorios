@@ -21,6 +21,10 @@ export const getAllProducts = async (query) => {
     filter.nombre = { $regex: query.search, $options: "i" };
   }
 
+  if (query.sinStock === "true" || query.sinStock === "1") {
+    filter.stock = { $lte: 0 };
+  }
+
   // 🔥 FIX IMPORTANTE
   if (query.minPrice || query.maxPrice) {
     filter.precio = {}; // 👈 antes era price ❌

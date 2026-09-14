@@ -685,11 +685,14 @@ function ProductsTab({ onEdit, onDelete, toast, refreshKey }) {
   const [page, setPage] = useState(1)
   const [search, setSearch] = useState("")
   const [searchInput, setSearchInput] = useState("")
+  const [sinStock, setSinStock] = useState(false)
   const [loading, setLoading] = useState(true)
 
   const load = useCallback(() => {
     setLoading(true)
-    getProducts({ search, page, limit: 10 })
+    const params = { search, page, limit: 10 }
+    if (sinStock) params.sinStock = "true"
+    getProducts(params)
       .then((res) => {
         setProducts(res.data.products || [])
         setTotal(res.data.total || 0)
@@ -697,7 +700,7 @@ function ProductsTab({ onEdit, onDelete, toast, refreshKey }) {
       })
       .catch(() => toast("error", "No se pudieron cargar los productos"))
       .finally(() => setLoading(false))
-  }, [search, page, toast, refreshKey])
+  }, [search, page, sinStock, toast, refreshKey])
 
   useEffect(() => {
     // eslint-disable-next-line react-hooks/set-state-in-effect
@@ -729,6 +732,14 @@ function ProductsTab({ onEdit, onDelete, toast, refreshKey }) {
           onChange={(e) => setSearchInput(e.target.value)}
         />
         <button type="submit" style={{ ...s.btn, background: "var(--gold)", color: "white" }}>Buscar</button>
+        <select
+          style={{ ...s.select, width: "auto" }}
+          value={sinStock ? "sin" : ""}
+          onChange={(e) => { setSinStock(e.target.value === "sin"); setPage(1) }}
+        >
+          <option value="">Todos</option>
+          <option value="sin">Sin stock</option>
+        </select>
         {search && (
           <button
             type="button"
