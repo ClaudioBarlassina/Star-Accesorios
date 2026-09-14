@@ -45,6 +45,8 @@ const Home = () => {
   const [pag, setPag] = useState({})
 
   const [es, setes] = useState(1)
+  const [todosMezclados, setTodosMezclados] = useState([])
+  const POR_PAGINA = 10
 
   const [valores, setvalores] = useState({
     category: '',
@@ -60,22 +62,45 @@ const Home = () => {
   }
 
   useEffect(() => {
-    getProducts({
-      category: valores.category,
-      subcategory: valores.subcategory || btnCateg?.name,
-      search: onSearch,
-      page: es,
-    }) // opcional: filtros
-      .then((res) => {
-        // tu backend devuelve JSON
-        const prods = res.data.products || res.data
-        const sinFiltro =
-          !valores.category && !valores.subcategory && !onSearch && !btnCateg
-        setProducts(sinFiltro ? shuffle([...prods]) : prods)
-         setPag(res.data)
+    const sinFiltro =
+      !valores.category && !valores.subcategory && !onSearch && !btnCateg
+
+    if (sinFiltro) {
+      if (todosMezclados.length === 0) {
+        getProducts({ limit: 100000 })
+          .then((res) => {
+            const prods = res.data.products || res.data
+            setTodosMezclados(shuffle([...prods]))
+          })
+          .catch((err) => console.error('Error al cargar productos:', err))
+      }
+    } else {
+      setTodosMezclados([])
+      getProducts({
+        category: valores.category,
+        subcategory: valores.subcategory || btnCateg?.name,
+        search: onSearch,
+        page: es,
+      }) // opcional: filtros
+        .then((res) => {
+          const prods = res.data.products || res.data
+          setProducts(prods)
+          setPag(res.data)
+        })
+        .catch((err) => console.error('Error al cargar productos:', err))
+    }
+  }, [valores, es, onSearch, btnCateg, todosMezclados.length])
+
+  useEffect(() => {
+    if (todosMezclados.length) {
+      setProducts(todosMezclados.slice((es - 1) * POR_PAGINA, es * POR_PAGINA))
+      setPag({
+        total: todosMezclados.length,
+        pages: Math.ceil(todosMezclados.length / POR_PAGINA),
+        page: es,
       })
-      .catch((err) => console.error('Error al cargar productos:', err))
-  }, [valores, es, onSearch, btnCateg])
+    }
+  }, [todosMezclados, es])
 
   const handler = (product) => {
     addCarrito(product)
