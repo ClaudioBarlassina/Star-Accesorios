@@ -276,9 +276,45 @@
 .resumenChart {
   background: var(--surface);
   border: 1px solid var(--border);
+  border-top: 3px solid var(--gold);
   border-radius: var(--radius-md);
-  padding: 20px;
+  box-shadow: var(--shadow-sm);
+  padding: 24px;
   margin-top: 16px;
+}
+
+.resumenChartHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 12px;
+  margin-bottom: 6px;
+}
+
+.resumenChartHint {
+  font-family: var(--body);
+  font-size: 12px;
+  color: var(--text-secondary);
+  margin: 2px 0 0;
+}
+
+.resumenChartBack {
+  padding: 6px 12px;
+  border: 1px solid var(--gold);
+  border-radius: var(--radius-sm);
+  background: var(--gold-bg);
+  color: var(--gold-dark);
+  font-family: var(--ui);
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 150ms ease;
+}
+
+.resumenChartBack:hover {
+  background: var(--gold);
+  color: white;
 }
 
 .resumenEmpty {

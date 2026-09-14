@@ -5,7 +5,7 @@ import { getCarousel, uploadCarouselImages, deleteCarouselImage } from "../../ap
 import { getUsers } from "../../api/users.api"
 import { useNavigate } from "react-router-dom"
 import { CATEGORIAS, getSubcategoriasDe } from "../../config/categories"
-import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, Cell } from "recharts"
+import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, Cell, CartesianGrid, LabelList } from "recharts"
 import CajaVenta from "./POS/CajaVenta"
 import BulkProductForm from "./BulkProductForm"
 import styles from "./AdminDashboard.module.css"
@@ -38,6 +38,52 @@ const stockEfectivo = (p) => {
     return p.variantes.reduce((acc, v) => acc + (Number(v.stock) || 0), 0)
   }
   return p?.stock
+}
+
+const PALETA = ["#c9a84c", "#8b5cf6", "#2563eb", "#059669", "#d97706", "#dc2626", "#0891b2", "#d946ef", "#65a30d", "#64748b"]
+
+const fmtCompactMoney = (v) => {
+  const n = Number(v) || 0
+  if (n >= 1000000) return `$${(n / 1000000).toFixed(1).replace(/\.0$/, "")}M`
+  if (n >= 1000) return `$${(n / 1000).toFixed(1).replace(/\.0$/, "")}k`
+  return `$${Math.round(n)}`
+}
+
+const fmtImporte = (v) => {
+  const n = Number(v) || 0
+  if (n >= 1000000) return `$${(n / 1000000).toFixed(1).replace(/\.0$/, "")}M`
+  if (n >= 1000) return `$${(n / 1000).toFixed(1).replace(/\.0$/, "")}k`
+  return `$${n.toLocaleString("es-AR")}`
+}
+
+function ChartTooltip({ active, payload, label, conCantidad }) {
+  if (!active || !payload || payload.length === 0) return null
+  const item = payload[0].payload
+  const importe = Number(item.importe ?? item.total ?? 0)
+  return (
+    <div style={{ background: "var(--surface)", border: "1px solid var(--border)", borderRadius: "var(--radius-sm)", boxShadow: "var(--shadow-lg)", padding: "10px 14px", fontFamily: "var(--ui)", minWidth: "130px" }}>
+      <div style={{ fontWeight: 700, color: "var(--gold-dark)", fontSize: "12px", marginBottom: "4px" }}>{label}</div>
+      <div style={{ fontWeight: 600, fontSize: "14px" }}>{fmtImporte(importe)}</div>
+      {conCantidad && (
+        <div style={{ fontSize: "12px", color: "var(--text-secondary)" }}>
+          {Number(item.cantidad || 0).toLocaleString("es-AR")} unidades
+        </div>
+      )}
+    </div>
+  )
+}
+
+function ChartBarLabel({ x, y, width, index, datos, modoCategoria }) {
+  const item = datos[index]
+  if (!item) return null
+  const texto = modoCategoria
+    ? `${fmtImporte(item.importe)} · ${item.cantidad} uni`
+    : fmtImporte(item.total)
+  return (
+    <text x={x + width / 2} y={y - 6} textAnchor="middle" fontSize={10} fill="#6b7280" fontWeight={600} fontFamily="var(--ui)">
+      {texto}
+    </text>
+  )
 }
 
 function Toast({ toast, onClose }) {
@@ -631,12 +677,14 @@ function Resumen({ orders, products, loading }) {
       if (key !== mesSeleccionado) return
       o.productos?.forEach((p) => {
         const cat = p.categoria || "Sin categoría"
-        mapa[cat] = (mapa[cat] || 0) + (p.precio || 0) * (p.cantidad || 1)
+        if (!mapa[cat]) mapa[cat] = { importe: 0, cantidad: 0 }
+        mapa[cat].importe += (p.precio || 0) * (p.cantidad || 1)
+        mapa[cat].cantidad += Number(p.cantidad) || 0
       })
     })
     return Object.entries(mapa)
-      .map(([categoria, total]) => ({ categoria, total }))
-      .sort((a, b) => b.total - a.total)
+      .map(([categoria, v]) => ({ categoria, ...v }))
+      .sort((a, b) => b.importe - a.importe)
   }, [pedidosFiltrados, mesSeleccionado])
 
   const hayFiltro = mesFiltro || catFiltro || prodFiltro
@@ -678,15 +726,17 @@ function Resumen({ orders, products, loading }) {
         if (!modoCategoria && chartData.length === 0) return null
         return (
           <div className={styles.resumenChart}>
-            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "14px" }}>
-              <h3 style={{ fontFamily: "var(--heading)", fontSize: "16px", margin: 0 }}>
-                {modoCategoria ? `Ventas por categoría — ${mesSeleccionadoLabel}` : "Ventas por mes"}
-              </h3>
+            <div className={styles.resumenChartHeader}>
+              <div>
+                <h3 style={{ fontFamily: "var(--heading)", fontSize: "16px", margin: 0 }}>
+                  {modoCategoria ? `Ventas por categoría — ${mesSeleccionadoLabel}` : "Ventas por mes"}
+                </h3>
+                {!modoCategoria && (
+                  <p className={styles.resumenChartHint}>Clic en un mes para ver el desglose por categoría</p>
+                )}
+              </div>
               {modoCategoria && (
-                <button
-                  onClick={() => setMesSeleccionado(null)}
-                  style={{ ...s.btn, background: "var(--border-light)", color: "var(--text)", padding: "6px 12px", fontSize: "12px" }}
-                >
+                <button className={styles.resumenChartBack} onClick={() => setMesSeleccionado(null)}>
                   ← Ver por meses
                 </button>
               )}
@@ -694,19 +744,38 @@ function Resumen({ orders, products, loading }) {
             {data.length === 0 ? (
               <p style={{ color: "var(--text-secondary)", fontFamily: "var(--body)", fontSize: "14px" }}>Sin ventas en este mes</p>
             ) : (
-              <ResponsiveContainer width="100%" height={240}>
-                <BarChart data={data} margin={{ top: 8, right: 8, bottom: 0, left: -16 }}>
+              <ResponsiveContainer width="100%" height={260}>
+                <BarChart data={data} margin={{ top: 26, right: 8, bottom: 0, left: -8 }}>
+                  <defs>
+                    <linearGradient id="gradGold" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="0%" stopColor="#e8d48b" />
+                      <stop offset="100%" stopColor="#c9a84c" />
+                    </linearGradient>
+                  </defs>
+                  <CartesianGrid vertical={false} stroke="#f3f4f6" strokeDasharray="4 4" />
                   <XAxis
                     dataKey={modoCategoria ? "categoria" : "mes"}
-                    tick={{ fontSize: 11, fill: "var(--text-secondary)" }}
+                    tick={{ fontSize: 11, fill: "#6b7280", fontFamily: "var(--ui)" }}
+                    axisLine={false}
+                    tickLine={false}
+                    interval={0}
+                    tickMargin={8}
                   />
-                  <YAxis tick={{ fontSize: 11, fill: "var(--text-secondary)" }} />
-                  <Tooltip formatter={(v) => `$${v.toLocaleString()}`} labelStyle={{ fontSize: 12 }} />
+                  <YAxis
+                    tick={{ fontSize: 11, fill: "#6b7280", fontFamily: "var(--ui)" }}
+                    axisLine={false}
+                    tickLine={false}
+                    width={56}
+                    tickFormatter={fmtCompactMoney}
+                  />
+                  <Tooltip content={<ChartTooltip conCantidad={modoCategoria} />} cursor={{ fill: "rgba(201, 168, 76, 0.08)" }} />
                   <Bar
-                    dataKey="total"
-                    fill="var(--gold)"
-                    radius={[4, 4, 0, 0]}
+                    dataKey={modoCategoria ? "importe" : "total"}
+                    fill="url(#gradGold)"
+                    radius={[6, 6, 0, 0]}
+                    maxBarSize={56}
                     cursor="pointer"
+                    activeBar={{ fill: "#a8882e" }}
                     onClick={(data) => {
                       if (modoCategoria) return
                       const mesKey = data?.key || data?.mes
@@ -721,9 +790,14 @@ function Resumen({ orders, products, loading }) {
                       chartData.map((entry) => (
                         <Cell
                           key={entry.key}
-                          fill={entry.key === mesSeleccionado ? "var(--gold)" : "var(--border-light)"}
+                          fill={entry.key === mesSeleccionado ? "url(#gradGold)" : "#e9e7df"}
                         />
                       ))}
+                    {modoCategoria &&
+                      data.map((entry, i) => (
+                        <Cell key={entry.categoria} fill={PALETA[i % PALETA.length]} />
+                      ))}
+                    <LabelList content={<ChartBarLabel datos={data} modoCategoria={modoCategoria} />} />
                   </Bar>
                 </BarChart>
               </ResponsiveContainer>
