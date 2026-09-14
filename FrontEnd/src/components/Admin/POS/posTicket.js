@@ -4,6 +4,8 @@ const ANCHO = 80
 const MARGEN = 4
 const LINEA = 5
 
+const URL_SITIO = "https://star-accesorios.vercel.app"
+
 const formatMoney = (n) =>
   new Intl.NumberFormat("es-AR", {
     style: "currency",
@@ -99,6 +101,10 @@ function dibujar(doc, pedido, { montoRecibido, vuelto, titulo } = {}) {
   y += LINEA
   doc.setFontSize(8)
   doc.text("Star Accesorios", ANCHO / 2, y, { align: "center" })
+  y += LINEA + 1
+  doc.text("Seguinos en nuestra página", ANCHO / 2, y, { align: "center" })
+  y += LINEA
+  doc.textWithLink(URL_SITIO, ANCHO / 2, y, { align: "center", url: URL_SITIO })
 
   return y
 }
