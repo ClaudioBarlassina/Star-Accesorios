@@ -5,7 +5,7 @@ import { getCarousel, uploadCarouselImages, deleteCarouselImage } from "../../ap
 import { getUsers } from "../../api/users.api"
 import { useNavigate } from "react-router-dom"
 import { CATEGORIAS, getSubcategoriasDe } from "../../config/categories"
-import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer } from "recharts"
+import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, Cell } from "recharts"
 import CajaVenta from "./POS/CajaVenta"
 import BulkProductForm from "./BulkProductForm"
 import styles from "./AdminDashboard.module.css"
@@ -563,6 +563,8 @@ function Resumen({ orders, products, loading }) {
   const [mesFiltro, setMesFiltro] = useState("")
   const [catFiltro, setCatFiltro] = useState("")
   const [prodFiltro, setProdFiltro] = useState("")
+  const [mesSeleccionado, setMesSeleccionado] = useState(null)
+  const [mesSeleccionadoLabel, setMesSeleccionadoLabel] = useState("")
 
   const mesesDisponibles = useMemo(() => {
     const mapa = {}
@@ -614,15 +616,28 @@ function Resumen({ orders, products, loading }) {
       const f = new Date(o.fecha)
       const key = `${f.getFullYear()}-${String(f.getMonth() + 1).padStart(2, "0")}`
       const label = f.toLocaleDateString("es-AR", { month: "short", year: "2-digit" })
-      if (!mapa[key]) mapa[key] = { mes: label, total: 0 }
+      if (!mapa[key]) mapa[key] = { key, mes: label, total: 0 }
       mapa[key].total += o.total || 0
     })
-    return Object.values(mapa).sort((a, b) => {
-      const ka = Object.keys(mapa).find((k) => mapa[k] === a)
-      const kb = Object.keys(mapa).find((k) => mapa[k] === b)
-      return ka.localeCompare(kb)
-    })
+    return Object.values(mapa).sort((a, b) => a.key.localeCompare(b.key))
   }, [pedidosFiltrados])
+
+  const categoriasData = useMemo(() => {
+    if (!mesSeleccionado) return []
+    const mapa = {}
+    pedidosFiltrados.forEach((o) => {
+      const f = new Date(o.fecha)
+      const key = `${f.getFullYear()}-${String(f.getMonth() + 1).padStart(2, "0")}`
+      if (key !== mesSeleccionado) return
+      o.productos?.forEach((p) => {
+        const cat = p.categoria || "Sin categoría"
+        mapa[cat] = (mapa[cat] || 0) + (p.precio || 0) * (p.cantidad || 1)
+      })
+    })
+    return Object.entries(mapa)
+      .map(([categoria, total]) => ({ categoria, total }))
+      .sort((a, b) => b.total - a.total)
+  }, [pedidosFiltrados, mesSeleccionado])
 
   const hayFiltro = mesFiltro || catFiltro || prodFiltro
 
@@ -657,19 +672,65 @@ function Resumen({ orders, products, loading }) {
         <StatCard label="Sin stock" value={agotados} sub="Productos sin unidades disponibles" color="#dc2626" />
       </div>
 
-      {chartData.length > 0 && (
-        <div className={styles.resumenChart}>
-          <h3 style={{ fontFamily: "var(--heading)", fontSize: "16px", margin: "0 0 14px" }}>Ventas por mes</h3>
-          <ResponsiveContainer width="100%" height={240}>
-            <BarChart data={chartData} margin={{ top: 8, right: 8, bottom: 0, left: -16 }}>
-              <XAxis dataKey="mes" tick={{ fontSize: 11, fill: "var(--text-secondary)" }} />
-              <YAxis tick={{ fontSize: 11, fill: "var(--text-secondary)" }} />
-              <Tooltip formatter={(v) => `$${v.toLocaleString()}`} labelStyle={{ fontSize: 12 }} />
-              <Bar dataKey="total" fill="var(--gold)" radius={[4, 4, 0, 0]} />
-            </BarChart>
-          </ResponsiveContainer>
-        </div>
-      )}
+      {(() => {
+        const modoCategoria = !!mesSeleccionado
+        const data = modoCategoria ? categoriasData : chartData
+        if (!modoCategoria && chartData.length === 0) return null
+        return (
+          <div className={styles.resumenChart}>
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "14px" }}>
+              <h3 style={{ fontFamily: "var(--heading)", fontSize: "16px", margin: 0 }}>
+                {modoCategoria ? `Ventas por categoría — ${mesSeleccionadoLabel}` : "Ventas por mes"}
+              </h3>
+              {modoCategoria && (
+                <button
+                  onClick={() => setMesSeleccionado(null)}
+                  style={{ ...s.btn, background: "var(--border-light)", color: "var(--text)", padding: "6px 12px", fontSize: "12px" }}
+                >
+                  ← Ver por meses
+                </button>
+              )}
+            </div>
+            {data.length === 0 ? (
+              <p style={{ color: "var(--text-secondary)", fontFamily: "var(--body)", fontSize: "14px" }}>Sin ventas en este mes</p>
+            ) : (
+              <ResponsiveContainer width="100%" height={240}>
+                <BarChart data={data} margin={{ top: 8, right: 8, bottom: 0, left: -16 }}>
+                  <XAxis
+                    dataKey={modoCategoria ? "categoria" : "mes"}
+                    tick={{ fontSize: 11, fill: "var(--text-secondary)" }}
+                  />
+                  <YAxis tick={{ fontSize: 11, fill: "var(--text-secondary)" }} />
+                  <Tooltip formatter={(v) => `$${v.toLocaleString()}`} labelStyle={{ fontSize: 12 }} />
+                  <Bar
+                    dataKey="total"
+                    fill="var(--gold)"
+                    radius={[4, 4, 0, 0]}
+                    cursor="pointer"
+                    onClick={(data) => {
+                      if (modoCategoria) return
+                      const mesKey = data?.key || data?.mes
+                      setMesSeleccionado(mesKey === mesSeleccionado ? null : mesKey)
+                      if (mesKey) {
+                        const entry = chartData.find((c) => c.key === mesKey || c.mes === mesKey)
+                        setMesSeleccionadoLabel(entry?.mes || mesKey)
+                      }
+                    }}
+                  >
+                    {!modoCategoria && mesSeleccionado &&
+                      chartData.map((entry) => (
+                        <Cell
+                          key={entry.key}
+                          fill={entry.key === mesSeleccionado ? "var(--gold)" : "var(--border-light)"}
+                        />
+                      ))}
+                  </Bar>
+                </BarChart>
+              </ResponsiveContainer>
+            )}
+          </div>
+        )
+      })()}
 
       {pedidosFiltrados.length === 0 && hayFiltro && (
         <div className={styles.resumenEmpty}>No hay ventas con los filtros seleccionados</div>
